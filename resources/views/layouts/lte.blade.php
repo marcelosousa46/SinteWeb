@@ -27,8 +27,9 @@
               </h1>
               <!-- You can dynamically generate breadcrumbs here -->
               <ol class="breadcrumb">
-                  <li><a href="#"><i class="fa fa-dashboard"></i> Level</a></li>
-                  <li class="active">Here</li>
+                  <li><a href="/"><i class="fa fa-dashboard"></i>Início</a></li>
+                  @yield('ref')
+                  @yield('ref1')
               </ol>
           </section>
 

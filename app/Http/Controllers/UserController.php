@@ -27,7 +27,7 @@ class UserController extends Controller
       ->addColumn('action', function ($usuarios) {
       return [
               '<a href="usuarios/edit/'.$usuarios->id.'" class="glyphicon glyphicon-pencil" title="Editar"></a>',
-              '<a href="setores/destroy/'.$usuarios->id.'" class="glyphicon glyphicon-trash" title="Deletar"
+              '<a href="usuarios/destroy/'.$usuarios->id.'" class="glyphicon glyphicon-trash" title="Deletar"
               onclick="return confirm(\'Excluir usuario?\')"></a>'
              ];
       })
@@ -64,8 +64,8 @@ class UserController extends Controller
 
   public function getEdit($id)
   {
-      $setor = User::find($id);
-      return view('usuarios.usuarios-new-edit');
+      $usuario = User::find($id);
+      return view('usuarios.usuarios-new-edit', compact('usuario'));
   }
 
 

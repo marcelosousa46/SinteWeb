@@ -1,43 +1,48 @@
 @extends('layouts.lte')
-
-@if( isset($usuario->id) )
-  @section('title', 'Usuários - alteração')
+@section('title', 'Usuários')
+@section('ref')
+  <li><a href="{{url('usuarios')}}">Usuários</a></li>
+@endsection
+@if(isset($usuario->id) )
+  @section('ref1')
+    <li class="active">Alteração</li>
+  @endsection
 @else
-  @section('title', 'Usuários - inclusão')
+  @section('ref1')
+    <li class="active">Inclusão</li>
+  @endsection
 @endif
 
 @section('content')
-    <nav>
-      <ul class="pager">
-        <li class="previous"><a href="{{url('usuarios')}}"><span aria-hidden="true">&larr;</span>voltar</a></li>
-      </ul>
-    </nav>
-    <div class="box box-primary">
-      <div class="box-header with-border">
-        @if( isset($setor->id) )
-            {!! Form::open(['route'=>['usuarios.update', $usuario->id]]) !!}
-        @else
-            {!! Form::open(['route'=>'usuarios.store']) !!}
-        @endif
+<div class="container">
+  <div class="row">
+    <div class="col-md-10">
+      <div class="box box-primary">
+        <div class="box-header with-border">
+          @if(isset($usuario->id) )
+              {!! Form::open(['route'=>['usuarios.update', $usuario->id]]) !!}
+          @else
+              {!! Form::open(['route'=>'usuarios.store']) !!}
+          @endif
 
-        <!-- Nome Form Input -->
-        <div class="box-body">
-            <div class="form-group">
-                {!! Form::label('nome', 'Nome:') !!}
-                {!! Form::text('name', isset($usuario->name) ? $usuario->name:null, ['class'=>'form-control']) !!}
-                {!! Form::label('email', 'E-Mail:') !!}
-                {!! Form::text('email', isset($usuario->email) ? $usuario->email:null, ['class'=>'form-control']) !!}
-                {!! Form::label('Senha', 'Senha:') !!}
-                {!! Form::password('password', isset($usuario->password) ? $usuario->email:null, ['class'=>'form-control']) !!}
-            </div>
+          <!-- Nome Form Input -->
+          <div class="box-body">
+              <div class="form-group">
+                  {!! Form::label('nome', 'Nome:') !!}
+                  {!! Form::text('name', isset($usuario->name) ? $usuario->name:null, ['class'=>'form-control']) !!}
+                  {!! Form::label('email', 'E-Mail:') !!}
+                  {!! Form::text('email', isset($usuario->email) ? $usuario->email:null, ['class'=>'form-control']) !!}
+              </div>
 
-            <div class="form-group">
-                {!! Form::submit('Confirmar', ['class'=>'btn btn-primary']) !!}
-            </div>
-         </div>
+              <div class="form-group">
+                  {!! Form::submit('Confirmar', ['class'=>'btn btn-primary']) !!}
+              </div>
+          </div>
 
-        {!! Form::close() !!}
+          {!! Form::close() !!}
+        </div>
       </div>
-  </div>
+    </div>
+ </div>
 
 @endsection
