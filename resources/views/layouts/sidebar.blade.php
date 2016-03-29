@@ -1,3 +1,6 @@
+<?php
+use App\User;
+?>
 <!-- Left side column. contains the sidebar -->
 <aside class="main-sidebar">
 
@@ -47,13 +50,25 @@
         <li class="active"><a href="{{ url('/login') }}"><span>Entrar</span></a></li>
       @else
         <li class="header">Menu Principal</li>
-        <li class="treeview">
-          <a href="#"><span>Entrada de dados</span> <i class="fa fa-angle-left pull-right"></i></a>
-          <ul class="treeview-menu">
-            <li><a href="{{ url('/usuarios') }}">Usuários</a></li>
-            <li><a href="#">Produtos</a></li>
-          </ul>
-        </li>
+        <?php
+          $id = auth()->user()->id;
+          $menu  = User::find($id)->Rotinas();
+        ?>
+
+        @for($i = 0; $i < count($menu); $i++)
+            <li class="treeview">
+              <a href="#"><span>{{ $menu[$i]->descricao }}</span> <i class="fa fa-angle-left pull-right"></i></a>
+              <?php
+                $submenu  = User::find($id)->Subrotinas($menu[$i]->tabela);
+              ?>
+              @for($j = 0; $j < count($submenu); $j++)
+                  <ul class="treeview-menu">
+                    <li><a href="{{ url('/usuarios') }}">{{ $submenu[$j]->descricao }}</a></li>
+                  </ul>
+              @endfor
+            </li>
+        @endfor      
+
         <li class="treeview">
           <a href="#"><span>Vendas</span> <i class="fa fa-angle-left pull-right"></i></a>
           <ul class="treeview-menu">
