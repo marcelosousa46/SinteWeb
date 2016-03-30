@@ -27,8 +27,8 @@ class User extends Authenticatable
 
     public function Rotinas(){
          return DB::table('users')
-                    ->join('Permissoes', 'Permissoes.users_id', '=', 'users.id')
-                    ->join('rotinas', 'rotinas.id', '=', 'Permissoes.rotinas_id')
+                    ->join('permissoes', 'permissoes.users_id', '=', 'users.id')
+                    ->join('rotinas', 'rotinas.id', '=', 'permissoes.rotinas_id')
                     ->select('rotinas.*')
                     ->where('users.id', $this->id)
                     ->where('rotinas.tipo', "0")
@@ -37,8 +37,8 @@ class User extends Authenticatable
 
     public function Subrotinas($tabela){
          return DB::table('users')
-                    ->join('Permissoes', 'Permissoes.users_id', '=', 'users.id')
-                    ->join('rotinas', 'rotinas.id', '=', 'Permissoes.rotinas_id')
+                    ->join('permissoes', 'permissoes.users_id', '=', 'users.id')
+                    ->join('rotinas', 'rotinas.id', '=', 'permissoes.rotinas_id')
                     ->select('rotinas.*')
                     ->where('users.id', $this->id)
                     ->where('rotinas.tipo', "1")

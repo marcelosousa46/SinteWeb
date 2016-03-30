@@ -54,7 +54,6 @@ use App\User;
           $id = auth()->user()->id;
           $menu  = User::find($id)->Rotinas();
         ?>
-
         @for($i = 0; $i < count($menu); $i++)
             <li class="treeview">
               <a href="#"><span>{{ $menu[$i]->descricao }}</span> <i class="fa fa-angle-left pull-right"></i></a>
@@ -67,7 +66,7 @@ use App\User;
                   </ul>
               @endfor
             </li>
-        @endfor      
+        @endfor
 
         <li class="treeview">
           <a href="#"><span>Vendas</span> <i class="fa fa-angle-left pull-right"></i></a>
