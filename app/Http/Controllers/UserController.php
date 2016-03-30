@@ -10,14 +10,17 @@ use App\User;
 
 class UserController extends Controller
 {
+  private $var;
   public function __construct()
   {
       $this->middleware('auth');
   }
 
-  public function getIndex()
+  public function getIndex(Request $request)
   {
-      return view('usuarios.usuarios');
+      $this->$var = $request->query();
+      dd($this->$var);
+      return view('usuarios.usuarios', compact('var'));
   }
 
   public function anyData()
@@ -28,16 +31,9 @@ class UserController extends Controller
       return [
               '<a href="usuarios/edit/'.$usuarios->id.'" class="glyphicon glyphicon-pencil" title="Editar"></a>',
               '<a href="usuarios/destroy/'.$usuarios->id.'" class="glyphicon glyphicon-trash" title="Deletar"
-              onclick="return confirm(\'Excluir usuario?\')"></a>'
+                                                            onclick="return confirm(\'Excluir usuario?\')"></a>'
              ];
       })
-      ->setRowData([
-              'id' => 'test',
-      ])
-      ->setRowAttr([
-              'color' => 'red',
-      ])
-
       ->make(true);
   }
   public function getCreate()

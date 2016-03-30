@@ -15,8 +15,9 @@ class CreateRotinasTable extends Migration
         Schema::create('rotinas', function (Blueprint $table) {
             $table->increments('id');
             $table->string('descricao',60);
-            $table->string('tabela',20);        
-            $table->string('tipo',1);        
+            $table->string('url',60);
+            $table->string('tipo',1);  /* Para Rotina tipo  = 0 e Sub-rotinas tipo = 1*/              
+            $table->string('nivel',1); /* Para Subrotinas Nivel da rotina */        
             $table->timestamps();
         });
     }

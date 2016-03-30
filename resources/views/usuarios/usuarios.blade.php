@@ -1,7 +1,7 @@
 @extends('layouts.lte')
-@section('title', 'Usuários')
+@section('title', $var['in'])
 @section('ref')
-  <li><class="active">Usuários</li>
+  <li><class="active">{{ $var['in'] }}</li>
 @endsection
 
 @section('content')

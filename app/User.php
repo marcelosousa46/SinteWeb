@@ -42,8 +42,18 @@ class User extends Authenticatable
                     ->select('rotinas.*')
                     ->where('users.id', $this->id)
                     ->where('rotinas.tipo', "1")
-                    ->where('rotinas.tabela', $tabela)
+                    ->where('rotinas.nivel', $tabela)
                     ->get();
     }
+
+    public function Crud($rotina){
+         return DB::table('permissoes')
+                    ->join('users', 'users.id', '=', 'permissoes.users_id')
+                    ->select('rotinas.crud')
+                    ->where('users.id', $this->id)
+                    ->where('permissoes.users_id', $rotina)
+                    ->get();
+    }
+
 
 }

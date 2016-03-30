@@ -1,6 +1,3 @@
-<?php
-use App\User;
-?>
 <!-- Left side column. contains the sidebar -->
 <aside class="main-sidebar">
 
@@ -16,7 +13,7 @@ use App\User;
         <div class="pull-left info">
           <p>{{ Auth::user()->name }}</p>
           <!-- Status -->
-          <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
+          <a href="{{ url('/logout') }}"><i class="fa fa-circle text-success"></i> Online</a>
         </div>
       </div>
     @else
@@ -51,32 +48,21 @@ use App\User;
       @else
         <li class="header">Menu Principal</li>
         <?php
-          $id = auth()->user()->id;
-          $menu  = User::find($id)->Rotinas();
+          $menu  = auth()->user()->Rotinas();
         ?>
         @for($i = 0; $i < count($menu); $i++)
             <li class="treeview">
-              <a href="#"><span>{{ $menu[$i]->descricao }}</span> <i class="fa fa-angle-left pull-right"></i></a>
+              <a href="{{ $menu[$i]->url }}"><span>{{ $menu[$i]->descricao }}</span> <i class="fa fa-angle-left pull-right"></i></a>
               <?php
-                $submenu  = User::find($id)->Subrotinas($menu[$i]->tabela);
+                $submenu  = auth()->user()->Subrotinas($menu[$i]->nivel);
               ?>
               @for($j = 0; $j < count($submenu); $j++)
                   <ul class="treeview-menu">
-                    <li><a href="{{ url('/usuarios') }}">{{ $submenu[$j]->descricao }}</a></li>
+                    <li><a href="{{ route($submenu[$j]->url, ['id' => $submenu[$j]->id, 'in' => $submenu[$j]->descricao]) }}">{{ $submenu[$j]->descricao }}</a></li>
                   </ul>
               @endfor
             </li>
         @endfor
-
-        <li class="treeview">
-          <a href="#"><span>Vendas</span> <i class="fa fa-angle-left pull-right"></i></a>
-          <ul class="treeview-menu">
-            <li><a href="#">Orçamentos</a></li>
-            <li><a href="#">Pedidos</a></li>
-            <li><a href="#">Nota fiscal</a></li>
-            <li><a href="#">Cupom fiscal</a></li>
-          </ul>
-        </li>
         <li class="active"><a href="{{ url('/logout') }}"><span>Sair</span></a></li>
     @endif
     </ul><!-- /.sidebar-menu -->
