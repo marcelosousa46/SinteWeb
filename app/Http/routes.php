@@ -22,5 +22,12 @@ Route::group(['middleware' => 'web'], function () {
         'getDestroy'  => 'usuarios.destroy',
         'postUpdate'  => 'usuarios.update',
     ]);
+    /* Permissoes */
+    Route::controller('permissoes','PermissaoController',[
+        'anyData'     => 'permissoes.data',
+        'getIndex'    => 'permissoes',
+        'postStore'   => 'permissoes.store',
+        'postUpdate'  => 'permissoes.update',
+    ]);
 
 });

@@ -54,11 +54,11 @@
             <li class="treeview">
               <a href="{{ $menu[$i]->url }}"><span>{{ $menu[$i]->descricao }}</span> <i class="fa fa-angle-left pull-right"></i></a>
               <?php
-                $submenu  = auth()->user()->Subrotinas($menu[$i]->nivel);
+                $submenu  = auth()->user()->Subrotinas($menu[$i]->nivel,$menu[$i]->id);
               ?>
               @for($j = 0; $j < count($submenu); $j++)
                   <ul class="treeview-menu">
-                    <li><a href="{{ route($submenu[$j]->url, ['id' => $submenu[$j]->id, 'in' => $submenu[$j]->descricao]) }}">{{ $submenu[$j]->descricao }}</a></li>
+                    <li><a href="{{ route($submenu[$j]->url,'id='.$submenu[$j]->id.'') }}">{{ $submenu[$j]->descricao }}</a></li>
                   </ul>
               @endfor
             </li>

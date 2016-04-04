@@ -55,6 +55,8 @@
   <script src="{{ asset ("/bower_components/AdminLTE/dist/js/app.min.js") }}" type="text/javascript"></script>
   <!-- DataTables -->
   <script src="http://cdn.datatables.net/1.10.11/js/jquery.dataTables.min.js"></script>
+  <!-- TreeView -->
+  <script src="{{ asset('/bower_components/bootstrap-treeview/public/js/bootstrap-treeview.js') }}"></script>
   <!-- App scripts -->
   @stack('scripts')
 

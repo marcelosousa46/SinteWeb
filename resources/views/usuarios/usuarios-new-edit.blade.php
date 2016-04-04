@@ -24,7 +24,7 @@
           @else
               {!! Form::open(['route'=>'usuarios.store']) !!}
           @endif
-
+          {!! csrf_field() !!}
           <!-- Nome Form Input -->
           <div class="box-body">
               <div class="form-group">

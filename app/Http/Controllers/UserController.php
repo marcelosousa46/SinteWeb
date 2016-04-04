@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
@@ -18,9 +17,9 @@ class UserController extends Controller
 
   public function getIndex(Request $request)
   {
-      $this->$var = $request->query();
-      dd($this->$var);
-      return view('usuarios.usuarios', compact('var'));
+      $query = ($request->query());
+      $request->session()->put('rotina_id', $query['id']);
+      return view('usuarios.usuarios');
   }
 
   public function anyData()
@@ -47,7 +46,7 @@ class UserController extends Controller
       $input = $request->all();
       User::create($input);
 
-      return redirect()->route('usuarios');
+      return redirect()->route('usuarios', ['id' => session('rotina_id')]);
 
   }
 
@@ -55,13 +54,27 @@ class UserController extends Controller
   {
       User::find($id)->delete();
 
-      return redirect()->route('usuarios');
+      return redirect()->route('usuarios', ['id' => session('rotina_id')]);
   }
 
-  public function getEdit($id)
+  public function getEdit(Request $request,$id)
   {
-      $usuario = User::find($id);
-      return view('usuarios.usuarios-new-edit', compact('usuario'));
+     $permissao = 'B';
+     if ($request->session()->has('rotina_id')) {
+        $crud = auth()->user()->Crud(session('rotina_id'));
+        $permissao = substr($crud[0]->crud,1,1);
+      }
+      $this->validate($request, [
+              'usuario' => "in:$permissao,'A'",
+          ]);
+
+      if ($permissao == 'A'){
+        $usuario = User::find($id);
+        return view('usuarios.usuarios-new-edit', compact('usuario'));
+      } else {
+        session()->put('status', 'Usuário não autorizado.');
+        return redirect()->route('usuarios', ['id' => session('rotina_id')]);
+      }
   }
 
 
@@ -69,6 +82,6 @@ class UserController extends Controller
   {
       $setor = User::find($id)->update($request->all());
 
-      return redirect()->route('usuarios');
+      return redirect()->route('usuarios', ['id' => session('rotina_id')]);
   }
 }

@@ -1,11 +1,20 @@
 @extends('layouts.lte')
-@section('title', $var['in'])
+@section('title', 'Usuários')
 @section('ref')
-  <li><class="active">{{ $var['in'] }}</li>
+  <li><class="active">'Usuários'</li>
 @endsection
 
 @section('content')
 <div class="container">
+  <div class="row">
+    <div class="col-md-6">
+      @if (session('status'))
+        <div class="alert alert-danger fade in">
+          <h4>Atenção!</h4>
+          {{ session('status') }}
+        </div>
+      @endif
+  </div>
   <div class="row">
     <div class="col-md-10">
       <table class="table table-striped table-bordered table-hover" id="usuarios-table">
@@ -25,6 +34,10 @@
 
 @push('scripts')
   <script>
+    $(".alert").fadeTo(2000, 0.4).slideUp(700, function(){
+      $(".alert").alert('close');
+    });
+
     $(function() {
         $('#usuarios-table').DataTable({
             language : {

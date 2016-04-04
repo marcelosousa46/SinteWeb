@@ -15,15 +15,28 @@ class PermissoesTableSeeder extends Seeder
 	     DB::table('permissoes')->insert([
 	               'users_id' => 1,
 	               'rotinas_id' => 1,
-	               'tipo' => '1',        
-	               'crud' => 'AAAAA',        
-	                ]);      
+	               'tipo' => '1',
+	               'crud' => 'AAAAA',
+	                ]);
 
 	     DB::table('permissoes')->insert([
 	               'users_id' => 1,
 	               'rotinas_id' => 2,
-	               'tipo' => '1',        
-	               'crud' => 'AAAAA',        
-	                ]);      
+	               'tipo' => '1',
+	               'crud' => 'AAAAA',
+	                ]);
+        DB::table('permissoes')->insert([
+ 	               'users_id' => 1,
+ 	               'rotinas_id' => 3,
+ 	               'tipo' => '1',
+ 	               'crud' => 'AAAAA',
+ 	                ]);
+
+ 	     DB::table('permissoes')->insert([
+ 	               'users_id' => 1,
+ 	               'rotinas_id' => 4,
+ 	               'tipo' => '1',
+ 	               'crud' => 'AAAAA',
+ 	                ]);
     }
 }
