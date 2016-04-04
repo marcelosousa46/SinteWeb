@@ -44,22 +44,19 @@
     <ul class="sidebar-menu">
       <!-- Optionally, you can add icons to the links -->
       @if (Auth::guest())
-        <li class="active"><a href="{{ url('/login') }}"><span>Entrar</span></a></li>
+        <li><a href="{{ url('/register') }}"><span>Registrar usuário</span></a></li>
+        <li><a href="{{ url('/login') }}"><span>Entrar</span></a></li>
       @else
         <li class="header">Menu Principal</li>
-        <?php
-          $menu  = auth()->user()->Rotinas();
-        ?>
         @for($i = 0; $i < count($menu); $i++)
             <li class="treeview">
               <a href="{{ $menu[$i]->url }}"><span>{{ $menu[$i]->descricao }}</span> <i class="fa fa-angle-left pull-right"></i></a>
-              <?php
-                $submenu  = auth()->user()->Subrotinas($menu[$i]->nivel,$menu[$i]->id);
-              ?>
               @for($j = 0; $j < count($submenu); $j++)
-                  <ul class="treeview-menu">
-                    <li><a href="{{ route($submenu[$j]->url,'id='.$submenu[$j]->id.'') }}">{{ $submenu[$j]->descricao }}</a></li>
-                  </ul>
+                 @if ($submenu[$j]->nivel == $menu[$i]->nivel)
+                    <ul class="treeview-menu">
+                      <li><a href="{{ route($submenu[$j]->url,'id='.$submenu[$j]->id.'') }}">{{ $submenu[$j]->descricao }}</a></li>
+                    </ul>
+                 @endif   
               @endfor
             </li>
         @endfor

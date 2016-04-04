@@ -35,14 +35,13 @@ class User extends Authenticatable
                     ->get();
     }
 
-    public function Subrotinas($tabela,$id){
+    public function Subrotinas($id){
          return DB::table('users')
                     ->join('permissoes', 'permissoes.users_id', '=', 'users.id')
                     ->join('rotinas', 'rotinas.id', '=', 'permissoes.rotinas_id')
                     ->select('rotinas.*')
                     ->where('users.id', $this->id)
                     ->where('rotinas.tipo', $id)
-                    ->where('rotinas.nivel', $tabela)
                     ->get();
     }
 

@@ -24,17 +24,22 @@ class PermissaoController extends Controller
   public function anyData()
   {
       $rotinas = auth()->user()->Rotinas();
+      $subrotinas  = auth()->user()->Subrotinas($rotinas[0]->nivel);
       $json = '[{';
+      $item = '';
       foreach ($rotinas as $ro){
-         $menu = '"text":'.'"'.$ro->descricao.'"'.',';
-         $subrotinas  = auth()->user()->Subrotinas($ro->nivel);
+         $menu = '"text":';
+         $menu = $menu.'"'.$ro->descricao.'"'.',';
          $submenu = '"nodes": [';
          foreach ($subrotinas as $su){
-            $submenu = $submenu .'{'.'"text": "'.$su->descricao.'"'.'},';
+            if ($su->nivel == $ro->nivel){
+               $submenu = $submenu .'{'.'"text": "'.$su->descricao.'"'.'},';
+            }   
          }
          $submenu = substr($submenu,0,-1).']';
+         $item = $item.$menu.$submenu;
       }
-      return $json.$menu.$submenu.'}]';
+      return $json.$item.'}]';
 
   }
 
