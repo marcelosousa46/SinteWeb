@@ -15,30 +15,16 @@ class ComposerServiceProvider extends ServiceProvider
     public function boot()
     {
       View::composer(['layouts.sidebar','permissoes.permissoes'], function($view)
-            {
-                if (!Auth::guest()){
-                    $this->menu = Auth::user()->Rotinas();
-                    $view->with('menu', $this->menu);
-                    if (!empty($this->menu)){
-                        $this->submenu = Auth::user()->Subrotinas($this->menu[0]->id);
-                        $view->with('submenu', $this->submenu);
-                    }    
-                 }
-            });
-      View::composer('permissoes.permissoes', function($view)
-            {
-              $json = '[{';
-              foreach ($this->menu as $ro){
-                 $menu = '"text":'.'"'.$ro->descricao.'"'.',';
-                 $submenu = '"nodes": [';
-                 foreach ($this->submenu as $su){
-                    $submenu = $submenu .'{'.'"text": "'.$su->descricao.'"'.'},';
-                 }
-                 $submenu = substr($submenu,0,-1).']';
-              }
-              $json = $json.$menu.$submenu.'}]';
-              $view->with('json', $json);
-            });
+          {
+              if (!Auth::guest()){
+                  $this->menu = Auth::user()->Rotinas();
+                  $view->with('menu', $this->menu);
+                  if (!empty($this->menu)){
+                      $this->submenu = Auth::user()->Subrotinas($this->menu[0]->id);
+                      $view->with('submenu', $this->submenu);
+                  }    
+               }
+          });
     }
 
     public function register()

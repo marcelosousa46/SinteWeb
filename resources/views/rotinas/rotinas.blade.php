@@ -1,7 +1,7 @@
 @extends('layouts.lte')
 @section('title', 'Rotinas')
 @section('ref')
-  <li><class="active">'Rotinas'</li>
+  <li><class="active">Rotinas</li>
 @endsection
 
 @section('content')
@@ -69,7 +69,7 @@
             ajax: '{!! URL::to('/rotinas/data') !!}',
             columns: [
                 { data: 'descricao', name: 'descricao' },
-                { data: 'nivel', name: 'nivel' },
+                { data: 'tipo', name: 'tipo' },
                 { data: 'action', name: 'action', orderable: false, searchable: false}
             ]
         });

@@ -30,7 +30,9 @@ class UserController extends Controller
       return [
               '<a href="usuarios/edit/'.$usuarios->id.'" class="glyphicon glyphicon-pencil" title="Editar"></a>',
               '<a href="usuarios/destroy/'.$usuarios->id.'" class="glyphicon glyphicon-trash" title="Deletar"
-                                                            onclick="return confirm(\'Excluir usuario?\')"></a>'
+                                                            onclick="return confirm(\'Excluir usuario?\')"></a>',
+              '<a href="/permissoes?id='.$usuarios->id.'" class="glyphicon glyphicon-th-list" title="Permissões"></a>'
+
              ];
       })
       ->make(true);
@@ -70,7 +72,8 @@ class UserController extends Controller
 
       if ($permissao == 'A'){
         $usuario = User::find($id);
-        return view('usuarios.usuarios-new-edit', compact('usuario'));
+        $rotina_id = session('rotina_id');
+        return view('usuarios.usuarios-new-edit', compact(['usuario','rotina_id']));
       } else {
         session()->put('status', 'Usuário não autorizado.');
         return redirect()->route('usuarios', ['id' => session('rotina_id')]);

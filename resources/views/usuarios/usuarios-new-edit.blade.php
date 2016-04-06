@@ -1,7 +1,7 @@
 @extends('layouts.lte')
 @section('title', 'Usuários')
 @section('ref')
-  <li><a href="{{url('usuarios')}}">Usuários</a></li>
+  <li><a href="{{url('usuarios?id='.$rotina_id)}}">Usuários</a></li>
 @endsection
 @if(isset($usuario->id) )
   @section('ref1')

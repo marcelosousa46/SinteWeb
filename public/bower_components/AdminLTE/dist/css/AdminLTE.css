@@ -4913,3 +4913,16 @@ table.text-center th {
     white-space: normal !important;
   }
 }
+/*
+ * Customizados: Marcelo
+ * -----------
+ */
+ .margem-chekbox-20{
+   margin-left: 20px !important;
+ }
+ .margem-chekbox-40{
+   margin-left: 40px !important;
+ }
+.tamanho-campo-120{
+  width: 120px;
+}

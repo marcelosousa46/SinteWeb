@@ -14,18 +14,38 @@
             {{ session('status') }}
           </div>
         @endif
+      </div>
     </div>
+  
     <div class="row">
       <div class="col-md-10">
-        <table class="table table-striped table-bordered table-hover" id="rotinas-table">
-            <thead>
-              <tr>
-                <th>Descrição</th>
-                <th>Tipo</th>
-                <th>Ação</th>
-              </tr>
-            </thead>
-        </table>
+        <div class="box box-primary">
+          <div class="box-header with-border">
+            <div class="box-body">
+              {!! Form::open(['route'=>'permissoes.create']) !!}
+              {!! csrf_field() !!}
+              <!-- Nome Form Input -->
+                <div class="form-group">
+                    @for($i = 0; $i < count($menu); $i++)
+                        <label class="checkbox margem-chekbox-20">
+                          <input type="checkbox" id="menu" value="option1"> {{ $menu[$i]->descricao }}
+                        </label>        
+                        @for($j = 0; $j < count($submenu); $j++)
+                           @if ($submenu[$j]->nivel == $menu[$i]->nivel)
+                              <label class="checkbox margem-chekbox-40">
+                                <input type="checkbox" id="submenu" value="option1">{{ $submenu[$j]->descricao }}
+                              </label>        
+                           @endif   
+                        @endfor 
+                    @endfor
+                </div>
+                <div class="form-group">
+                    {!! Form::submit('Confirmar', ['class'=>'btn btn-primary']) !!}
+                </div>
+            </div>
+            {!! Form::close() !!}
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -35,44 +55,6 @@
   <script>
     $(".alert").fadeTo(2000, 0.4).slideUp(700, function(){
       $(".alert").alert('close');
-    });
-
-    $(function() {
-        $('#rotinas-table').DataTable({
-            language : {
-                "sEmptyTable": "Nenhum registro encontrado",
-                "sInfo": "Mostrando de _START_ até _END_ de _TOTAL_ registros",
-                "sInfoEmpty": "Mostrando 0 até 0 de 0 registros",
-                "sInfoFiltered": "(Filtrados de _MAX_ registros)",
-                "sInfoPostFix": "",
-                "sInfoThousands": ".",
-                "sLengthMenu": "_MENU_ resultados por página",
-                "sLoadingRecords": "Carregando...",
-                "sProcessing": "Processando...",
-                "sZeroRecords": "Nenhum registro encontrado",
-                "sSearch": "Pesquisar",
-                "oPaginate": {
-                    "sNext": "Próximo",
-                    "sPrevious": "Anterior",
-                    "sFirst": "Primeiro",
-                    "sLast": "Último"
-                },
-                "oAria": {
-                    "sSortAscending": ": Ordenar colunas de forma ascendente",
-                    "sSortDescending": ": Ordenar colunas de forma descendente"
-                }
-            },
-           "bLengthChange": false,
-            processing: true,
-            serverSide: false,
-            ajax: '{!! URL::to('/rotinas/data') !!}',
-            columns: [
-                { data: 'name', name: 'name' },
-                { data: 'email', name: 'email' },
-                { data: 'action', name: 'action', orderable: false, searchable: false}
-            ]
-        });
-
     });
   </script>
 @endpush
