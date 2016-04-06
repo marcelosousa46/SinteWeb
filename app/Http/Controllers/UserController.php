@@ -35,11 +35,11 @@ class UserController extends Controller
       })
       ->make(true);
   }
+
   public function getCreate()
   {
       return view('usuarios.usuarios-new-edit');
   }
-
 
   public function postStore(Request $request)
   {

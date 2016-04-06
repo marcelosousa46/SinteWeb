@@ -1,36 +1,37 @@
 @extends('layouts.lte')
-@section('title', 'Permissões')
+@section('title', 'Rotinas')
 @section('ref')
-  <li><class="active">'Permissões'</li>
+  <li><class="active">'Rotinas'</li>
 @endsection
 
 @section('content')
-  <div class="container">
-    <div class="row">
-      <div class="col-md-6">
-        @if (session('status'))
-          <div class="alert alert-danger fade in">
-            <h4>Atenção!</h4>
-            {{ session('status') }}
-          </div>
-        @endif
-    </div>
-    <div class="row">
-      <div class="col-md-10">
-        <table class="table table-striped table-bordered table-hover" id="rotinas-table">
-            <thead>
-              <tr>
-                <th>Descrição</th>
-                <th>Tipo</th>
-                <th>Ação</th>
-              </tr>
-            </thead>
-        </table>
-      </div>
+<div class="container">
+  <div class="row">
+    <div class="col-md-6">
+      @if (session('status'))
+        <div class="alert alert-danger fade in">
+          <h4>Atenção!</h4>
+          {{ session('status') }}
+        </div>
+      @endif
+  </div>
+  <div class="row">
+    <div class="col-md-10">
+      <table class="table table-striped table-bordered table-hover" id="rotinas-table">
+          <thead>
+            <tr>
+              <th>Descrição</th>
+              <th>Tipo</th>
+              <th>Ação</th>
+            </tr>
+          </thead>
+      </table>
     </div>
   </div>
+</div>
 
 @stop
+
 @push('scripts')
   <script>
     $(".alert").fadeTo(2000, 0.4).slideUp(700, function(){
@@ -67,8 +68,8 @@
             serverSide: false,
             ajax: '{!! URL::to('/rotinas/data') !!}',
             columns: [
-                { data: 'name', name: 'name' },
-                { data: 'email', name: 'email' },
+                { data: 'descricao', name: 'descricao' },
+                { data: 'nivel', name: 'nivel' },
                 { data: 'action', name: 'action', orderable: false, searchable: false}
             ]
         });

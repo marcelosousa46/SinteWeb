@@ -26,8 +26,16 @@ Route::group(['middleware' => 'web'], function () {
     Route::controller('permissoes','PermissaoController',[
         'anyData'     => 'permissoes.data',
         'getIndex'    => 'permissoes',
+        'getCreate'   => 'permissoes.create',
         'postStore'   => 'permissoes.store',
         'postUpdate'  => 'permissoes.update',
+    ]);
+    /* Rotinas */
+    Route::controller('rotinas','RotinaController',[
+        'anyData'     => 'rotinas.data',
+        'getIndex'    => 'rotinas',
+        'postStore'   => 'rotinas.store',
+        'postUpdate'  => 'rotinas.update',
     ]);
 
 });

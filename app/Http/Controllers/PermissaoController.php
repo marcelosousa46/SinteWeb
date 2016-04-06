@@ -34,7 +34,7 @@ class PermissaoController extends Controller
          foreach ($subrotinas as $su){
             if ($su->nivel == $ro->nivel){
                $submenu = $submenu .'{'.'"text": "'.$su->descricao.'"'.'},';
-            }   
+            }
          }
          $submenu = substr($submenu,0,-1).']';
          $item = $item.$menu.$submenu;
@@ -42,5 +42,11 @@ class PermissaoController extends Controller
       return $json.$item.'}]';
 
   }
+
+  public function getCreate()
+  {
+      return view('permissoes.permissoes-new-edit');
+  }
+
 
 }
