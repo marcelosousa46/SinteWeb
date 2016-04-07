@@ -21,7 +21,9 @@ class RotinaController extends Controller
   {
       $query = ($request->query());
       $request->session()->put('rotina_id', $query['id']);
-      return view('rotinas.rotinas');
+			$rotina_id = session('rotina_id');
+
+      return view('rotinas.rotinas', compact('rotina_id'));
   }
 
   public function anyData()
@@ -41,7 +43,8 @@ class RotinaController extends Controller
 
 	public function getCreate()
   {
-      return view('rotinas.rotinas-new-edit',['id' => session('rotina_id')]);
+  		$rotina_id = session('rotina_id');
+      return view('rotinas.rotinas-new-edit',compact('rotina_id'));
   }
 
   public function postStore(Request $request)
@@ -73,7 +76,7 @@ class RotinaController extends Controller
 
       if ($permissao == 'A'){
         $rotina = Rotinas::find($id);
-        $rotina_id = session('rotina_id'); 
+        $rotina_id = session('rotina_id');
         return view('rotinas.rotinas-new-edit', compact(['rotina','rotina_id']));
       } else {
         session()->put('status', 'Usuário não autorizado.');
@@ -87,6 +90,6 @@ class RotinaController extends Controller
       $setor = Rotinas::find($id)->update($request->all());
 
       return redirect()->route('rotinas', ['id' => session('rotina_id')]);
-  }  
+  }
 
 }

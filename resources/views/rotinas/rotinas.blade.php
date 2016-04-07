@@ -1,5 +1,8 @@
 @extends('layouts.lte')
 @section('title', 'Rotinas')
+@section('inclusao')
+  <li class="item-inclusao"><a href="{{url('rotinas/create?id='.$rotina_id)}}"><i class="glyphicon glyphicon-plus"></i>Incluir</a></li>
+@endsection
 @section('ref')
   <li><class="active">Rotinas</li>
 @endsection
@@ -22,6 +25,7 @@
             <tr>
               <th>Descrição</th>
               <th>Tipo</th>
+              <th>Pai</th>
               <th>Ação</th>
             </tr>
           </thead>
@@ -70,6 +74,7 @@
             columns: [
                 { data: 'descricao', name: 'descricao' },
                 { data: 'tipo', name: 'tipo' },
+                { data: 'nivel', name: 'nivel' },
                 { data: 'action', name: 'action', orderable: false, searchable: false}
             ]
         });

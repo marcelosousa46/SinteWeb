@@ -19,7 +19,9 @@ class UserController extends Controller
   {
       $query = ($request->query());
       $request->session()->put('rotina_id', $query['id']);
-      return view('usuarios.usuarios');
+      $rotina_id = session('rotina_id');
+
+      return view('usuarios.usuarios', compact('rotina_id'));
   }
 
   public function anyData()
@@ -41,6 +43,7 @@ class UserController extends Controller
   public function getCreate()
   {
       return view('usuarios.usuarios-new-edit');
+      return view('usuarios.usuarios-new-edit',compact('rotina_id'));
   }
 
   public function postStore(Request $request)

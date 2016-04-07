@@ -25,6 +25,7 @@
                   @yield('title')
                   <small>{{ $page_description or null }}</small>
               </h1>
+              <h4>@yield('inclusao')</h4>
               <!-- You can dynamically generate breadcrumbs here -->
               <ol class="breadcrumb">
                   <li><a href="/"><i class="fa fa-dashboard"></i>Início</a></li>
