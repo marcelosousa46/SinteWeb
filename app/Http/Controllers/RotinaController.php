@@ -11,7 +11,7 @@ use App\User;
 
 class RotinaController extends Controller
 {
-	private $var;
+  private $user_id;
   public function __construct()
   {
       $this->middleware('auth');
@@ -22,20 +22,28 @@ class RotinaController extends Controller
       $query = ($request->query());
       $request->session()->put('rotina_id', $query['id']);
 			$rotina_id = session('rotina_id');
+      $this->user_id = $query['user_id'];
 
       return view('rotinas.rotinas', compact('rotina_id'));
   }
 
   public function anyData()
   {
-      return Datatables::of(Rotinas::all())
+//      $linhas = DB::table('users')
+//                ->join('permissoes', 'permissoes.users_id', '=', 'users.id')
+//                ->join('rotinas', 'rotinas.id', '=', 'permissoes.rotinas_id')
+//                ->select(['rotinas.descricao','rotinas.tipo','rotinas.mivel'])
+//                ->where('users.id', $this->user_id)
+//                ->get();
+      $linhas = Rotinas::all();
+      return Datatables::of($linhas)
 
       ->addColumn('action', function ($rotinas) {
       return [
               '<a href="rotinas/edit/'.$rotinas->id.'" class="glyphicon glyphicon-pencil" title="Editar"></a>',
               '<a href="rotinas/destroy/'.$rotinas->id.'" class="glyphicon glyphicon-trash" title="Deletar"
                                                             onclick="return confirm(\'Excluir rotina?\')"></a>',
-							'<a href="permissoes/create/'.$rotinas->id.'" class="glyphicon glyphicon-th-list" title="Permissões"></a>'
+							'<a href="permissoes/edit/'.$rotinas->id.'" class="glyphicon glyphicon-th-list" title="Permissões"></a>'
              ];
       })
       ->make(true);
@@ -68,7 +76,7 @@ class RotinaController extends Controller
      $permissao = 'B';
      if ($request->session()->has('rotina_id')) {
         $crud = auth()->user()->Crud(session('rotina_id'));
-        $permissao = substr($crud[0]->crud,1,1);
+        $permissao = $crud[0]->alterar;
       }
       $this->validate($request, [
               'usuario' => "in:$permissao,'A'",

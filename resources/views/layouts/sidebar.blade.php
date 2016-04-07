@@ -54,7 +54,7 @@
               @for($j = 0; $j < count($submenu); $j++)
                  @if ($submenu[$j]->nivel == $menu[$i]->nivel)
                     <ul class="treeview-menu">
-                      <li><a href="{{ route($submenu[$j]->url,'id='.$submenu[$j]->id.'') }}">{{ $submenu[$j]->descricao }}</a></li>
+                      <li><a href="{{ route($submenu[$j]->url,'id='.$submenu[$j]->id.'') }}">{{ $submenu[$j]->descricao }}</a></li> 
                     </ul>
                  @endif   
               @endfor

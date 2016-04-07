@@ -30,6 +30,8 @@
               <div class="form-group">
                   {!! Form::label('descricao', 'Descrição:') !!}
                   {!! Form::text('descricao', isset($rotina->descricao) ? $rotina->descricao:null, ['class'=>'form-control']) !!}
+                  {!! Form::label('url', 'URL:') !!}
+                  {!! Form::text('url', isset($rotina->url) ? $rotina->url:null, ['class'=>'form-control']) !!}
                   {!! Form::label('tipo', 'Tipo:') !!}
                   <div class="form-group">
                       {!! Form::select('tipo', array('0' => 'Menu', '1' => 'Submenu'),isset($rotina->tipo) ? $rotina->tipo:'0', ['class'=>'form-control tamanho-campo-120']) !!}                  

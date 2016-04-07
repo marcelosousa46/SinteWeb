@@ -8,7 +8,8 @@ use Auth;
 class Permissoes extends Model
 {
     protected $table    = 'permissoes';
-    protected $fillable = ['id','users_id','rotinas_id', 'tipo', 'crud'];
+    protected $fillable = ['id','users_id','rotinas_id', 'tipo', 'liberado', 
+                           'incluir', 'alterar', 'consultar', 'excluir'];
     protected $rotinas;
 
     public function Users() {

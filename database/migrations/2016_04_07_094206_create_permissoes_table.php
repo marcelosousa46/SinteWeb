@@ -18,8 +18,11 @@ class CreatePermissoesTable extends Migration
             $table->foreign('users_id')->references('id')->on('users');
             $table->integer('rotinas_id')->unsigned();
             $table->foreign('rotinas_id')->references('id')->on('rotinas');
-            $table->string('tipo',1);
-            $table->string('crud',5);
+            $table->string('liberado',1);
+            $table->string('incluir',1);
+            $table->string('alterar',1);
+            $table->string('consultar',1);
+            $table->string('excluir',1);
             $table->timestamps();
         });
     }

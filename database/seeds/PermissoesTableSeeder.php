@@ -15,28 +15,50 @@ class PermissoesTableSeeder extends Seeder
 	     DB::table('permissoes')->insert([
 	               'users_id' => 1,
 	               'rotinas_id' => 1,
-	               'tipo' => '1',
-	               'crud' => 'AAAAA',
+	               'liberado' => 'A',
+	               'incluir' => 'A',
+	               'alterar' => 'A',
+	               'consultar' => 'A',
+	               'excluir' => 'A',
 	                ]);
 
 	     DB::table('permissoes')->insert([
 	               'users_id' => 1,
 	               'rotinas_id' => 2,
-	               'tipo' => '1',
-	               'crud' => 'AAAAA',
+	               'liberado' => 'A',
+	               'incluir' => 'A',
+	               'alterar' => 'A',
+	               'consultar' => 'A',
+	               'excluir' => 'A',
 	                ]);
         DB::table('permissoes')->insert([
  	               'users_id' => 1,
  	               'rotinas_id' => 3,
- 	               'tipo' => '1',
- 	               'crud' => 'AAAAA',
+	               'liberado' => 'A',
+	               'incluir' => 'A',
+	               'alterar' => 'A',
+	               'consultar' => 'A',
+	               'excluir' => 'A',
  	                ]);
 
  	     DB::table('permissoes')->insert([
  	               'users_id' => 1,
  	               'rotinas_id' => 4,
- 	               'tipo' => '1',
- 	               'crud' => 'AAAAA',
+	               'liberado' => 'A',
+	               'incluir' => 'A',
+	               'alterar' => 'A',
+	               'consultar' => 'A',
+	               'excluir' => 'A',
+ 	                ]);
+
+ 	     DB::table('permissoes')->insert([
+ 	               'users_id' => 1,
+ 	               'rotinas_id' => 5,
+	               'liberado' => 'A',
+	               'incluir' => 'A',
+	               'alterar' => 'A',
+	               'consultar' => 'A',
+	               'excluir' => 'A',
  	                ]);
     }
 }

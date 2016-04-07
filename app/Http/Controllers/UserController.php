@@ -33,7 +33,7 @@ class UserController extends Controller
               '<a href="usuarios/edit/'.$usuarios->id.'" class="glyphicon glyphicon-pencil" title="Editar"></a>',
               '<a href="usuarios/destroy/'.$usuarios->id.'" class="glyphicon glyphicon-trash" title="Deletar"
                                                             onclick="return confirm(\'Excluir usuario?\')"></a>',
-              '<a href="/permissoes?id='.$usuarios->id.'" class="glyphicon glyphicon-th-list" title="Permissões"></a>'
+              '<a href="/rotinas?id='.session('rotina_id').'&user_id='.$usuarios->id. '" class="glyphicon glyphicon-th-list" title="Permissões"></a>'
 
              ];
       })
