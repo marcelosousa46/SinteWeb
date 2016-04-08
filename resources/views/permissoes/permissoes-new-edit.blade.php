@@ -19,7 +19,7 @@
     <div class="col-md-10">
       <div class="box box-primary">
         <div class="box-header with-border">
-          @if(isset($rotina->id) )
+          @if(isset($permissao->id) )
               {!! Form::open(['route'=>['permissoes.update', $permissao->id]]) !!}
           @else
               {!! Form::open(['route'=>'permissoes.store']) !!}
@@ -32,12 +32,16 @@
                       {!! Form::label('id_usuario', 'Usuário:'.$username) !!}
                       {!! Form::text('users_id', isset($permissao->users_id) ? $permissao->users_id:null, ['class'=>'form-control tamanho-campo-120', 'disabled']) !!}
                       {!! Form::label('rotinas_id', 'Rotina:'.$rotinadescricao) !!}
-                      {!! Form::text('rotinas_id', isset($permissao->rotinas_id) ? $permissao->rotinas_id:null, ['class'=>'form-control tamanho-campo-120', 'disabled']) !!}
+                      <div class="form-group">
+                          {!! Form::select('rotinas_id', $retorno_de_rotinas,isset($permissao->rotinas_id) ? $permissao->rotinas_id:'0', ['class'=>'form-control tamanho-campo-170', 'disabled']) !!}                  
+                      </div>    
                   @else
                       {!! Form::label('id_usuario', 'Usuário:') !!}
                       {!! Form::text('users_id', isset($permissao->users_id) ? $permissao->users_id:null, ['class'=>'form-control tamanho-campo-120']) !!}
                       {!! Form::label('rotinas_id', 'Rotina:') !!}
-                      {!! Form::text('rotinas_id', isset($permissao->rotinas_id) ? $permissao->rotinas_id:null, ['class'=>'form-control tamanho-campo-120']) !!}
+                      <div class="form-group">
+                          {!! Form::select('rotinas_id', $retorno_de_rotinas,isset($permissao->rotinas_id) ? $permissao->rotinas_id:'0', ['class'=>'form-control tamanho-campo-170']) !!}                  
+                      </div>    
                     @endif                    
                   {!! Form::label('liberado', 'Acesso total:') !!}
                   <div class="form-group">

@@ -33,7 +33,7 @@ class UserController extends Controller
               '<a href="usuarios/edit/'.$usuarios->id.'" class="glyphicon glyphicon-pencil" title="Editar"></a>',
               '<a href="usuarios/destroy/'.$usuarios->id.'" class="glyphicon glyphicon-trash" title="Deletar"
                                                             onclick="return confirm(\'Excluir usuario?\')"></a>',
-              '<a href="/rotinas?id='.session('rotina_id').'&user_id='.$usuarios->id. '" class="glyphicon glyphicon-th-list" title="Permissões"></a>'
+              '<a href="/permissoes?id='.session('rotina_id').'&user_id='.$usuarios->id. '" class="glyphicon glyphicon-th-list" title="Permissões"></a>'
 
              ];
       })
@@ -67,7 +67,7 @@ class UserController extends Controller
      $permissao = 'B';
      if ($request->session()->has('rotina_id')) {
         $crud = auth()->user()->Crud(session('rotina_id'));
-        $permissao = substr($crud[0]->crud,1,1);
+        $permissao = $crud[0]->alterar;
       }
       $this->validate($request, [
               'usuario' => "in:$permissao,'A'",

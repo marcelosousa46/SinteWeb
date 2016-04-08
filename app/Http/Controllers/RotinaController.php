@@ -8,6 +8,7 @@ use App\Http\Requests;
 use Yajra\Datatables\Datatables;
 use App\Models\Rotinas;
 use App\User;
+use DB;
 
 class RotinaController extends Controller
 {
@@ -22,21 +23,24 @@ class RotinaController extends Controller
       $query = ($request->query());
       $request->session()->put('rotina_id', $query['id']);
 			$rotina_id = session('rotina_id');
-      $this->user_id = $query['user_id'];
+      $request->session()->put('user_id', $query['user_id']);
 
       return view('rotinas.rotinas', compact('rotina_id'));
   }
 
   public function anyData()
   {
-//      $linhas = DB::table('users')
-//                ->join('permissoes', 'permissoes.users_id', '=', 'users.id')
-//                ->join('rotinas', 'rotinas.id', '=', 'permissoes.rotinas_id')
-//                ->select(['rotinas.descricao','rotinas.tipo','rotinas.mivel'])
-//                ->where('users.id', $this->user_id)
-//                ->get();
-      $linhas = Rotinas::all();
-      return Datatables::of($linhas)
+      $user_id = session('user_id');
+      $retorno = DB::table('users')
+                     ->join('permissoes', 'permissoes.users_id', '=', 'users.id')
+                     ->join('rotinas', 'rotinas.id', '=', 'permissoes.rotinas_id')
+                     ->select(['rotinas.id','rotinas.descricao','rotinas.tipo','rotinas.nivel'])
+                     ->where('users.id', $user_id)
+                     ->get();
+
+      $rotina = collect($retorno);
+          
+      return Datatables::of($rotina)
 
       ->addColumn('action', function ($rotinas) {
       return [
@@ -52,7 +56,9 @@ class RotinaController extends Controller
 	public function getCreate()
   {
   		$rotina_id = session('rotina_id');
-      return view('rotinas.rotinas-new-edit',compact('rotina_id'));
+      $user_id   = session('user_id');
+
+      return view('rotinas.rotinas-new-edit',compact(['rotina_id','user_id']));
   }
 
   public function postStore(Request $request)
@@ -60,7 +66,7 @@ class RotinaController extends Controller
       $input = $request->all();
       Rotinas::create($input);
 
-      return redirect()->route('rotinas', ['id' => session('rotina_id')]);
+      return redirect()->route('rotinas', ['id' => session('rotina_id'),'use_id' => session('use_id') ]);
 
   }
 
@@ -68,7 +74,7 @@ class RotinaController extends Controller
   {
       Rotinas::find($id)->delete();
 
-      return redirect()->route('rotinas', ['id' => session('rotina_id')]);
+      return redirect()->route('rotinas', ['id' => session('rotina_id'),'use_id' => session('use_id')]);
   }
 
   public function getEdit(Request $request,$id)
@@ -88,7 +94,7 @@ class RotinaController extends Controller
         return view('rotinas.rotinas-new-edit', compact(['rotina','rotina_id']));
       } else {
         session()->put('status', 'Usuário não autorizado.');
-        return redirect()->route('rotinas', ['id' => session('rotina_id')]);
+        return redirect()->route('rotinas', ['id' => session('rotina_id'),'use_id' => session('use_id')]);
       }
   }
 
@@ -97,7 +103,7 @@ class RotinaController extends Controller
   {
       $setor = Rotinas::find($id)->update($request->all());
 
-      return redirect()->route('rotinas', ['id' => session('rotina_id')]);
+      return redirect()->route('rotinas', ['id' => session('rotina_id'),'use_id' => session('use_id')]);
   }
 
 }

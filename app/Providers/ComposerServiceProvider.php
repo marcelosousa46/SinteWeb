@@ -14,7 +14,7 @@ class ComposerServiceProvider extends ServiceProvider
 
     public function boot()
     {
-      View::composer(['layouts.sidebar','permissoes.permissoes'], function($view)
+      View::composer(['layouts.sidebar','permissoes.permissoes','permissoes.permissoes-new-edit'], function($view)
           {
               if (!Auth::guest()){
                   $this->menu = Auth::user()->Rotinas();
@@ -22,6 +22,16 @@ class ComposerServiceProvider extends ServiceProvider
                   if (!empty($this->menu)){
                       $this->submenu = Auth::user()->Subrotinas($this->menu[0]->id);
                       $view->with('submenu', $this->submenu);
+                      $i = 0;
+                      foreach ($this->menu as $a) {
+                        $retorno_de_rotinas[$a->id] = $a->descricao;
+                        $i++;
+                      }
+                      foreach ($this->submenu as $a) {
+                        $retorno_de_rotinas[$a->id] = $a->descricao;
+                        $i++;
+                      }
+                      $view->with('retorno_de_rotinas', $retorno_de_rotinas);
                   }    
                }
           });
