@@ -14,9 +14,11 @@ use App\Classes\Classes;
 
 class PermissaoController extends Controller
 {
+  private $permissao;
   public function __construct()
   {
       $this->middleware('auth');
+      $this->permissao = new Classes;
   }
   public function getIndex(Request $request)
   {
@@ -24,8 +26,9 @@ class PermissaoController extends Controller
       $request->session()->put('rotina_id', $query['id']);
       $rotina_id = session('rotina_id');
       $request->session()->put('user_id', $query['user_id']);
+      $user_id = session('user_id');
 
-      return view('permissoes.permissoes', compact('rotina_id'));
+      return view('permissoes.permissoes', compact(['rotina_id','user_id']));
   }
 
   public function anyData()
@@ -34,13 +37,13 @@ class PermissaoController extends Controller
       $retorno = DB::table('permissoes')
                      ->join('rotinas', 'rotinas.id', '=', 'permissoes.rotinas_id')
                      ->join('users', 'users.id', '=', 'permissoes.users_id')
-                     ->select(['permissoes.id','rotinas.descricao','permissoes.liberado','permissoes.incluir','permissoes.alterar',
-                               'permissoes.consultar','permissoes.excluir', 'permissoes.rotinas_id'])
+                     ->select(['permissoes.id', 'permissoes.users_id','rotinas.descricao','permissoes.liberado','permissoes.incluir','permissoes.alterar',
+                               'permissoes.consultar','permissoes.excluir', 'permissoes.rotinas_id','users.name'])
                      ->where('permissoes.users_id', $user_id)
                      ->get();
 
       $permissoes = collect($retorno);
-          
+
       return Datatables::of($permissoes)
 
       ->addColumn('action', function ($permissoes) {
@@ -58,6 +61,7 @@ class PermissaoController extends Controller
   {
       $rotina_id = session('rotina_id');
       $user_id   = session('user_id');
+
       return view('permissoes.permissoes-new-edit',compact(['rotina_id','user_id']));
   }
 
@@ -85,27 +89,19 @@ class PermissaoController extends Controller
 
   public function getEdit(Request $request,$id)
   {
-//     $autorizacao = 'B';
-//     if ($request->session()->has('rotina_id')) {
-//        $crud = auth()->user()->Crud(session('rotina_id'));
-//        $autorizacao = $crud[0]->alterar;
-//      }
-//      $this->validate($request, [
-//              'usuario' => "in:$autorizacao,'A'",
-//          ]);
+      $autorizado = $this->permissao->getPermissao($request);
+      $rotina_id  = session('rotina_id');
+      $user_id    = session('user_id');
 
-//      if ($autorizacao == 'A'){
-//        $permissao = Permissoes::find($id);
-//        $username  = auth()->user()->name;
-//        $rotina_id = session('rotina_id');
-//        $user_id   = session('user_id');
-      if getPermissao($request)
-      {  
+      if ($autorizado)
+      {
         $rotinadescricao = Rotinas::find($id)->descricao;
-        return view('permissoes.permissoes-new-edit', compact(['permissao','rotina_id','username','rotinadescricao']));
+        $username  = User::find($user_id)->name;
+        $permissao = Permissoes::find($id);
+        return view('permissoes.permissoes-new-edit',compact(['permissao','rotina_id','user_id','username','rotinadescricao']));
       } else {
         session()->put('status', 'Usuário não autorizado.');
-        return redirect()->route('permissoes', ['id' => $rotina_id, 'user_id'=>$user_id]);
+        return view('permissoes.permissoes',compact(['permissao','rotina_id','user_id','username','rotinadescricao']));
       }
 
   }

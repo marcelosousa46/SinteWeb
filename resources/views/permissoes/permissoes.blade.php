@@ -1,7 +1,7 @@
 @extends('layouts.lte')
 @section('title', 'Permissões')
 @section('inclusao')
-  <li class="item-inclusao"><a href="{{url('permissoes/create?id='.$rotina_id)}}"><i class="glyphicon glyphicon-plus"></i>Incluir</a></li>
+  <li class="item-inclusao"><a href="{{url('permissoes/create?id='.$rotina_id.',&user_id='.$user_id)}}"><i class="glyphicon glyphicon-plus"></i>Incluir</a></li>
 @endsection
 @section('ref')
   <li><class="active">Permissões</li>
@@ -15,6 +15,7 @@
         <div class="alert alert-danger fade in">
           <h4>Atenção!</h4>
           {{ session('status') }}
+          {{ session()->forget('status') }}
         </div>
       @endif
   </div>
@@ -24,6 +25,7 @@
           <thead>
             <tr>
               <th>Rotina</th>
+              <th>Usuário</th>
               <th>Liberado</th>
               <th>Incluir</th>
               <th>Alterar</th>
@@ -76,6 +78,7 @@
             ajax: '{!! URL::to('/permissoes/data') !!}',
             columns: [
                 { data: 'descricao', name: 'descricao' },
+                { data: 'name', name: 'usuario' },
                 { data: 'liberado', name: 'liberado' },
                 { data: 'incluir', name: 'incluir' },
                 { data: 'alterar', name: 'alterar' },

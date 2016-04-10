@@ -1,7 +1,7 @@
 @extends('layouts.lte')
 @section('title', 'Rotinas')
 @section('inclusao')
-  <li class="item-inclusao"><a href="{{url('rotinas/create?id='.$rotina_id)}}"><i class="glyphicon glyphicon-plus"></i>Incluir</a></li>
+  <li class="item-inclusao"><a href="{{url('rotinas/create?id='.$rotina_id.',&user_id='.$user_id)}}"><i class="glyphicon glyphicon-plus"></i>Incluir</a></li>
 @endsection
 @section('ref')
   <li><class="active">Rotinas</li>

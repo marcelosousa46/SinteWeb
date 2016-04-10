@@ -9,13 +9,16 @@ use Yajra\Datatables\Datatables;
 use App\Models\Rotinas;
 use App\User;
 use DB;
+use App\Classes\Classes;
 
 class RotinaController extends Controller
 {
   private $user_id;
+  private $permissao;
   public function __construct()
   {
       $this->middleware('auth');
+      $this->permissao = new Classes;
   }
 
   public function getIndex(Request $request)
@@ -24,8 +27,9 @@ class RotinaController extends Controller
       $request->session()->put('rotina_id', $query['id']);
 			$rotina_id = session('rotina_id');
       $request->session()->put('user_id', $query['user_id']);
+      $user_id = session('user_id');
 
-      return view('rotinas.rotinas', compact('rotina_id'));
+      return view('rotinas.rotinas', compact(['rotina_id','user_id']));
   }
 
   public function anyData()
@@ -39,7 +43,7 @@ class RotinaController extends Controller
                      ->get();
 
       $rotina = collect($retorno);
-          
+
       return Datatables::of($rotina)
 
       ->addColumn('action', function ($rotinas) {
@@ -66,7 +70,7 @@ class RotinaController extends Controller
       $input = $request->all();
       Rotinas::create($input);
 
-      return redirect()->route('rotinas', ['id' => session('rotina_id'),'use_id' => session('use_id') ]);
+      return redirect()->route('rotinas', ['id' => session('rotina_id'),'user_id' => session('user_id') ]);
 
   }
 
@@ -74,27 +78,20 @@ class RotinaController extends Controller
   {
       Rotinas::find($id)->delete();
 
-      return redirect()->route('rotinas', ['id' => session('rotina_id'),'use_id' => session('use_id')]);
+      return redirect()->route('rotinas', ['id' => session('rotina_id'),'user_id' => session('user_id')]);
   }
 
   public function getEdit(Request $request,$id)
   {
-     $permissao = 'B';
-     if ($request->session()->has('rotina_id')) {
-        $crud = auth()->user()->Crud(session('rotina_id'));
-        $permissao = $crud[0]->alterar;
-      }
-      $this->validate($request, [
-              'usuario' => "in:$permissao,'A'",
-          ]);
+     $autorizado = $this->permissao->getPermissao($request);
 
-      if ($permissao == 'A'){
+      if ($autorizado){
         $rotina = Rotinas::find($id);
         $rotina_id = session('rotina_id');
-        return view('rotinas.rotinas-new-edit', compact(['rotina','rotina_id']));
+        return view('rotinas.rotinas-new-edit', compact(['rotina','rotina_id','user_id' => session('user_id')]));
       } else {
         session()->put('status', 'Usuário não autorizado.');
-        return redirect()->route('rotinas', ['id' => session('rotina_id'),'use_id' => session('use_id')]);
+        return redirect()->route('rotinas', ['id' => session('rotina_id'),'user_id' => session('user_id')]);
       }
   }
 
@@ -103,7 +100,7 @@ class RotinaController extends Controller
   {
       $setor = Rotinas::find($id)->update($request->all());
 
-      return redirect()->route('rotinas', ['id' => session('rotina_id'),'use_id' => session('use_id')]);
+      return redirect()->route('rotinas', ['id' => session('rotina_id'),'user_id' => session('user_id')]);
   }
 
 }

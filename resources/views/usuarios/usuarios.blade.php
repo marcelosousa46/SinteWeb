@@ -12,6 +12,7 @@
         <div class="alert alert-danger fade in">
           <h4>Atenção!</h4>
           {{ session('status') }}
+          {{ session()->forget('status') }}
         </div>
       @endif
   </div>
