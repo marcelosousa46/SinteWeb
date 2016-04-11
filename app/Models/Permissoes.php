@@ -21,7 +21,6 @@ class Permissoes extends Model
     }
 	public function Dados() {
 	    $this->rotinas = Auth::user()->Rotinas();
-	    dd($this->rotinas);
 	    return true;
 	}
 

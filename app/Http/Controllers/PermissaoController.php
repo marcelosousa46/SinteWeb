@@ -100,7 +100,8 @@ class PermissaoController extends Controller
         $permissao = Permissoes::find($id);
         return view('permissoes.permissoes-new-edit',compact(['permissao','rotina_id','user_id','username','rotinadescricao']));
       } else {
-        session()->put('status', 'Usuário não autorizado.');
+        session()->put('status', 'error');
+        session()->put('status-mensagem', 'Usuário não autorizado.');
         return view('permissoes.permissoes',compact(['permissao','rotina_id','user_id','username','rotinadescricao']));
       }
 
@@ -115,6 +116,26 @@ class PermissaoController extends Controller
       $Permissoes = Permissoes::find($id)->update($request->all());
 
       return redirect()->route('permissoes', ['id' => $rotina_id, 'user_id'=>$user_id]);
+  }
+
+  public function gerar(Request $request)
+  {
+      $autorizado = $this->permissao->getPermissao($request);
+      $rotina_id  = session('rotina_id');
+      $user_id    = session('user_id');
+
+      $gerado = $this->permissao->gerarPermissoes(session('user_id'));
+
+      if ($gerado)
+      {
+        session()->put('status', 'sucesso');
+        session()->put('status-mensagem', 'Permissoes geradas com sucesso.');
+        return view('permissoes.permissoes',compact(['permissao','rotina_id','user_id','username','rotinadescricao']));
+      } else {
+        session()->put('status', 'error');
+        session()->put('status-mensagem', 'permissões não geradas.');
+        return view('permissoes.permissoes',compact(['permissao','rotina_id','user_id','username','rotinadescricao']));
+      }
   }
 
 }

@@ -30,14 +30,14 @@
               <div class="form-group">
                   @if(isset($permissao->users_id))
                       {!! Form::label('id_usuario', 'Usuário:'.$username) !!}
-                      {!! Form::text('users_id', isset($permissao->users_id) ? $permissao->users_id:null, ['class'=>'form-control tamanho-campo-120', 'disabled']) !!}
+                      {!! Form::text('users_id', isset($permissao->users_id) ? $permissao->users_id:$user_id, ['class'=>'form-control tamanho-campo-120', 'disabled']) !!}
                       {!! Form::label('rotinas_id', 'Rotina:'.$rotinadescricao) !!}
                       <div class="form-group">
                           {!! Form::select('rotinas_id', $retorno_de_rotinas,isset($permissao->rotinas_id) ? $permissao->rotinas_id:'0', ['class'=>'form-control tamanho-campo-170', 'disabled']) !!}
                       </div>
                   @else
                       {!! Form::label('id_usuario', 'Usuário:') !!}
-                      {!! Form::text('users_id', isset($permissao->users_id) ? $permissao->users_id:null, ['class'=>'form-control tamanho-campo-120']) !!}
+                      {!! Form::text('users_id', isset($permissao->users_id) ? $permissao->users_id:$user_id, ['class'=>'form-control tamanho-campo-120', 'disabled']) !!}
                       {!! Form::label('rotinas_id', 'Rotina:') !!}
                       <div class="form-group">
                           {!! Form::select('rotinas_id', $retorno_de_rotinas,isset($permissao->rotinas_id) ? $permissao->rotinas_id:'0', ['class'=>'form-control tamanho-campo-170']) !!}

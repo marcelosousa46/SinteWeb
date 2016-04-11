@@ -23,12 +23,13 @@ Route::group(['middleware' => 'web'], function () {
         'postUpdate'  => 'usuarios.update',
     ]);
     /* Permissoes */
+    Route::get('permissoes/gerar', 'PermissaoController@gerar');
     Route::controller('permissoes','PermissaoController',[
-        'anyData'     => 'permissoes.data',
-        'getIndex'    => 'permissoes',
-        'getCreate'   => 'permissoes.create',
-        'postStore'   => 'permissoes.store',
-        'postUpdate'  => 'permissoes.update',
+        'anyData'    => 'permissoes.data',
+        'getIndex'   => 'permissoes',
+        'getCreate'  => 'permissoes.create',
+        'postStore'  => 'permissoes.store',
+        'postUpdate' => 'permissoes.update',
     ]);
     /* Rotinas */
     Route::controller('rotinas','RotinaController',[

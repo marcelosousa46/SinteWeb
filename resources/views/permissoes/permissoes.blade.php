@@ -2,6 +2,7 @@
 @section('title', 'Permissões')
 @section('inclusao')
   <li class="item-inclusao"><a href="{{url('permissoes/create?id='.$rotina_id.',&user_id='.$user_id)}}"><i class="glyphicon glyphicon-plus"></i>Incluir</a></li>
+  <li class="item-inclusao"><a href="{{url('permissoes/gerar?id='.$rotina_id.',&user_id='.$user_id)}}"><i class="fa fa-magic margem-menu-pagina-10"></i>Permitir todas</a></li>
 @endsection
 @section('ref')
   <li><class="active">Permissões</li>
@@ -12,11 +13,20 @@
   <div class="row">
     <div class="col-md-6">
       @if (session('status'))
-        <div class="alert alert-danger fade in">
-          <h4>Atenção!</h4>
-          {{ session('status') }}
-          {{ session()->forget('status') }}
-        </div>
+        @if (session('status') == 'error')
+          <div class="alert alert-danger fade in">
+            <h4>Atenção!</h4>
+            {{ session('status-mensagem') }}
+            {{ session()->forget('status') }}
+          </div>
+        @endif  
+        @if (session('status') == 'sucesso')
+          <div class="alert alert-success fade in">
+            <h4>Atenção!</h4>
+            {{ session('status-mensagem') }}
+            {{ session()->forget('status') }}
+          </div>
+        @endif  
       @endif
   </div>
   <div class="row">
