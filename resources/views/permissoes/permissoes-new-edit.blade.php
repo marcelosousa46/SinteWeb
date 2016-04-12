@@ -19,6 +19,15 @@
     <div class="col-md-10">
       <div class="box box-primary">
         <div class="box-header with-border">
+          @if (count($errors) > 0)
+              <div class="alert alert-danger">
+                  <ul>
+                      @foreach ($errors->all() as $error)
+                          <li>{{ $error }}</li>
+                      @endforeach
+                  </ul>
+              </div>
+          @endif          
           @if(isset($permissao->id) )
               {!! Form::open(['route'=>['permissoes.update', $permissao->id]]) !!}
           @else
@@ -37,7 +46,7 @@
                       </div>
                   @else
                       {!! Form::label('id_usuario', 'Usuário:') !!}
-                      {!! Form::text('users_id', isset($permissao->users_id) ? $permissao->users_id:$user_id, ['class'=>'form-control tamanho-campo-120', 'disabled']) !!}
+                      {!! Form::text('users_id', isset($permissao->users_id) ? $permissao->users_id:$user_id, ['class'=>'form-control tamanho-campo-120']) !!}
                       {!! Form::label('rotinas_id', 'Rotina:') !!}
                       <div class="form-group">
                           {!! Form::select('rotinas_id', $retorno_de_rotinas,isset($permissao->rotinas_id) ? $permissao->rotinas_id:'0', ['class'=>'form-control tamanho-campo-170']) !!}
@@ -77,3 +86,11 @@
  </div>
 
 @endsection
+@push('scripts')
+  <script>
+    $(".alert").fadeTo(5000, 0.4).slideUp(700, function(){
+      $(".alert").alert('close');
+    });
+  </script>
+@endpush
+

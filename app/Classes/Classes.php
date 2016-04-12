@@ -9,12 +9,23 @@ use App\Models\Permissoes;
 use DB;
 
 class Classes {
-    public function getPermissao($request)
+    public function getPermissao($request,$tipo)
     {
        $autorizado = false;
        if ($request->session()->has('rotina_id')) {
           $crud = auth()->user()->Crud(session('rotina_id'));
-          $autorizacao = $crud[0]->alterar;
+          $autorizacao = $crud[0]->liberado;
+          if ($autorizacao != 'A')
+          {
+             if ($tipo == 'A')
+             {
+               $autorizacao = $crud[0]->alterar;
+             }elseif ($tipo == 'I') {
+               $autorizacao = $crud[0]->incluir;
+             }elseif ($tipo == 'E') {
+               $autorizacao = $crud[0]->excluir;
+             }
+          }   
         }
         if ($autorizacao == 'A'){
         	 $autorizado = true;

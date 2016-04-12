@@ -25,7 +25,7 @@ class CreateProdutosTable extends Migration
             $table->string('id_genero',60);
             $table->string('lst',5);
             $table->decimal('icms',6,2);
-            $table->integer('preco');
+            $table->decimal('preco',14,2);
             $table->timestamps();
         });
     }

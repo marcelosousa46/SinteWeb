@@ -31,6 +31,7 @@ class ComposerServiceProvider extends ServiceProvider
                         $retorno_de_rotinas[$a->id] = $a->descricao;
                         $i++;
                       }
+//                      dd($retorno_de_rotinas);
                       $view->with('retorno_de_rotinas', $retorno_de_rotinas);
                   }    
                }

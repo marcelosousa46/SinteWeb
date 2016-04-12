@@ -58,6 +58,10 @@
   <script src="http://cdn.datatables.net/1.10.11/js/jquery.dataTables.min.js"></script>
   <!-- TreeView -->
   <script src="{{ asset('/bower_components/bootstrap-treeview/public/js/bootstrap-treeview.js') }}"></script>
+  <!-- Main.js -->
+  <script src="{{ asset('/vendor/assets/jquery.maskedinput.js') }}"></script>
+  <!-- jquery.maskMoney.js -->
+  <script src="{{ asset('/vendor/assets/jquery.maskMoney.js') }}"></script>
   <!-- App scripts -->
   @stack('scripts')
 

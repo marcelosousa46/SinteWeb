@@ -57,12 +57,20 @@ class RotinaController extends Controller
       ->make(true);
   }
 
-	public function getCreate()
+	public function getCreate(Request $request)
   {
-  		$rotina_id = session('rotina_id');
-      $user_id   = session('user_id');
+  	$rotina_id = session('rotina_id');
+    $user_id   = session('user_id');
 
+    $autorizado = $this->permissao->getPermissao($request,'I');
+    if ($autorizado){
       return view('rotinas.rotinas-new-edit',compact(['rotina_id','user_id']));
+    } else {
+      session()->put('status', 'error');
+      session()->put('status-mensagem', 'Usuário não autorizado.');
+      session()->put('status', 'Usuário não autorizado.');
+      return redirect()->route('rotinas', ['id' => session('rotina_id'),'user_id' => session('user_id')]);
+    }
   }
 
   public function postStore(Request $request)
@@ -74,23 +82,32 @@ class RotinaController extends Controller
 
   }
 
-  public function getDestroy($id)
+  public function getDestroy(Request $request,$id)
   {
-      Rotinas::find($id)->delete();
-
+    $rotina_id  = session('rotina_id');
+    $user_id    = session('user_id');
+    $autorizado = $this->permissao->getPermissao($request,'E');
+    if ($autorizado){
+       Rotinas::find($id)->delete();
       return redirect()->route('rotinas', ['id' => session('rotina_id'),'user_id' => session('user_id')]);
+      } else {
+        session()->put('status', 'error');
+        session()->put('status-mensagem', 'Usuário não autorizado.');
+        return redirect()->route('rotinas', ['id' => session('rotina_id'),'user_id' => session('user_id')]);
+      }
   }
 
   public function getEdit(Request $request,$id)
   {
-     $autorizado = $this->permissao->getPermissao($request);
+     $autorizado = $this->permissao->getPermissao($request,'A');
 
       if ($autorizado){
         $rotina = Rotinas::find($id);
         $rotina_id = session('rotina_id');
         return view('rotinas.rotinas-new-edit', compact(['rotina','rotina_id','user_id' => session('user_id')]));
       } else {
-        session()->put('status', 'Usuário não autorizado.');
+        session()->put('status', 'error');
+        session()->put('status-mensagem', 'Usuário não autorizado.');
         return redirect()->route('rotinas', ['id' => session('rotina_id'),'user_id' => session('user_id')]);
       }
   }

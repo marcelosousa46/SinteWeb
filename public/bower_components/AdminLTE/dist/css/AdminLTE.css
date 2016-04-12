@@ -4936,4 +4936,10 @@ table.text-center th {
  .margem-menu-pagina-10{
    margin-left: 10px !important;
  }
+.tamanho-campo-450{
+  width: 450px;
+}
+.tamanho-campo-170{
+  width: 170px;
+}
 

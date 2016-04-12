@@ -11,6 +11,7 @@ use App\Models\Rotinas;
 use Yajra\Datatables\Datatables;
 use DB;
 use App\Classes\Classes;
+use App\Http\Requests\PermissaoRequest;
 
 class PermissaoController extends Controller
 {
@@ -57,39 +58,55 @@ class PermissaoController extends Controller
 
   }
 
-  public function getCreate()
+  public function getCreate(Request $request)
   {
-      $rotina_id = session('rotina_id');
-      $user_id   = session('user_id');
-
-      return view('permissoes.permissoes-new-edit',compact(['rotina_id','user_id']));
+      $rotina_id  = session('rotina_id');
+      $user_id    = session('user_id');
+      $autorizado = $this->permissao->getPermissao($request,'I');
+      if ($autorizado)
+      {
+        return view('permissoes.permissoes-new-edit',compact(['rotina_id','user_id']));
+      } else {
+        session()->put('status', 'error');
+        session()->put('status-mensagem', 'Usuário não autorizado.');
+        return view('permissoes.permissoes',compact(['permissao','rotina_id','user_id','username','rotinadescricao']));
+      }
   }
 
-  public function postStore(Request $request)
-  {
+  public function postStore(PermissaoRequest $request)
+  { 
+
       $rotina_id = session('rotina_id');
       $user_id   = session('user_id');
-
       $input = $request->all();
-      Permissoes::create($input);
 
+      Permissoes::create($input);
       return redirect()->route('permissoes',['id' => $rotina_id, 'user_id'=>$user_id]);
 
+
+
   }
 
-  public function getDestroy($id)
+  public function getDestroy(Request $request,$id)
   {
       $rotina_id = session('rotina_id');
       $user_id   = session('user_id');
+      $autorizado = $this->permissao->getPermissao($request,'E');
 
-      Permissoes::find($id)->delete();
-
-      return redirect()->route('permissoes', ['id' => $rotina_id, 'user_id'=>$user_id]);
+      if ($autorizado)
+      {
+        Permissoes::find($id)->delete();
+        return redirect()->route('permissoes', ['id' => $rotina_id, 'user_id'=>$user_id]);
+      } else {
+        session()->put('status', 'error');
+        session()->put('status-mensagem', 'Usuário não autorizado.');
+        return view('permissoes.permissoes',compact(['permissao','rotina_id','user_id','username','rotinadescricao']));
+      }
   }
 
   public function getEdit(Request $request,$id)
   {
-      $autorizado = $this->permissao->getPermissao($request);
+      $autorizado = $this->permissao->getPermissao($request,'A');
       $rotina_id  = session('rotina_id');
       $user_id    = session('user_id');
 

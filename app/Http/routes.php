@@ -39,9 +39,10 @@ Route::group(['middleware' => 'web'], function () {
         'postUpdate'  => 'rotinas.update',
     ]);
     /* Produtos */
-    Route::controller('produtos','RotinaController',[
+    Route::controller('produtos','ProdutoController',[
         'anyData'     => 'produtos.data',
         'getIndex'    => 'produtos',
+        'getCreate'   => 'produtos.create',
         'postStore'   => 'produtos.store',
         'postUpdate'  => 'produtos.update',
     ]);
