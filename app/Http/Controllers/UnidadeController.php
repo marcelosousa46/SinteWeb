@@ -3,12 +3,14 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+
 use App\Http\Requests;
-use App\Models\Produtos;
-use App\Classes\Classes;
+use App\Models\Unidades;
+Use App\Classes\Classes;
 use Yajra\Datatables\Datatables;
 
-class ProdutoController extends Controller
+
+class UnidadeController extends Controller
 {
   private $permissao;
   public function __construct()
@@ -24,20 +26,20 @@ class ProdutoController extends Controller
       $request->session()->put('user_id', $query['user_id']);
       $user_id = session('user_id');
 
-      return view('produtos.produtos', compact(['rotina_id','user_id']));
+      return view('unidades.unidades', compact(['rotina_id','user_id']));
   }
   public function anyData()
   {
       $user_id  = session('user_id');
-      $produtos = Produtos::all();
+      $unidades = Unidades::all();
 
-      return Datatables::of($produtos)
+      return Datatables::of($unidades)
 
-      ->addColumn('action', function ($produtos) {
+      ->addColumn('action', function ($unidades) {
       return [
-              '<a href="produtos/edit/'.$produtos->id.'" class="glyphicon glyphicon-pencil" title="Editar"></a>',
-              '<a href="produtos/destroy/'.$produtos->id.'" class="glyphicon glyphicon-trash" title="Deletar"
-                                                            onclick="return confirm(\'Excluir produto?\')"></a>',
+              '<a href="unidades/edit/'.$unidades->id.'" class="glyphicon glyphicon-pencil" title="Editar"></a>',
+              '<a href="unidades/destroy/'.$unidades->id.'" class="glyphicon glyphicon-trash" title="Deletar"
+                                                            onclick="return confirm(\'Excluir unidade?\')"></a>',
              ];
       })
       ->make(true);
@@ -49,11 +51,11 @@ class ProdutoController extends Controller
       $autorizado = $this->permissao->getPermissao($request,'I');
       if ($autorizado)
       {
-        return view('produtos.produtos-new-edit',compact(['rotina_id','user_id']));
+        return view('unidades.unidades-new-edit',compact(['rotina_id','user_id']));
       } else {
         session()->put('status', 'error');
         session()->put('status-mensagem', 'Usuário não autorizado.');
-        return view('produtos.produtos',compact(['permissao','rotina_id','user_id','username','rotinadescricao']));
+        return view('unidades.unidades',compact(['permissao','rotina_id','user_id','username','rotinadescricao']));
       }
   }
   public function postStore(Request $request)
@@ -62,8 +64,8 @@ class ProdutoController extends Controller
       $user_id   = session('user_id');
       $input = $request->all();
 
-      Produtos::create($input);
-      return redirect()->route('produtos',['id' => $rotina_id, 'user_id'=>$user_id]);
+      Unidades::create($input);
+      return redirect()->route('unidades',['id' => $rotina_id, 'user_id'=>$user_id]);
   }
   public function getDestroy(Request $request,$id)
   {
@@ -73,12 +75,12 @@ class ProdutoController extends Controller
 
       if ($autorizado)
       {
-        Produtos::find($id)->delete();
-        return redirect()->route('produtos', ['id' => $rotina_id, 'user_id'=>$user_id]);
+        Unidades::find($id)->delete();
+        return redirect()->route('unidades', ['id' => $rotina_id, 'user_id'=>$user_id]);
       } else {
         session()->put('status', 'error');
         session()->put('status-mensagem', 'Usuário não autorizado.');
-        return view('produtos.produtos',compact(['rotina_id','user_id']));
+        return view('unidades.unidades',compact(['rotina_id','user_id']));
       }
   }
   public function getEdit(Request $request,$id)
@@ -89,12 +91,12 @@ class ProdutoController extends Controller
 
       if ($autorizado)
       {
-        $produto = produtos::find($id);
-        return view('produtos.produtos-new-edit',compact(['produto','rotina_id','user_id']));
+        $unidade = Unidades::find($id);
+        return view('unidades.unidades-new-edit',compact(['unidade','rotina_id','user_id']));
       } else {
         session()->put('status', 'error');
         session()->put('status-mensagem', 'Usuário não autorizado.');
-        return view('produtos.produtos',compact(['produto','rotina_id','user_id']));
+        return view('unidades.unidades',compact(['unidade','rotina_id','user_id']));
       }
   }
   public function postUpdate(Request $request, $id)
@@ -103,8 +105,9 @@ class ProdutoController extends Controller
       $user_id   = session('user_id');
       $valor     = $this->permissao->getValor($request->input('preco'));
       $request->merge(array('preco' => $valor));
-      $Produtos = produtos::find($id)->update($request->all());
+      $unidades = Unidades::find($id)->update($request->all());
 
-      return redirect()->route('produtos', ['id' => $rotina_id, 'user_id'=>$user_id]);
+      return redirect()->route('unidades', ['id' => $rotina_id, 'user_id'=>$user_id]);
   }
+
 }

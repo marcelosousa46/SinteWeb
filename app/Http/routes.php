@@ -46,5 +46,13 @@ Route::group(['middleware' => 'web'], function () {
         'postStore'   => 'produtos.store',
         'postUpdate'  => 'produtos.update',
     ]);
+    /* Unidades */
+    Route::controller('unidades','UnidadeController',[
+        'anyData'     => 'unidades.data',
+        'getIndex'    => 'unidades',
+        'getCreate'   => 'unidades.create',
+        'postStore'   => 'unidades.store',
+        'postUpdate'  => 'unidades.update',
+    ]);
 
 });

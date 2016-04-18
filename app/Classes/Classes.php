@@ -59,4 +59,12 @@ class Classes {
         $gerado = true;
         return $gerado;
      }
+     public function getValor($valor)
+     {
+       if (strpos($valor,','))
+       {
+         $valor     = str_replace(array('.',','),array('','.'),$valor);
+       }
+       return $valor;
+     }
 }

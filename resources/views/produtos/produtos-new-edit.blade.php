@@ -16,17 +16,17 @@
 @section('content')
 <div class="container">
   <div class="row">
-    <div class="col-md-10">
+    <div class="col-lg-12">
       <div class="box box-primary">
         <div class="box-header with-border">
           @if (count($errors) > 0)
-              <div class="alert alert-danger">
-                  <ul>
-                      @foreach ($errors->all() as $error)
-                          <li>{{ $error }}</li>
-                      @endforeach
-                  </ul>
-              </div>
+            <div class="alert alert-danger">
+              <ul>
+                @foreach ($errors->all() as $error)
+                  <li>{{ $error }}</li>
+                @endforeach
+              </ul>
+            </div>
           @endif          
           @if(isset($produto->id) )
               {!! Form::open(['route'=>['produtos.update', $produto->id]]) !!}
@@ -36,60 +36,58 @@
           {!! csrf_field() !!}
           <!-- Nome Form Input -->
           <div class="box-body">
-              <div class="form-group">
-                  {!! Form::label('l.codigo', 'Código:') !!}
-                  {!! Form::text('codigo', isset($produto->codigo) ? $produto->codigo:null, ['class'=>'form-control tamanho-campo-450']) !!}
-              </div>    
-              <div class="form-group">
-                  {!! Form::label('l.descricao', 'Descrição:') !!}
-                  {!! Form::text('descricao', isset($produto->descricao) ? $produto->descricao:null, ['class'=>'form-control tamanho-campo-450']) !!}
-              </div>    
-              <div class="form-group">
-                  {!! Form::label('l.codigo_barra', 'Código de barras:') !!}
-                  {!! Form::text('codigo_barra', isset($produto->codigo_barra) ? $produto->codigo_barra:null, ['class'=>'form-control tamanho-campo-450']) !!}
-              </div>    
-              <div class="form-group">
-                  {!! Form::label('l.codigo_anterior', 'Código anterior:') !!}
-                  {!! Form::text('codigo_anterior', isset($produto->codigo_anterior) ? $produto->codigo_anterior:null, ['class'=>'form-control tamanho-campo-450']) !!}
-              </div>    
-              <div class="form-group">
-                  {!! Form::label('l.id_unidade', 'unidade:') !!}
-                  {!! Form::text('id_unidade', isset($produto->id_unidade) ? $produto->id_unidade:null, ['class'=>'form-control tamanho-campo-120']) !!}
-              </div>    
-              <div class="form-group">
-                  {!! Form::label('l.id_tipoitem', 'Tipo do item:') !!}
-                  {!! Form::text('id_tipoitem', isset($produto->id_tipoitem) ? $produto->id_tipoitem:null, ['class'=>'form-control tamanho-campo-120']) !!}
-              </div>    
-              <div class="form-group">
-                  {!! Form::label('l.id_ncm', 'N.C.M:') !!}
-                  {!! Form::text('id_ncm', isset($produto->id_ncm) ? $produto->id_ncm:null, ['class'=>'form-control tamanho-campo-120']) !!}
-              </div>    
-              <div class="form-group">
-                  {!! Form::label('l.ipi', 'I.P.I:') !!}
-                  {!! Form::text('ipi', isset($produto->ipi) ? $produto->ipi:null, ['class'=>'form-control tamanho-campo-120']) !!}
-              </div>    
-              <div class="form-group">
-                  {!! Form::label('l.id_genero', 'Gênero:') !!}
-                  {!! Form::text('id_genero', isset($produto->id_genero) ? $produto->id_genero:null, ['class'=>'form-control tamanho-campo-120']) !!}
-              </div>    
-              <div class="form-group">
-                  {!! Form::label('l.lst', 'L.S.T:') !!}
-                  {!! Form::text('lst', isset($produto->lst) ? $produto->lst:null, ['class'=>'form-control tamanho-campo-120']) !!}
-              </div>    
-              <div class="form-group">
-                  {!! Form::label('l.icms', 'I.C.M.S:') !!}
-                  {!! Form::text('icms', isset($produto->icms) ? $produto->icms:null, ['class'=>'form-control tamanho-campo-120']) !!}
-              </div>    
-              <div class="form-group">
-                  {!! Form::label('l.preco', 'Preço:') !!}
-                  {!! Form::text('ed.preco', isset($produto->preco) ? $produto->preco:null, ['id'=>'real','class'=>'form-control tamanho-campo-170']) !!}
-              </div>
-
-              <div class="form-group">
-                  {!! Form::submit('Confirmar', ['class'=>'btn btn-primary']) !!}
-              </div>
-          </div>
-
+            <div class="form-group col-lg-6">
+                {!! Form::label('l.codigo', 'Código:') !!}
+                {!! Form::text('codigo', isset($produto->codigo) ? $produto->codigo:null, ['class'=>'form-control']) !!}
+            </div>    
+            <div class="form-group col-lg-6">
+                {!! Form::label('l.descricao', 'Descrição:') !!}
+                {!! Form::text('descricao', isset($produto->descricao) ? $produto->descricao:null, ['class'=>'form-control']) !!}
+            </div>    
+            <div class="form-group col-lg-6">
+                {!! Form::label('l.codigo_barra', 'Código de barras:') !!}
+                {!! Form::text('codigo_barra', isset($produto->codigo_barra) ? $produto->codigo_barra:null, ['class'=>'form-control']) !!}
+            </div>    
+            <div class="form-group col-lg-6">
+                {!! Form::label('l.codigo_anterior', 'Código anterior:') !!}
+                {!! Form::text('codigo_anterior', isset($produto->codigo_anterior) ? $produto->codigo_anterior:null, ['class'=>'form-control']) !!}
+            </div> 
+            <div class="form-group col-lg-6">
+                {!! Form::label('l.id_unidade', 'unidade:') !!}
+                {!! Form::text('id_unidade', isset($produto->id_unidade) ? $produto->id_unidade:null, ['class'=>'form-control tamanho-campo-120']) !!}
+            </div>    
+            <div class="form-group col-lg-6">
+              {!! Form::label('l.id_tipoitem', 'Tipo do item:') !!}
+              {!! Form::text('id_tipoitem', isset($produto->id_tipoitem) ? $produto->id_tipoitem:null, ['class'=>'form-control tamanho-campo-120']) !!}
+            </div>    
+            <div class="form-group col-lg-6">
+                {!! Form::label('l.id_ncm', 'N.C.M:') !!}
+                {!! Form::text('id_ncm', isset($produto->id_ncm) ? $produto->id_ncm:null, ['class'=>'form-control tamanho-campo-120']) !!}
+            </div>    
+            <div class="form-group col-lg-6">
+                {!! Form::label('l.ipi', 'I.P.I:') !!}
+                {!! Form::text('ipi', isset($produto->ipi) ? $produto->ipi:null, ['class'=>'form-control tamanho-campo-120']) !!}
+            </div>    
+            <div class="form-group col-lg-6">
+                {!! Form::label('l.id_genero', 'Gênero:') !!}
+                {!! Form::text('id_genero', isset($produto->id_genero) ? $produto->id_genero:null, ['class'=>'form-control tamanho-campo-120']) !!}
+            </div>    
+            <div class="form-group col-lg-6">
+                {!! Form::label('l.icms', 'I.C.M.S:') !!}
+                {!! Form::text('icms', isset($produto->icms) ? $produto->icms:null, ['class'=>'form-control tamanho-campo-120']) !!}
+            </div>    
+            <div class="form-group col-lg-6">
+                {!! Form::label('l.lst', 'L.S.T:') !!}
+                {!! Form::text('lst', isset($produto->lst) ? $produto->lst:null, ['class'=>'form-control tamanho-campo-120']) !!}
+            </div>    
+            <div class="form-group col-lg-6">
+                {!! Form::label('l.preco', 'Preço:') !!}
+                {!! Form::text('preco', isset($produto->preco) ? $produto->preco:null, ['id'=>'real','class'=>'form-control tamanho-campo-120']) !!}
+            </div>
+            <div class="form-group col-lg-6">
+                {!! Form::submit('Confirmar', ['class'=>'btn btn-primary']) !!}
+            </div>
+          </div>  
           {!! Form::close() !!}
         </div>
       </div>
