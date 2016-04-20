@@ -38,7 +38,7 @@
           <div class="box-body">
             <div class="form-group col-lg-6">
                 {!! Form::label('l.codigo', 'Código:') !!}
-                {!! Form::text('codigo', isset($produto->codigo) ? $produto->codigo:null, ['class'=>'form-control']) !!}
+                {!! Form::text('codigo', isset($produto->codigo) ? $produto->codigo:null, ['id'=>'codigo', 'class'=>'form-control']) !!}
             </div>    
             <div class="form-group col-lg-6">
                 {!! Form::label('l.descricao', 'Descrição:') !!}
@@ -54,23 +54,23 @@
             </div> 
             <div class="form-group col-lg-6">
                 {!! Form::label('l.id_unidade', 'unidade:') !!}
-                {!! Form::text('id_unidade', isset($produto->id_unidade) ? $produto->id_unidade:null, ['class'=>'form-control tamanho-campo-120']) !!}
+                {!! Form::select('unidade_id', $unidades,isset($produto->unidade_id) ? $produto->unidade_id:'1', ['class'=>'form-control']) !!}
             </div>    
             <div class="form-group col-lg-6">
-              {!! Form::label('l.id_tipoitem', 'Tipo do item:') !!}
-              {!! Form::text('id_tipoitem', isset($produto->id_tipoitem) ? $produto->id_tipoitem:null, ['class'=>'form-control tamanho-campo-120']) !!}
+                {!! Form::label('l.id_tipoitem', 'Tipo do item:') !!}
+                {!! Form::select('tipoitem_id', $tipoitens,isset($produto->tipoitem_id) ? $produto->tipoitem_id:'1', ['class'=>'form-control']) !!}
             </div>    
             <div class="form-group col-lg-6">
                 {!! Form::label('l.id_ncm', 'N.C.M:') !!}
-                {!! Form::text('id_ncm', isset($produto->id_ncm) ? $produto->id_ncm:null, ['class'=>'form-control tamanho-campo-120']) !!}
+                {!! Form::select('ncm_id', $ncms,isset($produto->ncm_id) ? $produto->ncm_id:'1', ['class'=>'form-control']) !!}
+            </div>    
+            <div class="form-group col-lg-6">
+                {!! Form::label('l.id_genero', 'Gênero:') !!}
+                {!! Form::select('genero_id', $generos,isset($produto->genero_id) ? $produto->genero_id:'1', ['class'=>'form-control']) !!}
             </div>    
             <div class="form-group col-lg-6">
                 {!! Form::label('l.ipi', 'I.P.I:') !!}
                 {!! Form::text('ipi', isset($produto->ipi) ? $produto->ipi:null, ['class'=>'form-control tamanho-campo-120']) !!}
-            </div>    
-            <div class="form-group col-lg-6">
-                {!! Form::label('l.id_genero', 'Gênero:') !!}
-                {!! Form::text('id_genero', isset($produto->id_genero) ? $produto->id_genero:null, ['class'=>'form-control tamanho-campo-120']) !!}
             </div>    
             <div class="form-group col-lg-6">
                 {!! Form::label('l.icms', 'I.C.M.S:') !!}
@@ -82,7 +82,7 @@
             </div>    
             <div class="form-group col-lg-6">
                 {!! Form::label('l.preco', 'Preço:') !!}
-                {!! Form::text('preco', isset($produto->preco) ? $produto->preco:null, ['id'=>'real','class'=>'form-control tamanho-campo-120']) !!}
+                {!! Form::text('preco_id', isset($produto->preco_id) ? $produto->preco_id:null, ['class'=>'form-control tamanho-campo-120']) !!}
             </div>
             <div class="form-group col-lg-6">
                 {!! Form::submit('Confirmar', ['class'=>'btn btn-primary']) !!}
@@ -97,8 +97,9 @@
 @endsection
 @push('scripts')
   <script>
-    $(".alert").fadeTo(5000, 0.4).slideUp(700, function(){
-      $(".alert").alert('close');
+     $("#codigo").focus();
+     $(".alert").fadeTo(5000, 0.4).slideUp(700, function(){
+     $(".alert").alert('close');
     });
     $(function($){
        $("#real").maskMoney({symbol:"R$",decimal:",",thousands:"."});

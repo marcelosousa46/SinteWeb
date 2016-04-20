@@ -52,7 +52,7 @@
             <li class="treeview">
               <a href="{{ $menu[$i]->url }}"><span>{{ $menu[$i]->descricao }}</span> <i class="fa fa-angle-left pull-right"></i></a>
               @for($j = 0; $j < count($submenu); $j++)
-                 @if ($submenu[$j]->nivel == $menu[$i]->nivel)
+                 @if ($submenu[$j]->nivel == $menu[$i]->id)
                     <ul class="treeview-menu">
                       <li><a href="{{ route($submenu[$j]->url,'id='.$submenu[$j]->id.'&user_id='.Auth::user()->id) }}">{{ $submenu[$j]->descricao }}</a></li> 
                     </ul>

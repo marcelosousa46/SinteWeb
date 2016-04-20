@@ -1,10 +1,10 @@
 @extends('layouts.lte')
-@section('title', 'Produtos')
+@section('title', 'Tipo de itens')
 @section('inclusao')
-  <li class="item-inclusao"><a href="{{url('produtos/create?id='.$rotina_id.',&user_id='.$user_id)}}"><i class="glyphicon glyphicon-plus"></i>Incluir</a></li>
+  <li class="item-inclusao"><a href="{{url('tipoitens/create?id='.$rotina_id.',&user_id='.$user_id)}}"><i class="glyphicon glyphicon-plus"></i>Incluir</a></li>
 @endsection
 @section('ref')
-  <li><class="active">Produtos</li>
+  <li><class="active">Tipo de itens</li>
 @endsection
 
 @section('content')
@@ -30,12 +30,11 @@
   </div>
   <div class="row">
     <div class="col-md-10">
-      <table class="table table-striped table-bordered table-hover" id="produtos-table">
+      <table class="table table-striped table-bordered table-hover" id="tipoitens-table">
           <thead>
             <tr>
               <th>Código</th>
               <th>Descrição</th>
-              <th>Unidade</th>
               <th>Ação</th>
             </tr>
           </thead>
@@ -53,7 +52,7 @@
     });
 
     $(function() {
-        $('#produtos-table').DataTable({
+        $('#tipoitens-table').DataTable({
             language : {
                 "sEmptyTable": "Nenhum registro encontrado",
                 "sInfo": "Mostrando de _START_ até _END_ de _TOTAL_ registros",
@@ -80,11 +79,10 @@
            "bLengthChange": false,
             processing: true,
             serverSide: false,
-            ajax: '{!! URL::to('/produtos/data') !!}',
+            ajax: '{!! URL::to('/tipoitens/data') !!}',
             columns: [
                 { data: 'codigo', name: 'codigo' },
                 { data: 'descricao', name: 'descricao' },
-                { data: 'unidade_id', name: 'id_unidade' },
                 { data: 'action', name: 'action', orderable: false, searchable: false}
             ]
         });

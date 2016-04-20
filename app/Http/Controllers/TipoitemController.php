@@ -5,12 +5,12 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
-use App\Models\Unidades;
+
+use App\Models\Tipoitens;
 Use App\Classes\Classes;
 use Yajra\Datatables\Datatables;
 
-
-class UnidadeController extends Controller
+class TipoitemController extends Controller
 {
   private $permissao;
   public function __construct()
@@ -26,20 +26,20 @@ class UnidadeController extends Controller
       $request->session()->put('user_id', $query['user_id']);
       $user_id = session('user_id');
 
-      return view('unidades.unidades', compact(['rotina_id','user_id']));
+      return view('tipoitens.tipoitens', compact(['rotina_id','user_id']));
   }
   public function anyData()
   {
-      $user_id  = session('user_id');
-      $unidades = Unidades::all();
+      $user_id   = session('user_id');
+      $tipoitens = Tipoitens::all();
 
-      return Datatables::of($unidades)
+      return Datatables::of($tipoitens)
 
-      ->addColumn('action', function ($unidades) {
+      ->addColumn('action', function ($tipoitens) {
       return [
-              '<a href="unidades/edit/'.$unidades->id.'" class="glyphicon glyphicon-pencil" title="Editar"></a>',
-              '<a href="unidades/destroy/'.$unidades->id.'" class="glyphicon glyphicon-trash" title="Deletar"
-                                                            onclick="return confirm(\'Excluir unidade?\')"></a>',
+              '<a href="tipoitens/edit/'.$tipoitens->id.'" class="glyphicon glyphicon-pencil" title="Editar"></a>',
+              '<a href="tipoitens/destroy/'.$tipoitens->id.'" class="glyphicon glyphicon-trash" title="Deletar"
+                                                              onclick="return confirm(\'Excluir tipo do item?\')"></a>',
              ];
       })
       ->make(true);
@@ -51,36 +51,36 @@ class UnidadeController extends Controller
       $autorizado = $this->permissao->getPermissao($request,'I');
       if ($autorizado)
       {
-        return view('unidades.unidades-new-edit',compact(['rotina_id','user_id']));
+        return view('tipoitens.tipoitens-new-edit',compact(['rotina_id','user_id']));
       } else {
         session()->put('status', 'error');
         session()->put('status-mensagem', 'Usuário não autorizado.');
-        return view('unidades.unidades',compact(['permissao','rotina_id','user_id','username','rotinadescricao']));
+        return view('tipoitens.tipoitens',compact(['permissao','rotina_id','user_id','username','rotinadescricao']));
       }
   }
   public function postStore(Request $request)
   { 
       $rotina_id = session('rotina_id');
       $user_id   = session('user_id');
-      $input = $request->all();
+      $input     = $request->all();
 
-      Unidades::create($input);
-      return redirect()->route('unidades',['id' => $rotina_id, 'user_id'=>$user_id]);
+      Tipoitens::create($input);
+      return redirect()->route('tipoitens',['id' => $rotina_id, 'user_id'=>$user_id]);
   }
   public function getDestroy(Request $request,$id)
   {
-      $rotina_id = session('rotina_id');
-      $user_id   = session('user_id');
+      $rotina_id  = session('rotina_id');
+      $user_id    = session('user_id');
       $autorizado = $this->permissao->getPermissao($request,'E');
 
       if ($autorizado)
       {
-        Unidades::find($id)->delete();
-        return redirect()->route('unidades', ['id' => $rotina_id, 'user_id'=>$user_id]);
+        Tipoitens::find($id)->delete();
+        return redirect()->route('tipoitens', ['id' => $rotina_id, 'user_id'=>$user_id]);
       } else {
         session()->put('status', 'error');
         session()->put('status-mensagem', 'Usuário não autorizado.');
-        return view('unidades.unidades',compact(['rotina_id','user_id']));
+        return view('tipoitens.tipoitens',compact(['rotina_id','user_id']));
       }
   }
   public function getEdit(Request $request,$id)
@@ -91,21 +91,20 @@ class UnidadeController extends Controller
 
       if ($autorizado)
       {
-        $unidade = Unidades::find($id);
-        return view('unidades.unidades-new-edit',compact(['unidade','rotina_id','user_id']));
+        $tipoitem = Tipoitens::find($id);
+        return view('tipoitens.tipoitens-new-edit',compact(['tipoitem','rotina_id','user_id']));
       } else {
         session()->put('status', 'error');
         session()->put('status-mensagem', 'Usuário não autorizado.');
-        return view('unidades.unidades',compact(['unidade','rotina_id','user_id']));
+        return view('tipoitens.tipoitens',compact(['tipoitem','rotina_id','user_id']));
       }
   }
   public function postUpdate(Request $request, $id)
   {
       $rotina_id = session('rotina_id');
       $user_id   = session('user_id');
-      $unidades = Unidades::find($id)->update($request->all());
+      $tipoitem  = Tipoitens::find($id)->update($request->all());
 
-      return redirect()->route('unidades', ['id' => $rotina_id, 'user_id'=>$user_id]);
+      return redirect()->route('tipoitem', ['id' => $rotina_id, 'user_id'=>$user_id]);
   }
-
 }

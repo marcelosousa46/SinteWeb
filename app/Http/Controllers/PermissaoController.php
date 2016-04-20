@@ -137,7 +137,7 @@ class PermissaoController extends Controller
 
   public function gerar(Request $request)
   {
-      $autorizado = $this->permissao->getPermissao($request);
+      $autorizado = $this->permissao->getPermissao($request,'I');
       $rotina_id  = session('rotina_id');
       $user_id    = session('user_id');
 

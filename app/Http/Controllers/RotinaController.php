@@ -104,11 +104,12 @@ class RotinaController extends Controller
       if ($autorizado){
         $rotina = Rotinas::find($id);
         $rotina_id = session('rotina_id');
-        return view('rotinas.rotinas-new-edit', compact(['rotina','rotina_id','user_id' => session('user_id')]));
+        $user_id = session('user_id');
+        return view('rotinas.rotinas-new-edit', compact(['rotina','rotina_id','user_id']));
       } else {
         session()->put('status', 'error');
         session()->put('status-mensagem', 'Usuário não autorizado.');
-        return redirect()->route('rotinas', ['id' => session('rotina_id'),'user_id' => session('user_id')]);
+        return redirect()->route('rotinas', ['id' => session('rotina_id'),'user_id']);
       }
   }
 

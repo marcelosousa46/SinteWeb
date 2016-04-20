@@ -5,12 +5,12 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
-use App\Models\Unidades;
+
+use App\Models\Ncms;
 Use App\Classes\Classes;
 use Yajra\Datatables\Datatables;
 
-
-class UnidadeController extends Controller
+class NcmController extends Controller
 {
   private $permissao;
   public function __construct()
@@ -26,20 +26,20 @@ class UnidadeController extends Controller
       $request->session()->put('user_id', $query['user_id']);
       $user_id = session('user_id');
 
-      return view('unidades.unidades', compact(['rotina_id','user_id']));
+      return view('ncms.ncms', compact(['rotina_id','user_id']));
   }
   public function anyData()
   {
       $user_id  = session('user_id');
-      $unidades = Unidades::all();
+      $generos = Ncms::all();
 
-      return Datatables::of($unidades)
+      return Datatables::of($ncms)
 
-      ->addColumn('action', function ($unidades) {
+      ->addColumn('action', function ($ncms) {
       return [
-              '<a href="unidades/edit/'.$unidades->id.'" class="glyphicon glyphicon-pencil" title="Editar"></a>',
-              '<a href="unidades/destroy/'.$unidades->id.'" class="glyphicon glyphicon-trash" title="Deletar"
-                                                            onclick="return confirm(\'Excluir unidade?\')"></a>',
+              '<a href="ncms/edit/'.$ncms->id.'" class="glyphicon glyphicon-pencil" title="Editar"></a>',
+              '<a href="ncms/destroy/'.$ncms->id.'" class="glyphicon glyphicon-trash" title="Deletar"
+                                                            onclick="return confirm(\'Excluir N.C.M?\')"></a>',
              ];
       })
       ->make(true);
@@ -51,11 +51,11 @@ class UnidadeController extends Controller
       $autorizado = $this->permissao->getPermissao($request,'I');
       if ($autorizado)
       {
-        return view('unidades.unidades-new-edit',compact(['rotina_id','user_id']));
+        return view('ncms.ncms-new-edit',compact(['rotina_id','user_id']));
       } else {
         session()->put('status', 'error');
         session()->put('status-mensagem', 'Usuário não autorizado.');
-        return view('unidades.unidades',compact(['permissao','rotina_id','user_id','username','rotinadescricao']));
+        return view('ncms.ncms',compact(['permissao','rotina_id','user_id','username','rotinadescricao']));
       }
   }
   public function postStore(Request $request)
@@ -64,8 +64,8 @@ class UnidadeController extends Controller
       $user_id   = session('user_id');
       $input = $request->all();
 
-      Unidades::create($input);
-      return redirect()->route('unidades',['id' => $rotina_id, 'user_id'=>$user_id]);
+      Ncms::create($input);
+      return redirect()->route('ncms',['id' => $rotina_id, 'user_id'=>$user_id]);
   }
   public function getDestroy(Request $request,$id)
   {
@@ -75,12 +75,12 @@ class UnidadeController extends Controller
 
       if ($autorizado)
       {
-        Unidades::find($id)->delete();
-        return redirect()->route('unidades', ['id' => $rotina_id, 'user_id'=>$user_id]);
+        Ncms::find($id)->delete();
+        return redirect()->route('ncms', ['id' => $rotina_id, 'user_id'=>$user_id]);
       } else {
         session()->put('status', 'error');
         session()->put('status-mensagem', 'Usuário não autorizado.');
-        return view('unidades.unidades',compact(['rotina_id','user_id']));
+        return view('ncms.ncms',compact(['rotina_id','user_id']));
       }
   }
   public function getEdit(Request $request,$id)
@@ -91,21 +91,21 @@ class UnidadeController extends Controller
 
       if ($autorizado)
       {
-        $unidade = Unidades::find($id);
-        return view('unidades.unidades-new-edit',compact(['unidade','rotina_id','user_id']));
+        $ncm = Ncms::find($id);
+        return view('ncms.ncms-new-edit',compact(['ncm','rotina_id','user_id']));
       } else {
         session()->put('status', 'error');
         session()->put('status-mensagem', 'Usuário não autorizado.');
-        return view('unidades.unidades',compact(['unidade','rotina_id','user_id']));
+        return view('ncms.ncms',compact(['ncm','rotina_id','user_id']));
       }
   }
   public function postUpdate(Request $request, $id)
   {
       $rotina_id = session('rotina_id');
       $user_id   = session('user_id');
-      $unidades = Unidades::find($id)->update($request->all());
+      $ncm       = Ncms::find($id)->update($request->all());
 
-      return redirect()->route('unidades', ['id' => $rotina_id, 'user_id'=>$user_id]);
+      return redirect()->route('ncms', ['id' => $rotina_id, 'user_id'=>$user_id]);
   }
 
 }

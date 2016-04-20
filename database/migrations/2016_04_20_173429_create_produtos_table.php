@@ -18,14 +18,19 @@ class CreateProdutosTable extends Migration
             $table->string('descricao',60);
             $table->string('codigo_barra',60);
             $table->string('codigo_anterior',60);
-            $table->integer('id_unidade');
-            $table->integer('id_tipoitem');
-            $table->integer('id_ncm');
-            $table->string('ipi',3);
-            $table->string('id_genero',60);
-            $table->string('lst',5);
+            $table->integer('unidade_id')->unsigned();
+            $table->foreign('unidade_id')->references('id')->on('unidades');
+            $table->integer('tipoitem_id')->unsigned();
+            $table->foreign('tipoitem_id')->references('id')->on('tipoitens');
+            $table->integer('ncm_id')->unsigned();
+            $table->foreign('ncm_id')->references('id')->on('ncms');
+            $table->integer('genero_id')->unsigned();
+            $table->foreign('genero_id')->references('id')->on('generos');
+            $table->integer('preco_id')->unsigned();
+            $table->foreign('preco_id')->references('id')->on('precos');
             $table->decimal('icms',6,2);
-            $table->decimal('preco',14,2);
+            $table->string('lst',5);
+            $table->string('ipi',3);
             $table->timestamps();
         });
     }

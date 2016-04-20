@@ -34,10 +34,12 @@
                   {!! Form::text('url', isset($rotina->url) ? $rotina->url:null, ['class'=>'form-control']) !!}
                   {!! Form::label('tipo', 'Tipo:') !!}
                   <div class="form-group">
-                      {!! Form::select('tipo', array('0' => 'Menu', '1' => 'Submenu'),isset($rotina->tipo) ? $rotina->tipo:'0', ['class'=>'form-control tamanho-campo-120']) !!}
+                      {!! Form::select('tipo', array('0' => 'Menu', '1' => 'Submenu'),isset($rotina->tipo) ? $rotina->tipo:'0', ['class'=>'form-control tamanho-campo-170']) !!}
                   </div>
                   {!! Form::label('pai', 'Pai:') !!}
-                  {!! Form::text('nivel', isset($rotina->nivel) ? $rotina->nivel:null, ['class'=>'form-control tamanho-campo-120']) !!}
+                  <div class="form-group">
+                    {!! Form::select('nivel', $retorno_menu,isset($rotina->nivel) ? $rotina->nivel:'0', ['class'=>'form-control tamanho-campo-170']) !!}
+                  </div>
               </div>
 
               <div class="form-group">

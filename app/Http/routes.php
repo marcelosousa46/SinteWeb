@@ -54,5 +54,29 @@ Route::group(['middleware' => 'web'], function () {
         'postStore'   => 'unidades.store',
         'postUpdate'  => 'unidades.update',
     ]);
+    /* Generos */
+    Route::controller('generos','GeneroController',[
+        'anyData'     => 'generos.data',
+        'getIndex'    => 'generos',
+        'getCreate'   => 'generos.create',
+        'postStore'   => 'generos.store',
+        'postUpdate'  => 'generos.update',
+    ]);
+    /* NCMs */
+    Route::controller('ncms','NcmController',[
+        'anyData'     => 'ncms.data',
+        'getIndex'    => 'ncms',
+        'getCreate'   => 'ncms.create',
+        'postStore'   => 'ncms.store',
+        'postUpdate'  => 'ncms.update',
+    ]);
+    /* TipoItens */
+    Route::controller('tipoitens','TipoitemController',[
+        'anyData'     => 'tipoitens.data',
+        'getIndex'    => 'tipoitens',
+        'getCreate'   => 'tipoitens.create',
+        'postStore'   => 'tipoitens.store',
+        'postUpdate'  => 'tipoitens.update',
+    ]);
 
 });

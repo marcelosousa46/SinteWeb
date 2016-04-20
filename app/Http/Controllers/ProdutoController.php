@@ -7,6 +7,7 @@ use App\Http\Requests;
 use App\Models\Produtos;
 use App\Classes\Classes;
 use Yajra\Datatables\Datatables;
+use App\Http\Requests\ProdutoRequest;
 
 class ProdutoController extends Controller
 {
@@ -47,16 +48,21 @@ class ProdutoController extends Controller
       $rotina_id  = session('rotina_id');
       $user_id    = session('user_id');
       $autorizado = $this->permissao->getPermissao($request,'I');
+      $unidades   = $this->permissao->getUnidades();
+      $tipoitens  = $this->permissao->getTipoitens();
+      $ncms       = $this->permissao->getNcms();
+      $generos    = $this->permissao->getGeneros();
       if ($autorizado)
       {
-        return view('produtos.produtos-new-edit',compact(['rotina_id','user_id']));
+        return view('produtos.produtos-new-edit',compact(['rotina_id','user_id','unidades',
+                                                          'tipoitens','ncms','generos']));
       } else {
         session()->put('status', 'error');
         session()->put('status-mensagem', 'Usuário não autorizado.');
         return view('produtos.produtos',compact(['permissao','rotina_id','user_id','username','rotinadescricao']));
       }
   }
-  public function postStore(Request $request)
+  public function postStore(ProdutoRequest $request)
   { 
       $rotina_id = session('rotina_id');
       $user_id   = session('user_id');
@@ -86,23 +92,28 @@ class ProdutoController extends Controller
       $autorizado = $this->permissao->getPermissao($request,'A');
       $rotina_id  = session('rotina_id');
       $user_id    = session('user_id');
+      $unidades   = $this->permissao->getUnidades();
+      $tipoitens  = $this->permissao->getTipoitens();
+      $ncms       = $this->permissao->getNcms();
+      $generos    = $this->permissao->getGeneros();
 
       if ($autorizado)
       {
         $produto = produtos::find($id);
-        return view('produtos.produtos-new-edit',compact(['produto','rotina_id','user_id']));
+        return view('produtos.produtos-new-edit',compact(['produto','rotina_id','user_id','unidades',
+                                                          'tipoitens','ncms','generos']));
       } else {
         session()->put('status', 'error');
         session()->put('status-mensagem', 'Usuário não autorizado.');
         return view('produtos.produtos',compact(['produto','rotina_id','user_id']));
       }
   }
-  public function postUpdate(Request $request, $id)
+  public function postUpdate(ProdutoRequest $request, $id)
   {
       $rotina_id = session('rotina_id');
       $user_id   = session('user_id');
-      $valor     = $this->permissao->getValor($request->input('preco'));
-      $request->merge(array('preco' => $valor));
+//      $valor     = $this->permissao->getValor($request->input('preco'));
+//      $request->merge(array('preco' => $valor));
       $Produtos = produtos::find($id)->update($request->all());
 
       return redirect()->route('produtos', ['id' => $rotina_id, 'user_id'=>$user_id]);

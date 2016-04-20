@@ -6,6 +6,10 @@ use Illuminate\Http\Request;
 use App\User;
 use App\Models\Rotinas;
 use App\Models\Permissoes;
+use App\Models\Unidades;
+use App\Models\Tipoitens;
+use App\Models\Ncms;
+use App\Models\Generos;
 use DB;
 
 class Classes {
@@ -67,4 +71,45 @@ class Classes {
        }
        return $valor;
      }
+     public function getUnidades()
+     {
+        $i = 0;
+        $unidades = Unidades::all();
+        foreach ($unidades as $a) {
+          $retorno_unidades[$a->id] = $a->descricao;
+          $i++;
+        }
+        return $retorno_unidades;
+     }
+     public function getTipoitens()
+     {
+        $i = 0;
+        $itens = Tipoitens::all();
+        foreach ($itens as $a) {
+          $retorno_itens[$a->id] = $a->codigo." - ".$a->descricao;
+          $i++;
+        }
+        return $retorno_itens;
+     }
+     public function getNcms()
+     {
+        $i = 0;
+        $ncms = Ncms::all();
+        foreach ($ncms as $a) {
+          $retorno_ncms[$a->id] = $a->codigo." - ".$a->descricao;
+          $i++;
+        }
+        return $retorno_ncms;
+     }
+     public function getGeneros()
+     {
+        $i = 0;
+        $generos = Generos::all();
+        foreach ($generos as $a) {
+          $retorno_generos[$a->id] = $a->codigo." - ".$a->descricao;
+          $i++;
+        }
+        return $retorno_generos;
+     }
+
 }

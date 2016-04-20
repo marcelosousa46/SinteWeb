@@ -5,12 +5,11 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
-use App\Models\Unidades;
+use App\Models\Generos;
 Use App\Classes\Classes;
 use Yajra\Datatables\Datatables;
 
-
-class UnidadeController extends Controller
+class GeneroController extends Controller
 {
   private $permissao;
   public function __construct()
@@ -26,20 +25,20 @@ class UnidadeController extends Controller
       $request->session()->put('user_id', $query['user_id']);
       $user_id = session('user_id');
 
-      return view('unidades.unidades', compact(['rotina_id','user_id']));
+      return view('generos.generos', compact(['rotina_id','user_id']));
   }
   public function anyData()
   {
       $user_id  = session('user_id');
-      $unidades = Unidades::all();
+      $generos = Generos::all();
 
-      return Datatables::of($unidades)
+      return Datatables::of($generos)
 
-      ->addColumn('action', function ($unidades) {
+      ->addColumn('action', function ($generos) {
       return [
-              '<a href="unidades/edit/'.$unidades->id.'" class="glyphicon glyphicon-pencil" title="Editar"></a>',
-              '<a href="unidades/destroy/'.$unidades->id.'" class="glyphicon glyphicon-trash" title="Deletar"
-                                                            onclick="return confirm(\'Excluir unidade?\')"></a>',
+              '<a href="generos/edit/'.$generos->id.'" class="glyphicon glyphicon-pencil" title="Editar"></a>',
+              '<a href="generos/destroy/'.$generos->id.'" class="glyphicon glyphicon-trash" title="Deletar"
+                                                            onclick="return confirm(\'Excluir genero?\')"></a>',
              ];
       })
       ->make(true);
@@ -51,11 +50,11 @@ class UnidadeController extends Controller
       $autorizado = $this->permissao->getPermissao($request,'I');
       if ($autorizado)
       {
-        return view('unidades.unidades-new-edit',compact(['rotina_id','user_id']));
+        return view('generos.generos-new-edit',compact(['rotina_id','user_id']));
       } else {
         session()->put('status', 'error');
         session()->put('status-mensagem', 'Usuário não autorizado.');
-        return view('unidades.unidades',compact(['permissao','rotina_id','user_id','username','rotinadescricao']));
+        return view('generos.generos',compact(['permissao','rotina_id','user_id','username','rotinadescricao']));
       }
   }
   public function postStore(Request $request)
@@ -64,8 +63,8 @@ class UnidadeController extends Controller
       $user_id   = session('user_id');
       $input = $request->all();
 
-      Unidades::create($input);
-      return redirect()->route('unidades',['id' => $rotina_id, 'user_id'=>$user_id]);
+      Generos::create($input);
+      return redirect()->route('generos',['id' => $rotina_id, 'user_id'=>$user_id]);
   }
   public function getDestroy(Request $request,$id)
   {
@@ -75,12 +74,12 @@ class UnidadeController extends Controller
 
       if ($autorizado)
       {
-        Unidades::find($id)->delete();
-        return redirect()->route('unidades', ['id' => $rotina_id, 'user_id'=>$user_id]);
+        Generos::find($id)->delete();
+        return redirect()->route('generos', ['id' => $rotina_id, 'user_id'=>$user_id]);
       } else {
         session()->put('status', 'error');
         session()->put('status-mensagem', 'Usuário não autorizado.');
-        return view('unidades.unidades',compact(['rotina_id','user_id']));
+        return view('generos.generos',compact(['rotina_id','user_id']));
       }
   }
   public function getEdit(Request $request,$id)
@@ -91,21 +90,20 @@ class UnidadeController extends Controller
 
       if ($autorizado)
       {
-        $unidade = Unidades::find($id);
-        return view('unidades.unidades-new-edit',compact(['unidade','rotina_id','user_id']));
+        $genero = Generos::find($id);
+        return view('generos.generos-new-edit',compact(['genero','rotina_id','user_id']));
       } else {
         session()->put('status', 'error');
         session()->put('status-mensagem', 'Usuário não autorizado.');
-        return view('unidades.unidades',compact(['unidade','rotina_id','user_id']));
+        return view('generos.generos',compact(['genero','rotina_id','user_id']));
       }
   }
   public function postUpdate(Request $request, $id)
   {
       $rotina_id = session('rotina_id');
       $user_id   = session('user_id');
-      $unidades = Unidades::find($id)->update($request->all());
+      $genero    = Generos::find($id)->update($request->all());
 
       return redirect()->route('unidades', ['id' => $rotina_id, 'user_id'=>$user_id]);
   }
-
 }

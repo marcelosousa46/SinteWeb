@@ -8,7 +8,23 @@ class Produtos extends Model
 {
     protected $table    = 'produtos';
     protected $fillable = ['id','codigo','descricao', 'codigo_barra',
-                           'codigo_anterior', 'id_unidade', 'id_tipoitem',
-                           'id_ncm', 'ipi', 'id_genero', 'lst', 'icms',
-                           'preco'];
+                           'codigo_anterior', 'unidade_id', 'tipoitem_id',
+                           'ncm_id', 'ipi', 'genero_id', 'lst', 'icms',
+                           'preco_id'];
+    public function Unidade() {
+        return $this->belongsTo('App\Models\Unidades');
+    }
+    public function Tipoitem() {
+        return $this->belongsTo('App\Models\Tipoitens');
+    }
+    public function Ncm() {
+        return $this->belongsTo('App\Models\Ncms');
+    }
+    public function Genero() {
+        return $this->belongsTo('App\Models\Generos');
+    }
+    public function Preco() {
+        return $this->belongsTo('App\Models\Precos');
+    }
+
 }
