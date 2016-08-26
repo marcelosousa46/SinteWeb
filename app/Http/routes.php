@@ -78,5 +78,21 @@ Route::group(['middleware' => 'web'], function () {
         'postStore'   => 'tipoitens.store',
         'postUpdate'  => 'tipoitens.update',
     ]);
+    /* Natop */
+    Route::controller('natop','NatopController',[
+        'anyData'     => 'natop.data',
+        'getIndex'    => 'natop',
+        'getCreate'   => 'natop.create',
+        'postStore'   => 'natop.store',
+        'postUpdate'  => 'natop.update',
+    ]);
+    /* Participantes */
+    Route::controller('participante','ParticipanteController',[
+        'anyData'     => 'participante.data',
+        'getIndex'    => 'participante',
+        'getCreate'   => 'participante.create',
+        'postStore'   => 'participante.store',
+        'postUpdate'  => 'participante.update',
+    ]);
 
 });

@@ -1,16 +1,26 @@
 @extends('layouts.lte')
-@section('title', 'Produtos')
+@section('title', 'Participantes')
 @section('inclusao')
-  <li class="item-inclusao"><a href="{{url('produtos/create?id='.$rotina_id.',&user_id='.$user_id)}}"><i class="glyphicon glyphicon-plus"></i>Incluir</a></li>
+  <li class="item-inclusao"><a href="{{url('participante/create?id='.$rotina_id.',&user_id='.$user_id)}}"><i class="glyphicon glyphicon-plus"></i>Incluir</a></li>
 @endsection
 @section('ref')
-  <li><class="active">Produtos</li>
+  <li><class="active">Participantes</li>
 @endsection
 
 @section('content')
 <div class="container-fluid">
   <div class="row">
     <div class="col-md-6">
+      @if (count($errors) > 0)
+      <div class="alert alert-danger fade in">
+        <ul>
+          @foreach ($errors->all() as $error)
+            <li>{{ $error }}</li>
+          @endforeach
+        </ul>
+      </div>
+      @endif          
+
       @if (session('status'))
         @if (session('status') == 'error')
           <div class="alert alert-danger fade in">
@@ -30,12 +40,11 @@
   </div>
   <div class="row">
     <div class="col-md-10">
-      <table class="table table-striped table-bordered table-hover" id="produtos-table">
+      <table class="table table-striped table-bordered table-hover" id="participante-table">
           <thead>
             <tr>
               <th>Código</th>
-              <th>Descrição</th>
-              <th>Unidade</th>
+              <th>Razão social</th>
               <th>Ação</th>
             </tr>
           </thead>
@@ -53,7 +62,7 @@
     });
 
     $(function() {
-        $('#produtos-table').DataTable({
+        $('#participante-table').DataTable({
             language : {
                 "sEmptyTable": "Nenhum registro encontrado",
                 "sInfo": "Mostrando de _START_ até _END_ de _TOTAL_ registros",
@@ -80,11 +89,10 @@
            "bLengthChange": false,
             processing: true,
             serverSide: false,
-            ajax: '{!! URL::to('/produtos/data') !!}',
+            ajax: '{!! URL::to('/participante/data') !!}',
             columns: [
                 { data: 'codigo', name: 'codigo' },
-                { data: 'descricao', name: 'descricao' },
-                { data: 'unidade_id', name: 'id_unidade' },
+                { data: 'nome', name: 'nome' },
                 { data: 'action', name: 'action', orderable: false, searchable: false}
             ]
         });

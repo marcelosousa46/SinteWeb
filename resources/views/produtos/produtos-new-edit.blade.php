@@ -14,7 +14,7 @@
 @endif
 
 @section('content')
-<div class="container">
+<div class="container-fluid">
   <div class="row">
     <div class="col-lg-12">
       <div class="box box-primary">
@@ -27,7 +27,8 @@
                 @endforeach
               </ul>
             </div>
-          @endif          
+          @endif        
+  
           @if(isset($produto->id) )
               {!! Form::open(['route'=>['produtos.update', $produto->id]]) !!}
           @else

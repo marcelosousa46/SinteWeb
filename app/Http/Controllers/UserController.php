@@ -64,6 +64,7 @@ class UserController extends Controller
 
   public function getEdit(Request $request,$id)
   {
+     //dd($request);
      $permissao = 'B';
      if ($request->session()->has('rotina_id')) {
         $crud = auth()->user()->Crud(session('rotina_id'));

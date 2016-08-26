@@ -6,11 +6,12 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 
-use App\Models\Ncms;
+use App\Models\Participantes;
 Use App\Classes\Classes;
 use Yajra\Datatables\Datatables;
+use App\Http\Requests\ParticipanteRequest;
 
-class NcmController extends Controller
+class ParticipanteController extends Controller
 {
   private $permissao;
   public function __construct()
@@ -26,24 +27,24 @@ class NcmController extends Controller
       $request->session()->put('user_id', $query['user_id']);
       $user_id = session('user_id');
 
-      return view('ncms.ncms', compact(['rotina_id','user_id']));
+      return view('participantes.participantes', compact(['rotina_id','user_id']));
   }
   public function anyData()
   {
       $user_id  = session('user_id');
-      $ncms = Ncms::all();
+      $participantes = Participantes::all();
 
-      return Datatables::of($ncms)
+      return Datatables::of($participantes)
 
-      ->addColumn('action', function ($ncms) {
+      ->addColumn('action', function ($participantes) {
       return [
-              '<a href="ncms/edit/'.$ncms->id.'" class="glyphicon glyphicon-pencil" title="Editar"></a>',
-              '<a href="ncms/destroy/'.$ncms->id.'" class="glyphicon glyphicon-trash" title="Deletar"
-                                                            onclick="return confirm(\'Excluir N.C.M?\')"></a>',
+              '<a href="participante/edit/'.$participantes->id.'" class="glyphicon glyphicon-pencil" title="Editar"></a>',
+              '<a href="participante/destroy/'.$participantes->id.'" class="glyphicon glyphicon-trash" title="Deletar"
+                                                                     onclick="return confirm(\'Excluir Participante?\')"></a>',
              ];
       })
       ->make(true);
-  }
+  }  
   public function getCreate(Request $request)
   {
       $rotina_id  = session('rotina_id');
@@ -51,21 +52,21 @@ class NcmController extends Controller
       $autorizado = $this->permissao->getPermissao($request,'I');
       if ($autorizado)
       {
-        return view('ncms.ncms-new-edit',compact(['rotina_id','user_id']));
+        return view('participantes.participantes-new-edit',compact(['rotina_id','user_id']));
       } else {
         session()->put('status', 'error');
         session()->put('status-mensagem', 'Usuário não autorizado.');
-        return view('ncms.ncms',compact(['permissao','rotina_id','user_id','username','rotinadescricao']));
+        return view('participantes.participantes',compact(['permissao','rotina_id','user_id','username','rotinadescricao']));
       }
   }
-  public function postStore(Request $request)
+  public function postStore(ParticipanteRequest $request)
   { 
       $rotina_id = session('rotina_id');
       $user_id   = session('user_id');
       $input = $request->all();
 
-      Ncms::create($input);
-      return redirect()->route('ncms',['id' => $rotina_id, 'user_id'=>$user_id]);
+      Participantes::create($input);
+      return redirect()->route('participante',['id' => $rotina_id, 'user_id'=>$user_id]);
   }
   public function getDestroy(Request $request,$id)
   {
@@ -75,12 +76,12 @@ class NcmController extends Controller
 
       if ($autorizado)
       {
-        Ncms::find($id)->delete();
-        return redirect()->route('ncms', ['id' => $rotina_id, 'user_id'=>$user_id]);
+        Participantes::find($id)->delete();
+        return redirect()->route('participante', ['id' => $rotina_id, 'user_id'=>$user_id]);
       } else {
         session()->put('status', 'error');
         session()->put('status-mensagem', 'Usuário não autorizado.');
-        return view('ncms.ncms',compact(['rotina_id','user_id']));
+        return view('participantes.participantes',compact(['rotina_id','user_id']));
       }
   }
   public function getEdit(Request $request,$id)
@@ -91,21 +92,20 @@ class NcmController extends Controller
 
       if ($autorizado)
       {
-        $ncm = Ncms::find($id);
-        return view('ncms.ncms-new-edit',compact(['ncm','rotina_id','user_id']));
+        $participante = Participantes::find($id);
+        return view('participantes.participantes-new-edit',compact(['participante','rotina_id','user_id']));
       } else {
         session()->put('status', 'error');
         session()->put('status-mensagem', 'Usuário não autorizado.');
-        return view('ncms.ncms',compact(['ncm','rotina_id','user_id']));
+        return view('participantes.participantes',compact(['participante','rotina_id','user_id']));
       }
   }
   public function postUpdate(Request $request, $id)
   {
       $rotina_id = session('rotina_id');
       $user_id   = session('user_id');
-      $ncm       = Ncms::find($id)->update($request->all());
+      $participante    = Participantes::find($id)->update($request->all());
 
-      return redirect()->route('ncms', ['id' => $rotina_id, 'user_id'=>$user_id]);
+      return redirect()->route('participante', ['id' => $rotina_id, 'user_id'=>$user_id]);
   }
-
 }

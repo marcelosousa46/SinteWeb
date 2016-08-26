@@ -4929,6 +4929,9 @@ table.text-center th {
 .tamanho-campo-170{
   width: 170px;
 }
+.tamanho-campo-500{
+  width: 500px;
+}
 .item-inclusao{
   text-decoration: none !important;
   display: inline-block !important;

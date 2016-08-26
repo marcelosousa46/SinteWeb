@@ -6,11 +6,12 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 
-use App\Models\Ncms;
+use App\Models\Natops;
 Use App\Classes\Classes;
 use Yajra\Datatables\Datatables;
 
-class NcmController extends Controller
+
+class NatopController extends Controller
 {
   private $permissao;
   public function __construct()
@@ -26,24 +27,24 @@ class NcmController extends Controller
       $request->session()->put('user_id', $query['user_id']);
       $user_id = session('user_id');
 
-      return view('ncms.ncms', compact(['rotina_id','user_id']));
+      return view('natops.natops', compact(['rotina_id','user_id']));
   }
   public function anyData()
   {
       $user_id  = session('user_id');
-      $ncms = Ncms::all();
+      $natops = Natops::all();
 
-      return Datatables::of($ncms)
+      return Datatables::of($natops)
 
-      ->addColumn('action', function ($ncms) {
+      ->addColumn('action', function ($natops) {
       return [
-              '<a href="ncms/edit/'.$ncms->id.'" class="glyphicon glyphicon-pencil" title="Editar"></a>',
-              '<a href="ncms/destroy/'.$ncms->id.'" class="glyphicon glyphicon-trash" title="Deletar"
-                                                            onclick="return confirm(\'Excluir N.C.M?\')"></a>',
+              '<a href="natop/edit/'.$natops->id.'" class="glyphicon glyphicon-pencil" title="Editar"></a>',
+              '<a href="natop/destroy/'.$natops->id.'" class="glyphicon glyphicon-trash" title="Deletar"
+                                                            onclick="return confirm(\'Excluir Natureza da operação?\')"></a>',
              ];
       })
       ->make(true);
-  }
+  }  
   public function getCreate(Request $request)
   {
       $rotina_id  = session('rotina_id');
@@ -51,11 +52,11 @@ class NcmController extends Controller
       $autorizado = $this->permissao->getPermissao($request,'I');
       if ($autorizado)
       {
-        return view('ncms.ncms-new-edit',compact(['rotina_id','user_id']));
+        return view('natops.natops-new-edit',compact(['rotina_id','user_id']));
       } else {
         session()->put('status', 'error');
         session()->put('status-mensagem', 'Usuário não autorizado.');
-        return view('ncms.ncms',compact(['permissao','rotina_id','user_id','username','rotinadescricao']));
+        return view('natops.natops',compact(['permissao','rotina_id','user_id','username','rotinadescricao']));
       }
   }
   public function postStore(Request $request)
@@ -64,8 +65,8 @@ class NcmController extends Controller
       $user_id   = session('user_id');
       $input = $request->all();
 
-      Ncms::create($input);
-      return redirect()->route('ncms',['id' => $rotina_id, 'user_id'=>$user_id]);
+      Natops::create($input);
+      return redirect()->route('natop',['id' => $rotina_id, 'user_id'=>$user_id]);
   }
   public function getDestroy(Request $request,$id)
   {
@@ -75,12 +76,12 @@ class NcmController extends Controller
 
       if ($autorizado)
       {
-        Ncms::find($id)->delete();
-        return redirect()->route('ncms', ['id' => $rotina_id, 'user_id'=>$user_id]);
+        Natops::find($id)->delete();
+        return redirect()->route('natop', ['id' => $rotina_id, 'user_id'=>$user_id]);
       } else {
         session()->put('status', 'error');
         session()->put('status-mensagem', 'Usuário não autorizado.');
-        return view('ncms.ncms',compact(['rotina_id','user_id']));
+        return view('natops.natops',compact(['rotina_id','user_id']));
       }
   }
   public function getEdit(Request $request,$id)
@@ -91,21 +92,21 @@ class NcmController extends Controller
 
       if ($autorizado)
       {
-        $ncm = Ncms::find($id);
-        return view('ncms.ncms-new-edit',compact(['ncm','rotina_id','user_id']));
+        $natop = Natops::find($id);
+        return view('natops.natops-new-edit',compact(['natop','rotina_id','user_id']));
       } else {
         session()->put('status', 'error');
         session()->put('status-mensagem', 'Usuário não autorizado.');
-        return view('ncms.ncms',compact(['ncm','rotina_id','user_id']));
+        return view('natops.natops',compact(['natop','rotina_id','user_id']));
       }
   }
   public function postUpdate(Request $request, $id)
   {
       $rotina_id = session('rotina_id');
       $user_id   = session('user_id');
-      $ncm       = Ncms::find($id)->update($request->all());
+      $natops    = Natops::find($id)->update($request->all());
 
-      return redirect()->route('ncms', ['id' => $rotina_id, 'user_id'=>$user_id]);
+      return redirect()->route('natop', ['id' => $rotina_id, 'user_id'=>$user_id]);
   }
 
 }

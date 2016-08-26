@@ -19,6 +19,7 @@
     <div class="col-md-10">
       <div class="box box-primary">
         <div class="box-header with-border">
+
           @if(isset($usuario->id) )
               {!! Form::open(['route'=>['usuarios.update', $usuario->id]]) !!}
           @else

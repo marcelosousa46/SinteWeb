@@ -9,8 +9,8 @@
 
 @section('content')
 <div class="alert alert-danger col-lg-6">
-  <ul>
-      <li>{{ $mensagem }}</li>
+  <ul> 
+      {{ $mensagem }}
   </ul>
 </div>
 @stop

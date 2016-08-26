@@ -45,6 +45,10 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $e)
     {
+        return parent::render($request, $e);
+
+        //dd($e);
+        /*
         if($this->isHttpException($e))
         {
             switch ($e->getStatusCode()) {
@@ -53,16 +57,15 @@ class Handler extends ExceptionHandler
                     return \Response::view('errors.404',array(),404);
                 break;
                 // internal error
-                case '500':
+                case 500:
                     return \Response::view('errors.500',array(),500);   
                 break;
- 
             }
         }
         else
-        {
+        {  
             $mensagem = 'Error: '.$e->getMessage().' Origem:'.$e->getFile();
-            return view('errors.custom',compact(['mensagem']));
-        }        
+            return view('errors.custom',compact(['codigo', 'mensagem']));
+        }        */
     }
 }
