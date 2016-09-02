@@ -94,5 +94,14 @@ Route::group(['middleware' => 'web'], function () {
         'postStore'   => 'participante.store',
         'postUpdate'  => 'participante.update',
     ]);
+    /* Notas */
+    Route::controller('nota','NotaController',[
+        'anyData'     => 'nota.data',
+        'getIndex'    => 'nota',
+        'getCreate'   => 'nota.create',
+        'postStore'   => 'nota.store',
+        'postUpdate'  => 'nota.update',
+    ]);
 
 });
+Route::get('search/autocomplete', 'SearchController@autocomplete');

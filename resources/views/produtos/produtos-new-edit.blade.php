@@ -52,7 +52,6 @@
             <div class="form-group col-lg-6">
                 {!! Form::label('l.codigo_anterior', 'Código anterior:') !!}
                 {!! Form::text('codigo_anterior', isset($produto->codigo_anterior) ? $produto->codigo_anterior:null, ['class'=>'form-control']) !!}
-            </div> 
             <div class="form-group col-lg-6">
                 {!! Form::label('l.id_unidade', 'unidade:') !!}
                 {!! Form::select('unidade_id', $unidades,isset($produto->unidade_id) ? $produto->unidade_id:'1', ['class'=>'form-control']) !!}

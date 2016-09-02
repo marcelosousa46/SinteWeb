@@ -1,3 +1,4 @@
+
 @import url(https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic);
 /*!
  *   AdminLTE v2.3.3
@@ -4945,4 +4946,9 @@ table.text-center th {
 .tamanho-campo-170{
   width: 170px;
 }
-
+.nav-tabs>li>a {
+    color: #fff !important;
+}
+.nav-tabs>li.active>a, .nav-tabs>li.active>a:focus, .nav-tabs>li.active>a:hover {
+    color: #555 !important;
+}
