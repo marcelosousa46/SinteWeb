@@ -9,14 +9,17 @@ use App\Http\Requests;
 use App\Models\Notas;
 Use App\Classes\Classes;
 use Yajra\Datatables\Datatables;
+use App\Classes\Nfe;
 
 class NotaController extends Controller
 {
   private $permissao;
+  private $nfe;
   public function __construct()
   {
       $this->middleware('auth');
       $this->permissao = new Classes;
+      $this->nfe = new Nfe;
   }
   public function getIndex(Request $request)
   {
@@ -106,6 +109,11 @@ class NotaController extends Controller
       $nota    = Notas::find($id)->update($request->all());
 
       return redirect()->route('nota', ['id' => $rotina_id, 'user_id'=>$user_id]);
+  }
+
+  public function anyGeranfe(Request $request)
+  {
+    return $this->nfe->getnfe($request);
   }
 
 }

@@ -85,6 +85,7 @@ Route::group(['middleware' => 'web'], function () {
         'getCreate'   => 'natop.create',
         'postStore'   => 'natop.store',
         'postUpdate'  => 'natop.update',
+        'anyAutocomplete'  => 'natop.autocomplete',
     ]);
     /* Participantes */
     Route::controller('participante','ParticipanteController',[
@@ -101,7 +102,7 @@ Route::group(['middleware' => 'web'], function () {
         'getCreate'   => 'nota.create',
         'postStore'   => 'nota.store',
         'postUpdate'  => 'nota.update',
+        'anyGeranfe'  => 'nota.geranfe',
     ]);
 
 });
-Route::get('search/autocomplete', 'SearchController@autocomplete');

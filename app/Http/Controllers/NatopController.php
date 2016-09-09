@@ -108,5 +108,11 @@ class NatopController extends Controller
 
       return redirect()->route('natop', ['id' => $rotina_id, 'user_id'=>$user_id]);
   }
+  public function anyAutocomplete(Request $request)
+  {
+      $data = Natops::select("descricao as name")->where("descricao","LIKE","%{$request->input('query')}%")->get();
+      return response()->json($data);
+  }
+
 
 }

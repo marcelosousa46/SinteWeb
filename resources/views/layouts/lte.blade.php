@@ -62,6 +62,8 @@
   <script src="{{ asset('/vendor/assets/jquery.maskMoney.js') }}"></script>
   <!-- jquery-ui.min.js -->
   <script src="{{ asset('/vendor/assets/jquery-ui.min.js') }}"></script>
+  <!-- Bootstrap-3-Typeahead -->
+  <script src="{{ asset('/bower_components/Bootstrap-3-Typeahead/bootstrap3-typeahead.min.js') }}"></script>
   <!-- App scripts -->
   @stack('scripts')
 

@@ -36,6 +36,12 @@ class notas extends Model
             'vl_pis',
             'vl_cofins',
             'vl_pis_st',
-            'vl_cofins_st'
+            'vl_cofins_st',
+            'serie_id'
     ];
+
+    public function Series() {
+        return $this->belongsTo('App\Models\Series');
+    }
+
 }

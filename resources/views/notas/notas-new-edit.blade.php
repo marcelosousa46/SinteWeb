@@ -25,9 +25,9 @@
         </div>
       @endif          
       @if(isset($participante->id) )
-          {!! Form::open(['route'=>['participante.update', $participante->id]]) !!}
+          {!! Form::open(['route'=>['nota.update', $participante->id]]) !!}
       @else
-          {!! Form::open(['route'=>'participante.store']) !!}
+          {!! Form::open(['route'=>'nota.store']) !!}
       @endif
       {!! csrf_field() !!}
       <div class="panel with-nav-tabs panel-primary">
@@ -54,17 +54,58 @@
                             {!! Form::date('dt_doc', isset($nota->dt_doc) ? $nota->dt_doc:\Carbon\Carbon::now(),  ['class'=>'form-control']) !!}
                           </div>    
                           <div class="form-group col-md-8 ui-widget">
-                            {!! Form::label('l.natop', 'Natureza da operação') !!}
+                            {!! Form::label('l.natop', 'Natureza operação') !!}
                             <div class="input-group">
                               {!! Form::text('cod_nat', isset($nota->cod_nat) ? $nota->nome:null, ['class'=>'form-control tags']) !!}
                               <div class="input-group-btn">
-                                <button type="button" class="btn btn-default form-control" data-toggle="modal" data-target=".bs-example-modal-lg">
+                                <button type="button" class="pesquisa btn btn-default form-control">
                                   <span class="glyphicon glyphicon-search"></span>
                                 </button>  
                               </div>                            
                             </div>    
+                            <input class="typeahead hidden form-control" type="text" placeholder="digite sua pesquisa...">
+
                          </div>    
                       </div>    
+
+                      <div class="row">
+                          <div class="form-group col-md-2">
+                            {!! Form::label('l.ind_pagto', 'Série') !!}
+                            {!! Form::select('serie_id', $serie_id,isset($nota->serie_id) ? $nota->serie_id:'1', ['class'=>'form-control']) !!}
+                          </div>    
+                          <div class="form-group col-md-2">
+                            {!! Form::label('l.ind_pagto', 'Pagamento') !!}
+                            {!! Form::select('ind_pagto', array('0' => 'à vista', '1' => 'à prazo', '2' => 'Outros'),isset($nota->ind_pagto) ? $nota->ind_pagto:'0', ['class'=>'form-control']) !!}
+                          </div>    
+                          <div class="form-group col-md-4">
+                            {!! Form::label('l.tpNf', 'Tipo de operação') !!}
+                            {!! Form::select('tpNf', array('0' => 'Entrada', '1' => 'Saída'),isset($nota->tpNf) ? $nota->tpNf:'1', ['class'=>'form-control']) !!}
+                          </div>    
+                          <div class="form-group col-md-4">
+                            {!! Form::label('l.idDest', 'Destino da operação') !!}
+                            {!! Form::select('idDest', array('1' => 'Interna', '2' => 'Interestadual', '3' => 'Exterior'),isset($nota->idDest) ? $nota->idDest:'1', ['class'=>'form-control']) !!}
+                          </div>    
+                      </div>    
+
+                      <div class="row">
+                          <div class="form-group col-md-4">
+                            {!! Form::label('l.tpEmis', 'Tipo de Emissão') !!}
+                            {!! Form::select('tpEmis', array('1' => 'Normal', '2' => 'Contingência FS-IA', '3' => 'Contingência SCAN', 
+                                                             '4' => 'Contingência DPEC', '5' => 'Contingência FS-DA',
+                                                             '6' => 'Contingência SVC-AN', '7' => 'Contingência SVC-RS'),isset($nota->tpEmis) ? $nota->tpEmis:'1', ['class'=>'form-control']) !!}
+                          </div>    
+                          <div class="form-group col-md-4">
+                            {!! Form::label('l.finNFe', 'Finalidade') !!}
+                            {!! Form::select('finNFe', array('1' => 'Normal', '2' => 'Complementar', '3' => 'Ajuste',
+                                                             '4' => 'Devolução/Retorno'),isset($nota->finNFe) ? $nota->finNFe:'1', ['class'=>'form-control']) !!}
+                          </div>    
+                          <div class="form-group col-md-4">
+                            {!! Form::label('l.indFinal', 'Consumidor final') !!}
+                            {!! Form::select('indFinal', array('0' => 'Normal', '1' => 'Consumidor final'),isset($nota->indFinal) ? $nota->indFinal:'0', ['class'=>'form-control']) !!}
+                          </div>    
+                      </div>    
+                      </div>    
+
                       <div class="row">
                           <div class="col-lg-12">
                               <div class="pull-right">
@@ -126,34 +167,6 @@
       {!! Form::close() !!}
   </div>
 </div>
-<!-- Modal para pesquisa -->
-
-<div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
-  <div class="modal-dialog modal-lg" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="gridSystemModalLabel">Pesquisa das naturezas</h4>
-      </div>
-      <div class="row">
-        <div class="col-md-12">
-          <table class="table table-striped table-bordered table-hover" id="natop-table">
-              <thead>
-                <tr>
-                  <th>Código</th>
-                  <th>Descrição</th>
-                  <th>Ação</th>
-                </tr>
-              </thead>
-          </table>
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
-      </div>      
-    </div>
-  </div>
-</div>                
 
 @endsection
 @push('scripts')
@@ -205,44 +218,32 @@
         
     });    
 
-    $(function() {
-        $('#natop-table').DataTable({
-            language : {
-                "sEmptyTable": "Nenhum registro encontrado",
-                "sInfo": "Mostrando de _START_ até _END_ de _TOTAL_ registros",
-                "sInfoEmpty": "Mostrando 0 até 0 de 0 registros",
-                "sInfoFiltered": "(Filtrados de _MAX_ registros)",
-                "sInfoPostFix": "",
-                "sInfoThousands": ".",
-                "sLengthMenu": "_MENU_ resultados por página",
-                "sLoadingRecords": "Carregando...",
-                "sProcessing": "Processando...",
-                "sZeroRecords": "Nenhum registro encontrado",
-                "sSearch": "Pesquisar",
-                "oPaginate": {
-                    "sNext": "Próximo",
-                    "sPrevious": "Anterior",
-                    "sFirst": "Primeiro",
-                    "sLast": "Último"
-                },
-                "oAria": {
-                    "sSortAscending": ": Ordenar colunas de forma ascendente",
-                    "sSortDescending": ": Ordenar colunas de forma descendente"
-                }
-            },
-           "bLengthChange": false,
-            processing: true,
-            serverSide: false,
-            ajax: '{!! URL::to('/natop/data') !!}',
-            columns: [
-                { data: 'codigo', name: 'codigo' },
-                { data: 'descricao', name: 'descricao' },
-                { data: 'action', name: 'action', orderable: false, searchable: false}
-            ]
-        });
+    var path = "{!! URL::to('/natop/autocomplete') !!}";
+    $('input.typeahead').typeahead({
+        source:  function (query, process) {
+        return $.get(path, { query: query }, function (data) {
+                return process(data);
+            });
+        },
+        updater: function (item) {
+           $('input.typeahead').removeClass('visible');
+           $('input.typeahead').addClass('hidden');
+           $('.tags').val(item.name);
+           $('.tags').focus();
+           return item;
+        }
+    });
+    $('input.typeahead').blur(function() {
+       $('input.typeahead').removeClass('visible');
+       $('input.typeahead').addClass('hidden');
+    });
+    $( ".pesquisa" ).click(function() {
+       $('input.typeahead').val('');
+       $('input.typeahead').removeClass('hidden');
+       $('input.typeahead').addClass('visible');
+       $('input.typeahead').focus();
 
     });
-
   </script>
 @endpush
 

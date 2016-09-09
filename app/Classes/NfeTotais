@@ -1,0 +1,178 @@
+<?php
+namespace App\Classes;
+
+/**
+* 
+*/
+class NfeTotais
+{
+	private $vBC
+	private $vICMS
+	private $vICMSDeson
+	private $vBCST
+	private $vST
+	private $vProd
+	private $vFrete
+	private $vSeg
+	private $vDesc
+	private $vII
+	private $vIPI
+	private $vPIS
+	private $vCOFINS
+	private $vOutro
+
+	public function getvBC()
+	{
+	    return $this->vBC;
+	}
+	 
+	public function setvBC($vBC)
+	{
+	    $this->vBC = $vBC;
+	    return $this;
+	}
+	
+	public function getvICMS()
+	{
+	    return $this->vICMS;
+	}
+	 
+	public function setvICMS($vICMS)
+	{
+	    $this->vICMS = $vICMS;
+	    return $this;
+	}
+
+	public function getvICMSDeson()
+	{
+	    return $this->vICMSDeson;
+	}
+	 
+	public function setvICMSDeson($vICMSDeson)
+	{
+	    $this->vICMSDeson = $vICMSDeson;
+	    return $this;
+	}
+
+	public function getvBCST()
+	{
+	    return $this->vBCST;
+	}
+	 
+	public function setvBCST($vBCST)
+	{
+	    $this->vBCST = $vBCST;
+	    return $this;
+	}
+
+	public function getvST()
+	{
+	    return $this->vST;
+	}
+	 
+	public function setvST($vST)
+	{
+	    $this->vST = $vST;
+	    return $this;
+	}
+
+	public function getvProd()
+	{
+	    return $this->vProd;
+	}
+	 
+	public function setvProd($vProd)
+	{
+	    $this->vProd = $vProd;
+	    return $this;
+	}
+
+	public function getvFrete()
+	{
+	    return $this->vFrete;
+	}
+	 
+	public function setvFrete($vFrete)
+	{
+	    $this->vFrete = $vFrete;
+	    return $this;
+	}
+
+	public function getvSeg()
+	{
+	    return $this->vSeg;
+	}
+	 
+	public function setvSeg($vSeg)
+	{
+	    $this->vSeg = $vSeg;
+	    return $this;
+	}
+
+	public function getvDesc()
+	{
+	    return $this->vDesc;
+	}
+	 
+	public function setvDesc($vDesc)
+	{
+	    $this->vDesc = $vDesc;
+	    return $this;
+	}
+
+	public function getvII()
+	{
+	    return $this->vII;
+	}
+	 
+	public function setvII($vII)
+	{
+	    $this->vII = $vII;
+	    return $this;
+	}
+
+	public function getvIPI()
+	{
+	    return $this->vIPI;
+	}
+	 
+	public function setvIPI($vIPI)
+	{
+	    $this->vIPI = $vIPI;
+	    return $this;
+	}
+
+	public function getvPIS()
+	{
+	    return $this->vPIS;
+	}
+	 
+	public function setvPIS($vPIS)
+	{
+	    $this->vPIS = $vPIS;
+	    return $this;
+	}
+
+	public function getvCOFINS()
+	{
+	    return $this->vCOFINS;
+	}
+	 
+	public function setvCOFINS($vCOFINS)
+	{
+	    $this->vCOFINS = $vCOFINS;
+	    return $this;
+	}
+
+	public function getvOutro()
+	{
+	    return $this->vOutro;
+	}
+	 
+	public function setvOutro($vOutro)
+	{
+	    $this->vOutro = $vOutro;
+	    return $this;
+	}
+
+}
