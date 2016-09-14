@@ -48,10 +48,6 @@
 
 @push('scripts')
   <script>
-    $(".alert").fadeTo(5000, 0.4).slideUp(700, function(){
-      $(".alert").alert('close');
-    });
-
     $(function() {
         $('#produtos-table').DataTable({
             language : {

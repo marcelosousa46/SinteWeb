@@ -10,6 +10,7 @@ use App\Models\Unidades;
 use App\Models\Tipoitens;
 use App\Models\Ncms;
 use App\Models\Generos;
+use App\Models\Series;
 use DB;
 
 class Classes {
@@ -111,5 +112,16 @@ class Classes {
         }
         return $retorno_generos;
      }
+     public function getSeries()
+     {
+        $i = 0;
+        $series = Series::all();
+        foreach ($series as $a) {
+          $retorno_series[$a->id] = $a->id." - ".$a->descricao;
+          $i++;
+        }
+        return $retorno_series;
+     }
+
 
 }

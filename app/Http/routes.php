@@ -40,11 +40,14 @@ Route::group(['middleware' => 'web'], function () {
     ]);
     /* Produtos */
     Route::controller('produtos','ProdutoController',[
-        'anyData'     => 'produtos.data',
-        'getIndex'    => 'produtos',
-        'getCreate'   => 'produtos.create',
-        'postStore'   => 'produtos.store',
-        'postUpdate'  => 'produtos.update',
+        'anyData'          => 'produtos.data',
+        'getIndex'         => 'produtos',
+        'getCreate'        => 'produtos.create',
+        'postStore'        => 'produtos.store',
+        'postUpdate'       => 'produtos.update',
+        'anyAutocomplete'  => 'produtos.autocomplete',
+        'anyCodigo'        => 'produtos.codigo',
+        'anyId'            => 'produtos.id',
     ]);
     /* Unidades */
     Route::controller('unidades','UnidadeController',[
@@ -86,6 +89,7 @@ Route::group(['middleware' => 'web'], function () {
         'postStore'   => 'natop.store',
         'postUpdate'  => 'natop.update',
         'anyAutocomplete'  => 'natop.autocomplete',
+        'anyId'            => 'natop.id',
     ]);
     /* Participantes */
     Route::controller('participante','ParticipanteController',[

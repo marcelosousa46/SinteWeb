@@ -15,6 +15,11 @@
 @section('content')
 <div class="container-fluid">
   <div class="col-md-12">
+      <div class="mensagem hidden alert-danger">
+        <ul>
+            <li id="mensagem">error</li>
+        </ul>
+      </div>
       @if (count($errors) > 0)
         <div class="alert alert-danger">
           <ul>
@@ -55,23 +60,14 @@
                           </div>    
                           <div class="form-group col-md-8 ui-widget">
                             {!! Form::label('l.natop', 'Natureza operação') !!}
-                            <div class="input-group">
-                              {!! Form::text('cod_nat', isset($nota->cod_nat) ? $nota->nome:null, ['class'=>'form-control tags']) !!}
-                              <div class="input-group-btn">
-                                <button type="button" class="pesquisa btn btn-default form-control">
-                                  <span class="glyphicon glyphicon-search"></span>
-                                </button>  
-                              </div>                            
-                            </div>    
-                            <input class="typeahead hidden form-control" type="text" placeholder="digite sua pesquisa...">
-
+                            {!! Form::text('natop', isset($nota->cod_nat) ? $nota->natop:null, ['id'=>'natop','class'=>'form-control','placeholder'=>'descrição para pesquisa...']) !!}
                          </div>    
                       </div>    
 
                       <div class="row">
                           <div class="form-group col-md-2">
                             {!! Form::label('l.ind_pagto', 'Série') !!}
-                            {!! Form::select('serie_id', $serie_id,isset($nota->serie_id) ? $nota->serie_id:'1', ['class'=>'form-control']) !!}
+                            {!! Form::select('serie_id', $series,isset($nota->serie_id) ? $nota->serie_id:'1', ['class'=>'form-control']) !!}
                           </div>    
                           <div class="form-group col-md-2">
                             {!! Form::label('l.ind_pagto', 'Pagamento') !!}
@@ -104,8 +100,6 @@
                             {!! Form::select('indFinal', array('0' => 'Normal', '1' => 'Consumidor final'),isset($nota->indFinal) ? $nota->indFinal:'0', ['class'=>'form-control']) !!}
                           </div>    
                       </div>    
-                      </div>    
-
                       <div class="row">
                           <div class="col-lg-12">
                               <div class="pull-right">
@@ -113,9 +107,69 @@
                               </div>
                           </div>
                       </div>
-                  </div>
+                  </div>    
                   <div class="tab-pane fade" id="tab2primary">
-                      <p>Primary 2</p>
+                      <div class="row">
+                          <div class="form-group col-md-4">
+                            {!! Form::text('id_item',0, ['id'=>'id_item','class'=>'form-control hidden']) !!}
+                            {!! Form::label('l.cod_item', 'Código produto') !!}
+                            {!! Form::text('cod_item', isset($notaitem->cod_item) ? $notaitem->coditem:null, ['id'=>'cod_item','autocomplete'=>'off','class'=>'form-control','placeholder'=>'código para pesquisa...']) !!}
+                          </div>    
+                          <div class="form-group col-md-8 ui-widget">
+                            {!! Form::label('l.descricao', 'Descrição produto') !!}
+                            {!! Form::text('descricao', isset($notaitem->descricao) ? $notaitem->descricao:null, ['id'=>'descricao','class'=>'form-control','placeholder'=>'descrição para pesquisa...']) !!}
+                         </div>    
+                      </div>    
+                      <div class="row">
+                          <div class="form-group col-md-4 ui-widget">
+                            {!! Form::label('l.CFOP', 'Natop') !!}
+                            {!! Form::text('cfop', isset($notaitem->cfop) ? $notaitem->cfop:null, ['id'=>'cfop','autocomplete'=>'off','class'=>'form-control','placeholder'=>'código para pesquisa...']) !!}
+                         </div>    
+                         <div class="form-group col-md-8 ui-widget">
+                            {!! Form::text('id_natop',0, ['id'=>'id_natop','class'=>'form-control hidden']) !!}
+                            {!! Form::label('l.natop_descricao', 'Descrição natureza') !!}
+                            {!! Form::text('descricao', null, ['id'=>'natop_descricao','class'=>'form-control','placeholder'=>'descrição para pesquisa...']) !!}
+                         </div>    
+                      </div>
+                      <div class="row">
+                         <div class="form-group col-md-2">
+                            {!! Form::label('l.unid', 'Unidade') !!}
+                            {!! Form::select('unid', $unidades,isset($notaitem->unid) ? $notaitem->unid:'1', ['class'=>'form-control']) !!}
+                         </div>    
+                          <div class="form-group col-md-2">
+                            {!! Form::label('l.qtd', 'Qtde produto') !!}
+                            {!! Form::text('qtd', isset($notaitem->qtd) ? $notaitem->qtd:null, ['id'=>'qtd','class'=>'form-control text-right']) !!}
+                          </div>    
+                          <div class="form-group col-md-2">
+                            {!! Form::label('l.vl_item', 'Valor produto') !!}
+                            {!! Form::text('vl_item', isset($notaitem->vl_item) ? $notaitem->vl_item:null, ['id'=>'vl_item','class'=>'form-control text-right']) !!}
+                          </div>    
+                          <div class="form-group col-md-2">
+                            {!! Form::label('l.vl_desc', 'Valor desconto') !!}
+                            {!! Form::text('vl_desc', isset($notaitem->vl_desc) ? $notaitem->vl_desc:null, ['id'=>'vl_desc','class'=>'form-control text-right']) !!}
+                          </div>    
+                          <div class="form-group col-md-2">
+                            {!! Form::label('l.aliq_icms', 'Aliquota icms') !!}
+                            {!! Form::text('aliq_icms', isset($notaitem->aliq_icms) ? $notaitem->aliq_icms:null, ['id'=>'aliq_icms','class'=>'form-control text-right']) !!}
+                          </div>    
+                          <div class="form-group col-md-2">
+                            {!! Form::label('l.nbsp', '&nbsp;') !!}
+                            <button id="btnAdicionar" class="btn btn-default btn-block" type="button"><span class="glyphicon glyphicon-plus"></span> Incluir item </button>
+                          </div>    
+                      </div>    
+                      <table id="tblCadastro" class="table table-striped table-bordered">         
+                        <thead>
+                          <tr>
+                            <th>Código</th>
+                            <th>Descrição</th>
+                            <th class='text-right'>Qtde</th>
+                            <th class='text-right'>Valor do item</th>
+                            <th>Opções</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                      </table>
                       <div class="row">
                           <div class="col-lg-12">
                               <div class="pull-right">
@@ -126,7 +180,26 @@
                       </div>
                   </div>
                   <div class="tab-pane fade" id="tab3primary">
-                      <p>Primary 3</p>
+                      <div class="row">
+                          <fieldset disabled>
+                            <div class="form-group col-md-2">
+                              {!! Form::label('l.qtd_item', 'Qtde itens') !!}
+                              {!! Form::text('qtd_item', '0,00', ['id'=>'qtd_item','class'=>'form-control text-center']) !!}
+                            </div>    
+                            <div class="form-group col-md-2 ui-widget">
+                              {!! Form::label('l.vl_merc', 'Valor mercadoria') !!}
+                              {!! Form::text('vl_merc', '0,00', ['id'=>'vl_merc','class'=>'form-control text-right']) !!}
+                           </div>    
+                            <div class="form-group col-md-2 ui-widget">
+                              {!! Form::label('l.vl_bc_icms', 'Valor base icms') !!}
+                              {!! Form::text('vl_bc_icms', '0,00', ['id'=>'vl_bc_icms','class'=>'form-control text-right']) !!}
+                           </div>    
+                            <div class="form-group col-md-2 ui-widget">
+                              {!! Form::label('l.vl_icms', 'Valor icms') !!}
+                              {!! Form::text('vl_icms', '0,00', ['id'=>'vl_icms','class'=>'form-control text-right']) !!}
+                           </div>    
+                         </fieldset>
+                      </div>    
                       <div class="row">
                           <div class="col-lg-12">
                               <div class="pull-right">
@@ -171,10 +244,6 @@
 @endsection
 @push('scripts')
   <script>
-    $(".alert").fadeTo(5000, 0.4).slideUp(700, function(){
-      $(".alert").alert('close');
-    });
-
     $(function(){
         $('.nav-tabs a:first',this.$page).tab('show')
         $('.nav-tabs li:gt(0)',this.$page).each(function(){
@@ -217,33 +286,15 @@
             $previous_tab.tab('show');    });
         
     });    
-
-    var path = "{!! URL::to('/natop/autocomplete') !!}";
-    $('input.typeahead').typeahead({
-        source:  function (query, process) {
-        return $.get(path, { query: query }, function (data) {
-                return process(data);
-            });
-        },
-        updater: function (item) {
-           $('input.typeahead').removeClass('visible');
-           $('input.typeahead').addClass('hidden');
-           $('.tags').val(item.name);
-           $('.tags').focus();
-           return item;
-        }
-    });
-    $('input.typeahead').blur(function() {
-       $('input.typeahead').removeClass('visible');
-       $('input.typeahead').addClass('hidden');
-    });
-    $( ".pesquisa" ).click(function() {
-       $('input.typeahead').val('');
-       $('input.typeahead').removeClass('hidden');
-       $('input.typeahead').addClass('visible');
-       $('input.typeahead').focus();
-
-    });
+    // Mascaras
+    $("#qtd").maskMoney({prefix:'', allowNegative: true, thousands:'.', decimal:',', affixesStay: false});
+    $("#vl_item").maskMoney({prefix:'R$ ', allowNegative: true, thousands:'.', decimal:',', affixesStay: false});
+    $("#aliq_icms").maskMoney({prefix:'', allowNegative: true, thousands:'.', decimal:',', affixesStay: false});
+    $("#vl_desc").maskMoney({prefix:'R$ ', allowNegative: true, thousands:'.', decimal:',', affixesStay: false});
+    $("#vl_merc").maskMoney({prefix:'R$ ', allowNegative: true, thousands:'.', decimal:',', affixesStay: false});
+    $("#qtd_item").maskMoney({prefix:'', allowNegative: true, thousands:'.', decimal:',', affixesStay: false});
+    $("#vl_bc_icms").maskMoney({prefix:'R$ ', allowNegative: true, thousands:'.', decimal:',', affixesStay: false});
+    $("#vl_icms").maskMoney({prefix:'R$ ', allowNegative: true, thousands:'.', decimal:',', affixesStay: false});
   </script>
 @endpush
 

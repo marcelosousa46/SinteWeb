@@ -110,9 +110,18 @@ class NatopController extends Controller
   }
   public function anyAutocomplete(Request $request)
   {
-      $data = Natops::select("descricao as name")->where("descricao","LIKE","%{$request->input('query')}%")->get();
+      $data = Natops::select("codigo","descricao as name","id")->where("descricao","LIKE","%{$request->input('query')}%")->get();
       return response()->json($data);
   }
-
+  public function anyCodigo(Request $request)
+  {
+      $data = Natops::select("codigo as name","descricao","id")->where("codigo","LIKE","%{$request->input('query')}%")->get();
+      return response()->json($data);
+  }
+  public function anyId(Request $request, $id)
+  {
+      $data = Natops::find($id);
+      return response()->json($data);
+  }
 
 }

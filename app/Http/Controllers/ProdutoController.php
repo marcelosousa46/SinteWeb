@@ -118,4 +118,21 @@ class ProdutoController extends Controller
 
       return redirect()->route('produtos', ['id' => $rotina_id, 'user_id'=>$user_id]);
   }
+  public function anyAutocomplete(Request $request)
+  {
+      $data = produtos::select("codigo","descricao as name","id")->where("descricao","LIKE","%{$request->input('query')}%")->get();
+      return response()->json($data);
+  }
+  public function anyCodigo(Request $request)
+  {
+      $data = produtos::select("codigo as name","descricao","id","icms")->where("codigo","LIKE","%{$request->input('query')}%")->get();
+      return response()->json($data);
+  }
+  public function anyId(Request $request, $id)
+  {
+      $data = produtos::find($id);
+      return response()->json($data);
+  }
+
+
 }

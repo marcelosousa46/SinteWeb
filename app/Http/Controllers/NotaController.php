@@ -54,7 +54,9 @@ class NotaController extends Controller
       $autorizado = $this->permissao->getPermissao($request,'I');
       if ($autorizado)
       {
-        return view('notas.notas-new-edit',compact(['rotina_id','user_id']));
+        $series   = $this->permissao->getSeries();
+        $unidades = $this->permissao->getUnidades();
+        return view('notas.notas-new-edit',compact(['rotina_id','user_id','series','unidades']));
       } else {
         session()->put('status', 'error');
         session()->put('status-mensagem', 'Usuário não autorizado.');

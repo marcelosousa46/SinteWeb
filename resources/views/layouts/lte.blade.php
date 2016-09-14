@@ -21,17 +21,17 @@
       <div class="content-wrapper">
           <!-- Content Header (Page header) -->
           <section class="content-header">
-              <h1>
-                  @yield('title')
-                  <small>{{ $page_description or null }}</small>
-              </h1>
-              <h4>@yield('inclusao')</h4>
               <!-- You can dynamically generate breadcrumbs here -->
               <ol class="breadcrumb">
                   <li><a href="/"><i class="fa fa-dashboard"></i>Início</a></li>
                   @yield('ref')
                   @yield('ref1')
               </ol>
+              <h1>
+                  @yield('title')
+                  <small>{{ $page_description or null }}</small>
+              </h1>
+              <h4>@yield('inclusao')</h4>
           </section>
 
           <!-- Main content -->
@@ -64,7 +64,8 @@
   <script src="{{ asset('/vendor/assets/jquery-ui.min.js') }}"></script>
   <!-- Bootstrap-3-Typeahead -->
   <script src="{{ asset('/bower_components/Bootstrap-3-Typeahead/bootstrap3-typeahead.min.js') }}"></script>
-  <!-- App scripts -->
+  <!-- main.js -->
+  <script src="{{ asset('/vendor/assets/main.js') }}"></script>
   @stack('scripts')
 
 </body>
