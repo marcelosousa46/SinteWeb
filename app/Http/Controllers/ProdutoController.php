@@ -112,20 +112,18 @@ class ProdutoController extends Controller
   {
       $rotina_id = session('rotina_id');
       $user_id   = session('user_id');
-//      $valor     = $this->permissao->getValor($request->input('preco'));
-//      $request->merge(array('preco' => $valor));
-      $Produtos = produtos::find($id)->update($request->all());
+      $Produtos  = produtos::find($id)->update($request->all());
 
       return redirect()->route('produtos', ['id' => $rotina_id, 'user_id'=>$user_id]);
   }
   public function anyAutocomplete(Request $request)
   {
-      $data = produtos::select("codigo","descricao as name","id")->where("descricao","LIKE","%{$request->input('query')}%")->get();
+      $data = produtos::select("codigo","descricao as name","id","preco_venda","cst")->where("descricao","LIKE","%{$request->input('query')}%")->get();
       return response()->json($data);
   }
   public function anyCodigo(Request $request)
   {
-      $data = produtos::select("codigo as name","descricao","id","icms")->where("codigo","LIKE","%{$request->input('query')}%")->get();
+      $data = produtos::select("codigo as name","descricao","id","icms","preco_venda","cst")->where("codigo","LIKE","%{$request->input('query')}%")->get();
       return response()->json($data);
   }
   public function anyId(Request $request, $id)

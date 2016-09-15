@@ -26,8 +26,7 @@ class CreateProdutosTable extends Migration
             $table->foreign('ncm_id')->references('id')->on('ncms');
             $table->integer('genero_id')->unsigned();
             $table->foreign('genero_id')->references('id')->on('generos');
-            $table->integer('preco_id')->unsigned();
-            $table->foreign('preco_id')->references('id')->on('precos');
+            $table->decimal('preco_venda',14,2);
             $table->decimal('icms',6,2);
             $table->string('lst',5);
             $table->string('ipi',3);

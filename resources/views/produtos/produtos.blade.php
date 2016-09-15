@@ -9,41 +9,44 @@
 
 @section('content')
 <div class="container-fluid">
-  <div class="row">
-    <div class="col-md-6">
-      @if (session('status'))
-        @if (session('status') == 'error')
-          <div class="alert alert-danger fade in">
-            <h4>Atenção!</h4>
-            {{ session('status-mensagem') }}
-            {{ session()->forget('status') }}
-          </div>
-        @endif  
-        @if (session('status') == 'sucesso')
-          <div class="alert alert-success fade in">
-            <h4>Atenção!</h4>
-            {{ session('status-mensagem') }}
-            {{ session()->forget('status') }}
-          </div>
-        @endif  
-      @endif
-  </div>
-  <div class="row">
-    <div class="col-md-10">
-      <table class="table table-striped table-bordered table-hover" id="produtos-table">
-          <thead>
-            <tr>
-              <th>Código</th>
-              <th>Descrição</th>
-              <th>Unidade</th>
-              <th>Ação</th>
-            </tr>
-          </thead>
-      </table>
+  <div class="col-md-12">
+
+    <div class="row">
+      <div class="col-md-6">
+        @if (session('status'))
+          @if (session('status') == 'error')
+            <div class="alert alert-danger fade in">
+              <h4>Atenção!</h4>
+              {{ session('status-mensagem') }}
+              {{ session()->forget('status') }}
+            </div>
+          @endif  
+          @if (session('status') == 'sucesso')
+            <div class="alert alert-success fade in">
+              <h4>Atenção!</h4>
+              {{ session('status-mensagem') }}
+              {{ session()->forget('status') }}
+            </div>
+          @endif  
+        @endif
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <table class="table table-striped table-bordered table-hover" id="produtos-table">
+            <thead>
+              <tr>
+                <th>Código</th>
+                <th>Descrição</th>
+                <th>Preço</th>
+                <th>Ação</th>
+              </tr>
+            </thead>
+        </table>
+     </div>
     </div>
   </div>
+  </div>
 </div>
-
 @stop
 
 @push('scripts')
@@ -80,7 +83,7 @@
             columns: [
                 { data: 'codigo', name: 'codigo' },
                 { data: 'descricao', name: 'descricao' },
-                { data: 'unidade_id', name: 'id_unidade' },
+                { data: 'preco_venda', name: 'preco_venda' },
                 { data: 'action', name: 'action', orderable: false, searchable: false}
             ]
         });

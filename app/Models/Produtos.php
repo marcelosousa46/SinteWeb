@@ -10,7 +10,7 @@ class Produtos extends Model
     protected $fillable = ['id','codigo','descricao', 'codigo_barra',
                            'codigo_anterior', 'unidade_id', 'tipoitem_id',
                            'ncm_id', 'ipi', 'genero_id', 'lst', 'icms',
-                           'preco_id','cst'];
+                           'preco_venda','cst'];
     public function Unidade() {
         return $this->belongsTo('App\Models\Unidades');
     }
@@ -22,9 +22,6 @@ class Produtos extends Model
     }
     public function Genero() {
         return $this->belongsTo('App\Models\Generos');
-    }
-    public function Preco() {
-        return $this->belongsTo('App\Models\Precos');
     }
 
 }

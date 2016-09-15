@@ -90,24 +90,24 @@
                 {!! Form::select('genero_id', $generos,isset($produto->genero_id) ? $produto->genero_id:'1', ['class'=>'form-control']) !!}
             </div>    
             <div class="form-group col-md-2">
-                {!! Form::label('l.ipi', 'I.P.I:') !!}
+                {!! Form::label('l.ipi', 'I.P.I') !!}
                 {!! Form::text('ipi', isset($produto->ipi) ? $produto->ipi:null, ['id'=>'ipi','class'=>'form-control text-right']) !!}
             </div>    
             <div class="form-group col-md-2">
-                {!! Form::label('l.icms', 'I.C.M.S:') !!}
+                {!! Form::label('l.icms', 'I.C.M.S (%)') !!}
                 {!! Form::text('icms', isset($produto->icms) ? $produto->icms:null, ['id'=>'icms','class'=>'form-control text-right']) !!}
             </div>    
             <div class="form-group col-md-2">
-                {!! Form::label('l.lst', 'L.S.T:') !!}
+                {!! Form::label('l.lst', 'L.S.T') !!}
                 {!! Form::text('lst', isset($produto->lst) ? $produto->lst:null, ['id'=>'lst','class'=>'form-control']) !!}
             </div>    
             <div class="form-group col-md-2">
-                {!! Form::label('l.preco', 'Preço:') !!}
-                {!! Form::text('preco_id', isset($produto->preco_id) ? $produto->preco_id:null, ['id'=>'preco','class'=>'form-control text-right']) !!}
+                {!! Form::label('l.preco', 'Preço R$') !!}
+                {!! Form::text('preco_venda', isset($produto->preco_venda) ? $produto->preco_venda:null, ['id'=>'preco_venda','class'=>'form-control text-right']) !!}
             </div>
             <div class="form-group col-md-2">
                 {!! Form::label('l.nbsp', '&nbsp;') !!}
-                {!! Form::submit('Confirmar', ['class'=>'btn btn-primary btn-block']) !!}
+                {!! Form::submit('Confirmar', ['id'=>'confirma','class'=>'btn btn-primary btn-block']) !!}
             </div>
           </div>  
         {!! Form::close() !!}
@@ -120,11 +120,10 @@
 @push('scripts')
   <script>
     $("#icms").maskMoney({prefix:'', allowNegative: true, thousands:'.', decimal:',', affixesStay: false});
-    $("#preco").maskMoney({prefix:'R$ ', allowNegative: true, thousands:'.', decimal:',', affixesStay: false});
-    $('#preco').maskMoney('mask')
+    $("#preco_venda").maskMoney({prefix:'', allowNegative: true, thousands:'.', decimal:',', affixesStay: false});
+    $('#preco_venda').maskMoney('mask')
     $('#icms').maskMoney('mask')
     $('#codigo').focus();
-
   </script>
 @endpush
 

@@ -21,7 +21,7 @@ class ProdutoRequest extends Request
            'tipoitem_id'     => 'required',
            'ncm_id'          => 'required',
            'genero_id'       => 'required',
-           'preco_id'        => 'required',
+           'preco_venda'     => 'required',
            'lst'             => 'max:5',
            'ipi'             => 'max:3'
         ];

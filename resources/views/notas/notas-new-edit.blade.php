@@ -111,7 +111,13 @@
                   <div class="tab-pane fade" id="tab2primary">
                       <div class="row">
                           <div class="form-group col-md-4">
+                            <!-- Id do produto para validação, campo não disponível na view -->
                             {!! Form::text('id_item',0, ['id'=>'id_item','class'=>'form-control hidden']) !!}
+                            <!-- Cst do produto para calculo de impostos, campo não disponível na view -->
+                            {!! Form::text('cst',null, ['id'=>'cst','class'=>'form-control hidden']) !!}
+                            <!-- taxa do icms do produto para calculo de impostos, campo não disponível na view -->
+                            {!! Form::text('icms',null, ['id'=>'icms','class'=>'form-control hidden']) !!}
+                            <!-- *** -->
                             {!! Form::label('l.cod_item', 'Código produto') !!}
                             {!! Form::text('cod_item', isset($notaitem->cod_item) ? $notaitem->coditem:null, ['id'=>'cod_item','autocomplete'=>'off','class'=>'form-control','placeholder'=>'código para pesquisa...']) !!}
                           </div>    
@@ -138,19 +144,19 @@
                          </div>    
                           <div class="form-group col-md-2">
                             {!! Form::label('l.qtd', 'Qtde produto') !!}
-                            {!! Form::text('qtd', isset($notaitem->qtd) ? $notaitem->qtd:null, ['id'=>'qtd','class'=>'form-control text-right']) !!}
+                            {!! Form::text('qtd', isset($notaitem->qtd) ? $notaitem->qtd:null, ['id'=>'qtd','class'=>'form-control text-right mascara-monetaria']) !!}
                           </div>    
                           <div class="form-group col-md-2">
-                            {!! Form::label('l.vl_item', 'Valor produto') !!}
-                            {!! Form::text('vl_item', isset($notaitem->vl_item) ? $notaitem->vl_item:null, ['id'=>'vl_item','class'=>'form-control text-right']) !!}
+                            {!! Form::label('l.vl_item', 'Vlr produto R$') !!}
+                            {!! Form::text('vl_item', isset($notaitem->vl_item) ? $notaitem->vl_item:null, ['id'=>'vl_item','class'=>'form-control text-right mascara-monetaria']) !!}
                           </div>    
                           <div class="form-group col-md-2">
-                            {!! Form::label('l.vl_desc', 'Valor desconto') !!}
-                            {!! Form::text('vl_desc', isset($notaitem->vl_desc) ? $notaitem->vl_desc:null, ['id'=>'vl_desc','class'=>'form-control text-right']) !!}
+                            {!! Form::label('l.vl_desc', 'Vlr desconto R$') !!}
+                            {!! Form::text('vl_desc', isset($notaitem->vl_desc) ? $notaitem->vl_desc:null, ['id'=>'vl_desc','class'=>'form-control text-right mascara-monetaria']) !!}
                           </div>    
                           <div class="form-group col-md-2">
-                            {!! Form::label('l.aliq_icms', 'Aliquota icms') !!}
-                            {!! Form::text('aliq_icms', isset($notaitem->aliq_icms) ? $notaitem->aliq_icms:null, ['id'=>'aliq_icms','class'=>'form-control text-right']) !!}
+                            {!! Form::label('l.aliq_icms', 'Aliq. icms (%)') !!}
+                            {!! Form::text('aliq_icms', isset($notaitem->aliq_icms) ? $notaitem->aliq_icms:null, ['id'=>'aliq_icms','class'=>'form-control text-right mascara-monetaria']) !!}
                           </div>    
                           <div class="form-group col-md-2">
                             {!! Form::label('l.nbsp', '&nbsp;') !!}
@@ -162,8 +168,8 @@
                           <tr>
                             <th>Código</th>
                             <th>Descrição</th>
-                            <th class='text-right'>Qtde</th>
-                            <th class='text-right'>Valor do item</th>
+                            <th class="text-right">Qtde</th>
+                            <th class="text-right">Vlr item R$</th>
                             <th>Opções</th>
                           </tr>
                         </thead>
@@ -184,19 +190,19 @@
                           <fieldset disabled>
                             <div class="form-group col-md-2">
                               {!! Form::label('l.qtd_item', 'Qtde itens') !!}
-                              {!! Form::text('qtd_item', '0,00', ['id'=>'qtd_item','class'=>'form-control text-center']) !!}
+                              {!! Form::text('qtd_item', '0,00', ['id'=>'qtd_item','class'=>'form-control text-center mascara-monetaria']) !!}
                             </div>    
                             <div class="form-group col-md-2 ui-widget">
-                              {!! Form::label('l.vl_merc', 'Valor mercadoria') !!}
-                              {!! Form::text('vl_merc', '0,00', ['id'=>'vl_merc','class'=>'form-control text-right']) !!}
+                              {!! Form::label('l.tot_merc', 'Vlr mercadoria R$') !!}
+                              {!! Form::text('tot_merc', '0,00', ['id'=>'tot_merc','class'=>'form-control text-right mascara-monetaria']) !!}
                            </div>    
                             <div class="form-group col-md-2 ui-widget">
-                              {!! Form::label('l.vl_bc_icms', 'Valor base icms') !!}
-                              {!! Form::text('vl_bc_icms', '0,00', ['id'=>'vl_bc_icms','class'=>'form-control text-right']) !!}
+                              {!! Form::label('l.vl_bc_icms', 'Base icms R$') !!}
+                              {!! Form::text('vl_bc_icms', '0,00', ['id'=>'vl_bc_icms','class'=>'form-control text-right mascara-monetaria']) !!}
                            </div>    
                             <div class="form-group col-md-2 ui-widget">
-                              {!! Form::label('l.vl_icms', 'Valor icms') !!}
-                              {!! Form::text('vl_icms', '0,00', ['id'=>'vl_icms','class'=>'form-control text-right']) !!}
+                              {!! Form::label('l.tot_icms', 'Vlr icms R$') !!}
+                              {!! Form::text('tot_icms', '0,00', ['id'=>'tot_icms','class'=>'form-control text-right mascara-monetaria']) !!}
                            </div>    
                          </fieldset>
                       </div>    
@@ -286,15 +292,11 @@
             $previous_tab.tab('show');    });
         
     });    
-    // Mascaras
-    $("#qtd").maskMoney({prefix:'', allowNegative: true, thousands:'.', decimal:',', affixesStay: false});
-    $("#vl_item").maskMoney({prefix:'R$ ', allowNegative: true, thousands:'.', decimal:',', affixesStay: false});
-    $("#aliq_icms").maskMoney({prefix:'', allowNegative: true, thousands:'.', decimal:',', affixesStay: false});
-    $("#vl_desc").maskMoney({prefix:'R$ ', allowNegative: true, thousands:'.', decimal:',', affixesStay: false});
-    $("#vl_merc").maskMoney({prefix:'R$ ', allowNegative: true, thousands:'.', decimal:',', affixesStay: false});
-    $("#qtd_item").maskMoney({prefix:'', allowNegative: true, thousands:'.', decimal:',', affixesStay: false});
-    $("#vl_bc_icms").maskMoney({prefix:'R$ ', allowNegative: true, thousands:'.', decimal:',', affixesStay: false});
-    $("#vl_icms").maskMoney({prefix:'R$ ', allowNegative: true, thousands:'.', decimal:',', affixesStay: false});
+    // Exibir mascaras
+    $('#qtd').maskMoney('mask');
+    $('#vl_item').maskMoney('mask');
+    $('#aliq_icms').maskMoney('mask');
+    $('#vl_desc').maskMoney('mask');
   </script>
 @endpush
 

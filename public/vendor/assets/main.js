@@ -1,14 +1,6 @@
 "use restrict";
 
 $(document).ready(function(){
-  $('.guiMoneyMask').bind('input',function(){
-    guiMoneyMask();
-     
-    // Exemplo get float:
-    var value = getGuiMoneyFloat(1);
-    $('#guiMoneyFloat').html(value);
-  });
-
   // Alerta para mensagens
   $(".alert").fadeTo(4000, 0.4).slideUp(700, function(){
     $(".alert").alert('close');
@@ -58,6 +50,8 @@ $(document).ready(function(){
          $('#cfop').val(item.name);
          $('#natop_descricao').val(item.descricao);
          $('#id_natop').val(item.id);
+         $('#vl_item').maskMoney('mask');
+         $('#aliq_icms').maskMoney('mask');
          $('#qtd').focus();
          return item;
       }
@@ -75,6 +69,11 @@ $(document).ready(function(){
          $('#descricao').val(item.name);
          $('#cod_item.tagCodProduto').val(item.codigo);
          $('#id_item').val(item.id);
+         $('#vl_item').val(item.preco_venda);
+         $('#cst').val(item.cst);
+         $('#icms').val(item.icms);
+         $('#vl_item').maskMoney('mask');
+         $('#aliq_icms').maskMoney('mask');
          $('#cfop').focus();
          return item;
       }
@@ -93,13 +92,18 @@ $(document).ready(function(){
          $('#descricao').val(item.descricao);
          $('#id_item').val(item.id);
          $('#aliq_icms').val(item.icms);
+         $('#vl_item').val(item.preco_venda);
+         $('#cst').val(item.cst);
+         $('#icms').val(item.icms);
+         $('#vl_item').maskMoney('mask');
+         $('#aliq_icms').maskMoney('mask');
          $('#cfop').focus();
          return item;
       }
   });
   
 });
-// Butões da Inclusão do item da nota
+// Butões da manutenção do item da nota
 $(".btnExcluir").bind("click", Excluir);
 $("#btnAdicionar").bind("click", Adicionar); 
 //**
@@ -107,12 +111,28 @@ $("#btnAdicionar").bind("click", Adicionar);
 //**
 // Funções da Itens da nota fiscal
 function Adicionar(){
-  var cod_item  = $("#cod_item").val();
-  var descricao = $("#descricao").val();
-  var qtd       = $("#qtd").val();
-  var vl_item   = $("#vl_item").val();
-  var id_item   = $("#id_item").val();
-  var id_natop  = $("#id_natop").val();
+  var cod_item   = $("#cod_item").val();
+  var descricao  = $("#descricao").val();
+  var qtd        = $("#qtd").maskMoney('unmasked')[0];
+  var vl_item    = $("#vl_item").maskMoney('unmasked')[0];
+  var id_item    = $("#id_item").maskMoney('unmasked')[0];
+  var id_natop   = $("#id_natop").maskMoney('unmasked')[0];
+  var cst        = $("#cst").maskMoney('unmasked')[0];
+  var icms       = $("#icms").maskMoney('unmasked')[0];
+//  var vl_merc    = (parseFloat($("#qtd").val())*
+//                   parseFloat($("#vl_item").val())*100);
+  var vl_merc    = $("#qtd").maskMoney('unmasked')[0] *
+                   $("#vl_item").maskMoney('unmasked')[0];
+  console.log(vl_merc);                 
+  if ( cst == '00'){
+     var vl_bc_icms = vl_merc;
+     var vl_icms = (vl_bc_icms * icms / 100);
+  } else {
+     var vl_bc_icms = 0;
+     var vl_icms = 0;
+
+  }               
+
   $.ajax({
       type: "GET",
       url: '../../../produtos/id/'+id_item, 
@@ -137,7 +157,6 @@ function Adicionar(){
     $('.mensagem').removeClass('hidden');
     $('.mensagem').addClass('visible');
     $("#mensagem").text('Campos com valores inválidos!');
-    $("#vl_merc").trigger('focus');
     $('#cod_item').focus();
   } else {  
     $('.mensagem').removeClass('visible');
@@ -148,112 +167,82 @@ function Adicionar(){
       "<td>"+descricao+"</td>"+
       "<td class='text-right'>"+qtd+"</td>"+
       "<td class='text-right'>"+vl_item+"</td>" +
-      "<td><button class='btnExcluir btn btn-default btn-xs' type='button'><span class='glyphicon glyphicon-remove'></span></button></td>"+
+      "<td style='display:none'>"+vl_merc+"</td>" +
+      "<td style='display:none'>"+vl_bc_icms+"</td>" +
+      "<td style='display:none'>"+vl_icms+"</td>" +
+      "<td><button id='"+cod_item+"' class='btnExcluir btn btn-default btn-xs' type='button'><span class='glyphicon glyphicon-remove'></span></button></td>"+
       "</tr>");
 
     // Preencher aba de totalizações
     //***
     // Soma o valor da mercadorias após inclusão do item
-    $("#vl_merc").val(getValorMercadoria($("#vl_item").val(),$("#qtd").val()));
+//    $("#tot_merc").val(parseFloat($("#tot_merc").val())*100 + vl_merc);
+    $("#tot_merc").maskMoney('mask',($("#tot_merc").maskMoney('unmasked')[0] + vl_merc));
     //***
     // Soma o valor da quantidade após inclusão do item
-    $("#qtd_item").val(getTotalItens($("#qtd").val()));
+    $("#qtd_item").maskMoney('mask',($("#qtd_item").maskMoney('unmasked')[0] + 1)); 
     //***
-    $('#vl_merc').maskMoney('mask')
-    $('#qtd_item').maskMoney('mask')
+    // Soma a base de calculo após inclusão do item
+//    $("#vl_bc_icms").val(parseFloat($("#vl_bc_icms").val())*100 + vl_bc_icms);
+    $("#vl_bc_icms").maskMoney('mask',($("#vl_bc_icms").maskMoney('unmasked')[0] + vl_bc_icms));
+    //***
+    // Soma o icms após inclusão do item
+//    $("#tot_icms").val(parseFloat($("#tot_icms").val())*100 + vl_icms);
+    $("#tot_icms").maskMoney('mask',($("#tot_icms").maskMoney('unmasked')[0] + vl_icms));
+    //***
     // Limpar campos após inclusão
     $("#cod_item").val("");
     $("#descricao").val("");
-    $("#qtd").val("");
-    $("#vl_item").val("");
+    $("#qtd").val("0,00");
+    $("#vl_item").val("0,00");
     $('#cod_item').focus();
     //***
-    $(".btnExcluir").bind("click", Excluir);
+    // Exibir mascaras
+    $('#qtd').maskMoney('mask');
+    $('#vl_item').maskMoney('mask');
+    $('#vl_merc').maskMoney('mask');
+    $('#tot_merc').maskMoney('mask');
+    $('#qtd_item').maskMoney('mask');
+    $('#vl_bc_icms').maskMoney('mask');
+    $('#tot_icms').maskMoney('mask');
+    //***
+    $('#'+cod_item).bind("click", Excluir);
   }
 };
 function Excluir(){
     var par = $(this).parent().parent(); //tr
+    var vl_merc    = par.children("td:nth-child(5)");
+    var vl_bc_icms = par.children("td:nth-child(6)");
+    var vl_icms    = par.children("td:nth-child(7)");
+    console.log(vl_merc.html());
+    console.log(vl_bc_icms.html());
+    console.log(vl_icms.html());
     par.remove();
     // Diminue o valor da mercadorias após exclusão do item
-    $("#vl_merc").val(parseFloat($("#vl_merc").val()) - (getValorMercadoria($("#vl_item").val(),$("#qtd").val())));
+    $("#tot_merc").val(parseFloat($("#tot_merc").val())*100 - parseFloat(vl_merc.html()));
     //***
     // Diminue a quantidade do item após exclusão do item
-    $("#qtd_item").val((parseFloat($("#qtd_item").val())-getTotalItens($("#qtd").val())));
+    $("#qtd_item").val((parseFloat($("#qtd_item").val())*100 - (parseFloat(100)))); // representa 1.00
     //***
-    $('#vl_merc').maskMoney('mask')
-    $('#qtd_item').maskMoney('mask')
+    // Diminue o valor da Base de calculo após exclusão do item
+    $("#vl_bc_icms").val(parseFloat($("#vl_bc_icms").val())*100 - parseFloat(vl_bc_icms.html()));
+    //***
+    // Diminue o valor do icms após exclusão do item
+    $("#tot_icms").val(parseFloat($("#tot_icms").val())*100 - parseFloat(vl_icms.html()));
+    //***
+    vl_merc    = 0;
+    vl_bc_icms = 0;
+    vl_bc_icms = 0;
     $('#cod_item').focus();
-
+    // Exibir mascaras
+    $('#vl_merc').maskMoney('mask');
+    $('#tot_merc').maskMoney('mask');
+    $('#qtd_item').maskMoney('mask');
+    $('#vl_bc_icms').maskMoney('mask');
+    $('#tot_icms').maskMoney('mask');
+    //***
 };
-function getValorMercadoria(valor,qtde)
-{
-  return parseFloat(valor)*parseFloat(qtde)*100;
-}
-function getTotalItens(qtde)
-{
-  return parseFloat($("#qtd_item").val())+parseFloat(qtde)*100;
-}
-function getBaseCalculo(){
-
-}
-function getValorIcms(){
-
-}
-function getGuiMoneyFloat()
-{
-        var money = guiMoneyMask(1);
-        
-         if(!money){
-          return 0;
-        }
-        money = money.replace(",",".");
-        
-        return parseFloat( money );
-}
-function guiMoneyMask(getMoney)
-{
-    var icon = "R$";
-   
-    
-    icon += " ";
-    var money = $(".guiMoneyMask").val();
-   
-    money = money.replace(icon,"");
-    money = money.replace(" ","");
-    
-    money = money.replace(",","");
-    money = money.replace(".","");
-    
-    if(money === ""){
-      return;
-    }
-    if(isNaN(money)){
-      $(".guiMoneyMask").val("");
-      return;
-    }
-    
-    $(".guiMoneyMask").val("");
-   
-   var aux = money+'';
-      
-    if(aux.length < 3){
-      aux = aux.replace(/([0-9]{2})$/g, "0,$1");
-    } else if(aux.length > 2){
-      aux = aux.replace(/([0-9]{2})$/g, ",$1");
-    }
-    
-    if(aux.length > 2){
-        var tmp = aux.split(",");
-        aux = parseInt(tmp[0])+","+tmp[1];
-       
-    }
-    
-   
-    
-    $(".guiMoneyMask").val(icon+aux);
-     if(getMoney === 1){
-      return aux;
-    }
-}
+// Mascaras
+$('.mascara-monetaria').maskMoney({prefix:'',allowNegative: false,allowZero:true,defaultZero:true,thousands:'.', decimal:',',affixesStay: true});
 
                 
