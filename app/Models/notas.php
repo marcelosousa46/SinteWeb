@@ -43,5 +43,8 @@ class notas extends Model
     public function Series() {
         return $this->belongsTo('App\Models\Series');
     }
-
+    public function Itens()
+    {
+        return $this->hasMany('App\Models\notaitens');
+    }
 }

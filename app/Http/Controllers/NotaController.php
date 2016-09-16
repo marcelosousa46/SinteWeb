@@ -6,10 +6,12 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 
-use App\Models\Notas;
+use App\Models\notas;
+use App\Models\notasitens;
 Use App\Classes\Classes;
 use Yajra\Datatables\Datatables;
 use App\Classes\Nfe;
+use App\Http\Requests\NotaRequest;
 
 class NotaController extends Controller
 {
@@ -63,13 +65,21 @@ class NotaController extends Controller
         return view('notas.notas',compact(['permissao','rotina_id','user_id','username','rotinadescricao']));
       }
   }
-  public function postStore(ParticipanteRequest $request)
+  public function postStore(NotaRequest $request)
   { 
       $rotina_id = session('rotina_id');
       $user_id   = session('user_id');
       $input = $request->all();
-
+      dd($input);
       Notas::create($input);
+      $itens = notaitens::find($id);
+        foreach ($postValues['qty'] as $qty) {
+
+        $itens->create([ 
+            'id' => $order->id,
+            'total' => $qty,
+        ]);
+    }
       return redirect()->route('nota',['id' => $rotina_id, 'user_id'=>$user_id]);
   }
   public function getDestroy(Request $request,$id)
@@ -108,7 +118,7 @@ class NotaController extends Controller
   {
       $rotina_id = session('rotina_id');
       $user_id   = session('user_id');
-      $nota    = Notas::find($id)->update($request->all());
+      $nota      = Notas::find($id)->update($request->all());
 
       return redirect()->route('nota', ['id' => $rotina_id, 'user_id'=>$user_id]);
   }

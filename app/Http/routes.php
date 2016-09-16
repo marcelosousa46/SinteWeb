@@ -93,11 +93,13 @@ Route::group(['middleware' => 'web'], function () {
     ]);
     /* Participantes */
     Route::controller('participante','ParticipanteController',[
-        'anyData'     => 'participante.data',
-        'getIndex'    => 'participante',
-        'getCreate'   => 'participante.create',
-        'postStore'   => 'participante.store',
-        'postUpdate'  => 'participante.update',
+        'anyData'      => 'participante.data',
+        'getIndex'     => 'participante',
+        'getCreate'    => 'participante.create',
+        'postStore'    => 'participante.store',
+        'postUpdate'   => 'participante.update',
+        'anyDescricao' => 'participante.nome',
+        'anyCodigo'    => 'participante.codigo',
     ]);
     /* Notas */
     Route::controller('nota','NotaController',[

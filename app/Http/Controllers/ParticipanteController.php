@@ -108,4 +108,14 @@ class ParticipanteController extends Controller
 
       return redirect()->route('participante', ['id' => $rotina_id, 'user_id'=>$user_id]);
   }
+  public function anyNome(Request $request)
+  {
+      $data = Participantes::select("codigo","nome as name","id")->where("nome","LIKE","%{$request->input('query')}%")->get();
+      return response()->json($data);
+  }
+  public function anyCodigo(Request $request)
+  {
+      $data = Participantes::select("codigo as name","nome","id")->where("codigo","LIKE","%{$request->input('query')}%")->get();
+      return response()->json($data);
+  }  
 }

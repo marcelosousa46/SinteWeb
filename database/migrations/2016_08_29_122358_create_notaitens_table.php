@@ -14,6 +14,8 @@ class CreateNotaitensTable extends Migration
     {
         Schema::create('notaitens', function (Blueprint $table) {
             $table->increments('id');
+            $table->integer('nota_id')->unsigned();
+            $table->foreign('nota_id')->references('id')->on('notas');
             $table->integer('num_item');
             $table->string('cod_item');
             $table->string('desc_compl');

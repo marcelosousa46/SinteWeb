@@ -101,6 +101,41 @@ $(document).ready(function(){
          return item;
       }
   });
+
+  // Pesquisa pelo codigo do participante
+  $('#cli_cod').typeahead({
+      source:  function (query, process) {
+      var path = "../../../participante/codigo";    
+      return $.get(path, { query: query }, function (data) {
+              return process(data);
+          });
+      },
+      updater: function (item) {
+         $('#clie_cod').val(item.name);
+         $('#cli_nome').val(item.nome);
+         $('#cli_id').val(item.id);
+         $('#cli_cod').focus();
+         return item;
+      }
+  });
+
+  // Pesquisa pelo nome do participante
+  $('#cli_nome').typeahead({
+      source:  function (query, process) {
+      var path = "../../../participante/nome";    
+      return $.get(path, { query: query }, function (data) {
+              return process(data);
+          });
+      },
+      updater: function (item) {
+         $('#cli_cod').val(item.codigo);
+         $('#cli_nome').val(item.name);
+         $('#cli_id').val(item.id);
+         $('#cli_cod').focus();
+         return item;
+      }
+  });
+
   
 });
 // Butões da manutenção do item da nota
@@ -111,19 +146,18 @@ $("#btnAdicionar").bind("click", Adicionar);
 //**
 // Funções da Itens da nota fiscal
 function Adicionar(){
-  var cod_item   = $("#cod_item").val();
-  var descricao  = $("#descricao").val();
-  var qtd        = $("#qtd").maskMoney('unmasked')[0];
-  var vl_item    = $("#vl_item").maskMoney('unmasked')[0];
-  var id_item    = $("#id_item").maskMoney('unmasked')[0];
-  var id_natop   = $("#id_natop").maskMoney('unmasked')[0];
-  var cst        = $("#cst").maskMoney('unmasked')[0];
-  var icms       = $("#icms").maskMoney('unmasked')[0];
-//  var vl_merc    = (parseFloat($("#qtd").val())*
-//                   parseFloat($("#vl_item").val())*100);
-  var vl_merc    = $("#qtd").maskMoney('unmasked')[0] *
-                   $("#vl_item").maskMoney('unmasked')[0];
-  console.log(vl_merc);                 
+  var cod_item    = $("#cod_item").val();
+  var descricao   = $("#descricao").val();
+  var qtd         = $("#qtd").maskMoney('unmasked')[0];
+  var vl_item     = $("#vl_item").maskMoney('unmasked')[0];
+  var id_item     = $("#id_item").val();
+  var id_natop    = $("#id_natop").val();
+  var cst         = $("#cst").val();
+  var icms        = $("#icms").maskMoney('unmasked')[0];
+  var vl_merc     = $("#qtd").maskMoney('unmasked')[0] *
+                    $("#vl_item").maskMoney('unmasked')[0];
+  var id_variavel = Math.floor((Math.random() * 100) + 1) + cod_item;
+  
   if ( cst == '00'){
      var vl_bc_icms = vl_merc;
      var vl_icms = (vl_bc_icms * icms / 100);
@@ -165,29 +199,26 @@ function Adicionar(){
       "<tr>"+
       "<td>"+cod_item+"</td>"+
       "<td>"+descricao+"</td>"+
-      "<td class='text-right'>"+qtd+"</td>"+
-      "<td class='text-right'>"+vl_item+"</td>" +
+      "<td class='text-right'>"+$('#qtd').val()+"</td>"+
+      "<td class='text-right'>"+$('#vl_item').val()+"</td>" +
       "<td style='display:none'>"+vl_merc+"</td>" +
       "<td style='display:none'>"+vl_bc_icms+"</td>" +
       "<td style='display:none'>"+vl_icms+"</td>" +
-      "<td><button id='"+cod_item+"' class='btnExcluir btn btn-default btn-xs' type='button'><span class='glyphicon glyphicon-remove'></span></button></td>"+
+      "<td><button id='" + id_variavel +"' class='btnExcluir btn btn-default btn-xs' type='button'><span class='glyphicon glyphicon-remove'></span></button></td>"+
       "</tr>");
 
     // Preencher aba de totalizações
     //***
     // Soma o valor da mercadorias após inclusão do item
-//    $("#tot_merc").val(parseFloat($("#tot_merc").val())*100 + vl_merc);
     $("#tot_merc").maskMoney('mask',($("#tot_merc").maskMoney('unmasked')[0] + vl_merc));
     //***
     // Soma o valor da quantidade após inclusão do item
     $("#qtd_item").maskMoney('mask',($("#qtd_item").maskMoney('unmasked')[0] + 1)); 
     //***
     // Soma a base de calculo após inclusão do item
-//    $("#vl_bc_icms").val(parseFloat($("#vl_bc_icms").val())*100 + vl_bc_icms);
     $("#vl_bc_icms").maskMoney('mask',($("#vl_bc_icms").maskMoney('unmasked')[0] + vl_bc_icms));
     //***
     // Soma o icms após inclusão do item
-//    $("#tot_icms").val(parseFloat($("#tot_icms").val())*100 + vl_icms);
     $("#tot_icms").maskMoney('mask',($("#tot_icms").maskMoney('unmasked')[0] + vl_icms));
     //***
     // Limpar campos após inclusão
@@ -205,8 +236,20 @@ function Adicionar(){
     $('#qtd_item').maskMoney('mask');
     $('#vl_bc_icms').maskMoney('mask');
     $('#tot_icms').maskMoney('mask');
+    $('#td_qtd').maskMoney('mask');
+    $('#td_vl_item').maskMoney('mask');
+    $("#tab2primary").append(
+      "<input type='text' name='item_id_item[]' id='id_item"+ id_variavel + "' value='" + id_item + "' class='hidden'/>" +
+      "<input type='text' name='item_vl_item[]' id='vl_item"+ id_variavel + "' value='" + vl_item + "' class='hidden'/>" +
+      "<input type='text' name='item_qtd[]' id='qtd"+ id_variavel + "' value='" + qtd + "' class='hidden'/>" +
+      "<input type='text' name='item_icms[]' id='icms"+ id_variavel + "' value='" + icms + "' class='hidden'/>" +
+      "<input type='text' name='item_vl_merc[]' id='vl_merc"+ id_variavel + "' value='" + vl_merc +"' class='hidden'/>" +
+      "<input type='text' name='item_cst[]' id='cst"+ id_variavel + "' value='" + cst +"' class='hidden'/>" +
+      "<input type='text' name='item_id_natop[]' id='id_natop"+ id_variavel + "' value='" + id_natop +"' class='hidden'/>"
+      );
+
     //***
-    $('#'+cod_item).bind("click", Excluir);
+    $('#'+id_variavel).bind("click", Excluir);
   }
 };
 function Excluir(){
@@ -214,25 +257,24 @@ function Excluir(){
     var vl_merc    = par.children("td:nth-child(5)");
     var vl_bc_icms = par.children("td:nth-child(6)");
     var vl_icms    = par.children("td:nth-child(7)");
-    console.log(vl_merc.html());
-    console.log(vl_bc_icms.html());
-    console.log(vl_icms.html());
+    
     par.remove();
     // Diminue o valor da mercadorias após exclusão do item
-    $("#tot_merc").val(parseFloat($("#tot_merc").val())*100 - parseFloat(vl_merc.html()));
+//    $("#tot_merc").val(parseFloat($("#tot_merc").val())*100 - parseFloat(vl_merc.html()));
+    $("#tot_merc").maskMoney('mask',($("#tot_merc").maskMoney('unmasked')[0] - parseFloat(vl_merc.html())));
     //***
     // Diminue a quantidade do item após exclusão do item
-    $("#qtd_item").val((parseFloat($("#qtd_item").val())*100 - (parseFloat(100)))); // representa 1.00
+//    $("#qtd_item").val((parseFloat($("#qtd_item").val())*100 - (parseFloat(100)))); // representa 1.00
+    $("#qtd_item").maskMoney('mask',($("#qtd_item").maskMoney('unmasked')[0] - 1)); 
     //***
     // Diminue o valor da Base de calculo após exclusão do item
-    $("#vl_bc_icms").val(parseFloat($("#vl_bc_icms").val())*100 - parseFloat(vl_bc_icms.html()));
+//    $("#vl_bc_icms").val(parseFloat($("#vl_bc_icms").val())*100 - parseFloat(vl_bc_icms.html()));
+    $("#vl_bc_icms").maskMoney('mask',($("#vl_bc_icms").maskMoney('unmasked')[0] - parseFloat(vl_bc_icms.html())));
     //***
     // Diminue o valor do icms após exclusão do item
-    $("#tot_icms").val(parseFloat($("#tot_icms").val())*100 - parseFloat(vl_icms.html()));
+//    $("#tot_icms").val(parseFloat($("#tot_icms").val())*100 - parseFloat(vl_icms.html()));
+    $("#tot_icms").maskMoney('mask',($("#tot_icms").maskMoney('unmasked')[0] - parseFloat(vl_icms.html())));
     //***
-    vl_merc    = 0;
-    vl_bc_icms = 0;
-    vl_bc_icms = 0;
     $('#cod_item').focus();
     // Exibir mascaras
     $('#vl_merc').maskMoney('mask');
@@ -244,5 +286,6 @@ function Excluir(){
 };
 // Mascaras
 $('.mascara-monetaria').maskMoney({prefix:'',allowNegative: false,allowZero:true,defaultZero:true,thousands:'.', decimal:',',affixesStay: true});
+$('.mascara-percent4').maskMoney({prefix:'',precision:4,allowNegative: false,allowZero:true,defaultZero:true,thousands:'.', decimal:',',affixesStay: true});
 
                 

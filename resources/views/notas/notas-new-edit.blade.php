@@ -123,7 +123,7 @@
                           </div>    
                           <div class="form-group col-md-8 ui-widget">
                             {!! Form::label('l.descricao', 'Descrição produto') !!}
-                            {!! Form::text('descricao', isset($notaitem->descricao) ? $notaitem->descricao:null, ['id'=>'descricao','class'=>'form-control','placeholder'=>'descrição para pesquisa...']) !!}
+                            {!! Form::text('descricao[]', isset($notaitem->descricao) ? $notaitem->descricao:null, ['id'=>'descricao','class'=>'form-control','placeholder'=>'descrição para pesquisa...']) !!}
                          </div>    
                       </div>    
                       <div class="row">
@@ -229,12 +229,22 @@
                       
                   </div>
                   <div class="tab-pane fade" id="tab5primary">
-                      <p>Primary 5</p>
+                      <div class="row">
+                          <div class="form-group col-md-4 ui-widget">
+                            {!! Form::label('l.cod_cli', 'Código') !!}
+                            {!! Form::text('cli_cod', isset($participante->codigo) ? $participante->codigo:null, ['id'=>'cli_cod','autocomplete'=>'off','class'=>'form-control','placeholder'=>'código para pesquisa...']) !!}
+                         </div>    
+                         <div class="form-group col-md-8 ui-widget">
+                            {!! Form::text('cli_id',0, ['id'=>'cli_id','class'=>'form-control hidden']) !!}
+                            {!! Form::label('l.cli_nome', 'Destinatário') !!}
+                            {!! Form::text('cli_nome', null, ['id'=>'cli_nome','class'=>'form-control','placeholder'=>'nome para pesquisa...']) !!}
+                         </div>    
+                      </div>
                       <div class="row">
                           <div class="col-lg-12">
                               <div class="pull-right">
                                   <button class="btn btn-default previous-tab" type="button"><span class="glyphicon glyphicon-chevron-left"></span> Anterior</button>
-                                  <button class="btn btn-default next-tab" type="submit"><span class="glyphicon glyphicon-chevron-ok"></span> Enviar</button>
+                                  <button class="btn btn-default next-tab" type="submit"><span class="glyphicon glyphicon-chevron-ok"></span> Gerar</button>
                               </div>
                           </div>
                       </div>
@@ -297,6 +307,9 @@
     $('#vl_item').maskMoney('mask');
     $('#aliq_icms').maskMoney('mask');
     $('#vl_desc').maskMoney('mask');
+    function geraid(){
+      return Math.floor((Math.random() * 100) + 1);
+    }
   </script>
 @endpush
 

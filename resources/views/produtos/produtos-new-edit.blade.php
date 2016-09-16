@@ -95,15 +95,25 @@
             </div>    
             <div class="form-group col-md-2">
                 {!! Form::label('l.icms', 'I.C.M.S (%)') !!}
-                {!! Form::text('icms', isset($produto->icms) ? $produto->icms:null, ['id'=>'icms','class'=>'form-control text-right']) !!}
+                {!! Form::text('icms', isset($produto->icms) ? $produto->icms:null, ['id'=>'icms','class'=>'form-control mascara-monetaria text-right']) !!}
             </div>    
+            <div class="form-group col-md-2">
+                {!! Form::label('l.pis', 'Pis (%)') !!}
+                {!! Form::text('pis', isset($produto->pis) ? $produto->pis:null, ['id'=>'pis','class'=>'form-control mascara-percent4 text-right']) !!}
+            </div>    
+            <div class="form-group col-md-2">
+                {!! Form::label('l.cofins', 'Cofins (%)') !!}
+                {!! Form::text('cofins', isset($produto->cofins) ? $produto->cofins:null, ['id'=>'cofins','class'=>'form-control mascara-percent4 text-right']) !!}
+            </div>    
+          </div>
+          <div class="row">
             <div class="form-group col-md-2">
                 {!! Form::label('l.lst', 'L.S.T') !!}
                 {!! Form::text('lst', isset($produto->lst) ? $produto->lst:null, ['id'=>'lst','class'=>'form-control']) !!}
             </div>    
             <div class="form-group col-md-2">
                 {!! Form::label('l.preco', 'Preço R$') !!}
-                {!! Form::text('preco_venda', isset($produto->preco_venda) ? $produto->preco_venda:null, ['id'=>'preco_venda','class'=>'form-control text-right']) !!}
+                {!! Form::text('preco_venda', isset($produto->preco_venda) ? $produto->preco_venda:null, ['id'=>'preco_venda','class'=>'form-control mascara-monetaria text-right']) !!}
             </div>
             <div class="form-group col-md-2">
                 {!! Form::label('l.nbsp', '&nbsp;') !!}
@@ -119,11 +129,17 @@
 @endsection
 @push('scripts')
   <script>
-    $("#icms").maskMoney({prefix:'', allowNegative: true, thousands:'.', decimal:',', affixesStay: false});
-    $("#preco_venda").maskMoney({prefix:'', allowNegative: true, thousands:'.', decimal:',', affixesStay: false});
     $('#preco_venda').maskMoney('mask')
     $('#icms').maskMoney('mask')
+    $('#pis').maskMoney('mask')
+    $('#cofins').maskMoney('mask')
     $('#codigo').focus();
+    $( "#confirma" ).click(function() {
+      $("#preco_venda").val($("#preco_venda").maskMoney('unmasked')[0]);
+      $("#icms").val($("#icms").maskMoney('unmasked')[0]);
+      $("#pis").val($("#pis").maskMoney('unmasked')[0]);
+      $("#cofins").val($("#cofins").maskMoney('unmasked')[0]);
+    });
   </script>
 @endpush
 

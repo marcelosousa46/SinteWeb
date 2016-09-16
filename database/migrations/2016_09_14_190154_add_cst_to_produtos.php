@@ -14,6 +14,9 @@ class AddCstToProdutos extends Migration
     {
         Schema::table('produtos', function (Blueprint $table) {
             $table->string('cst',2);
+            $table->decimal('pis',8,4);
+            $table->decimal('cofins',8,4);
+
         });
     }
 

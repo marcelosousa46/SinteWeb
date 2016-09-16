@@ -107,6 +107,10 @@ return [
     |
     */
 
-    'attributes' => [],
+    'attributes' => [
+        'cli_cod'      => 'Código para destinatário',
+        'natop'        => 'Naturea da operação',
+        'item_id_item' => 'Itens na nota',
+    ],
 
 ];

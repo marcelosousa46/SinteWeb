@@ -10,7 +10,7 @@ class Produtos extends Model
     protected $fillable = ['id','codigo','descricao', 'codigo_barra',
                            'codigo_anterior', 'unidade_id', 'tipoitem_id',
                            'ncm_id', 'ipi', 'genero_id', 'lst', 'icms',
-                           'preco_venda','cst'];
+                           'preco_venda','cst','pis','cofins'];
     public function Unidade() {
         return $this->belongsTo('App\Models\Unidades');
     }
