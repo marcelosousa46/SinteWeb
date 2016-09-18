@@ -94,11 +94,10 @@
             serverSide: false,
             ajax: '{!! URL::to('/nota/data') !!}',
             columns: [
-                { data: 'cod_part', name: 'codigo' },
-                { data: 'destinatario', name: 'nome' },
+                { data: 'codigo', name: 'codigo' },
+                { data: 'nome', name: 'nome' },
                 { data: 'dt_doc'      , name: 'emissao' },
                 { data: 'vl_doc'      , name: 'valor' },
-                { data: 'situacao'    , name: 'situacao' },
                 { data: 'action', name: 'action', orderable: false, searchable: false}
             ]
         });

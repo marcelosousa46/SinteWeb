@@ -67,7 +67,7 @@
                       <div class="row">
                           <div class="form-group col-md-2">
                             {!! Form::label('l.ind_pagto', 'Série') !!}
-                            {!! Form::select('serie_id', $series,isset($nota->serie_id) ? $nota->serie_id:'1', ['class'=>'form-control']) !!}
+                            {!! Form::select('ser', $series,isset($nota->ser) ? $nota->ser:'1', ['id'=>'ser','class'=>'form-control']) !!}
                           </div>    
                           <div class="form-group col-md-2">
                             {!! Form::label('l.ind_pagto', 'Pagamento') !!}
@@ -75,7 +75,7 @@
                           </div>    
                           <div class="form-group col-md-4">
                             {!! Form::label('l.tpNf', 'Tipo de operação') !!}
-                            {!! Form::select('tpNf', array('0' => 'Entrada', '1' => 'Saída'),isset($nota->tpNf) ? $nota->tpNf:'1', ['class'=>'form-control']) !!}
+                            {!! Form::select('ind_oper', array('0' => 'Entrada', '1' => 'Saída'),isset($nota->ind_oper) ? $nota->ind_oper:'1', ['class'=>'form-control']) !!}
                           </div>    
                           <div class="form-group col-md-4">
                             {!! Form::label('l.idDest', 'Destino da operação') !!}
@@ -101,6 +101,10 @@
                           </div>    
                       </div>    
                       <div class="row">
+                          <!-- Emissão prórpia, campo não disponível na view -->
+                          {!! Form::text('ind_emit',0, ['id'=>'ind_emit','class'=>'form-control hidden']) !!}
+                          <!-- Emissão prórpia, campo não disponível na view -->
+                          {!! Form::text('cod_mod','55', ['id'=>'cod_mod','class'=>'form-control hidden']) !!}
                           <div class="col-lg-12">
                               <div class="pull-right">
                                   <button class="btn btn-default next-tab" type="button"><span class="glyphicon glyphicon-chevron-right"></span> Próximo</button>
@@ -187,24 +191,26 @@
                   </div>
                   <div class="tab-pane fade" id="tab3primary">
                       <div class="row">
-                          <fieldset disabled>
-                            <div class="form-group col-md-2">
-                              {!! Form::label('l.qtd_item', 'Qtde itens') !!}
-                              {!! Form::text('qtd_item', '0,00', ['id'=>'qtd_item','class'=>'form-control text-center mascara-monetaria']) !!}
-                            </div>    
-                            <div class="form-group col-md-2 ui-widget">
-                              {!! Form::label('l.tot_merc', 'Vlr mercadoria R$') !!}
-                              {!! Form::text('tot_merc', '0,00', ['id'=>'tot_merc','class'=>'form-control text-right mascara-monetaria']) !!}
-                           </div>    
-                            <div class="form-group col-md-2 ui-widget">
-                              {!! Form::label('l.vl_bc_icms', 'Base icms R$') !!}
-                              {!! Form::text('vl_bc_icms', '0,00', ['id'=>'vl_bc_icms','class'=>'form-control text-right mascara-monetaria']) !!}
-                           </div>    
-                            <div class="form-group col-md-2 ui-widget">
-                              {!! Form::label('l.tot_icms', 'Vlr icms R$') !!}
-                              {!! Form::text('tot_icms', '0,00', ['id'=>'tot_icms','class'=>'form-control text-right mascara-monetaria']) !!}
-                           </div>    
-                         </fieldset>
+                          <div class="form-group col-md-2">
+                            {!! Form::label('l.qtd_item', 'Qtde itens') !!}
+                            {!! Form::text('qtd_item', '0,00', ['id'=>'qtd_item','class'=>'form-control text-center mascara-monetaria']) !!}
+                          </div>    
+                          <div class="form-group col-md-2 ui-widget">
+                            {!! Form::label('l.vl_merc', 'Vlr mercadoria R$') !!}
+                            {!! Form::text('vl_merc', '0,00', ['id'=>'vl_merc','class'=>'form-control text-right mascara-monetaria']) !!}
+                         </div>    
+                          <div class="form-group col-md-2 ui-widget">
+                            {!! Form::label('l.vl_doc', 'Vlr documento R$') !!}
+                            {!! Form::text('vl_doc', '0,00', ['id'=>'vl_doc','class'=>'form-control text-right mascara-monetaria']) !!}
+                         </div>    
+                          <div class="form-group col-md-2 ui-widget">
+                            {!! Form::label('l.vl_bc_icms', 'Base icms R$') !!}
+                            {!! Form::text('vl_bc_icms', '0,00', ['id'=>'vl_bc_icms','class'=>'form-control text-right mascara-monetaria']) !!}
+                         </div>    
+                          <div class="form-group col-md-2 ui-widget">
+                            {!! Form::label('l.tot_icms', 'Vlr icms R$') !!}
+                            {!! Form::text('tot_icms', '0,00', ['id'=>'tot_icms','class'=>'form-control text-right mascara-monetaria']) !!}
+                         </div>    
                       </div>    
                       <div class="row">
                           <div class="col-lg-12">
@@ -231,11 +237,14 @@
                   <div class="tab-pane fade" id="tab5primary">
                       <div class="row">
                           <div class="form-group col-md-4 ui-widget">
+                            <!-- Numero da nota, campo não disponível na view -->
+                            {!! Form::text('num_doc',0, ['id'=>'num_doc','class'=>'form-control hidden']) !!}
                             {!! Form::label('l.cod_cli', 'Código') !!}
                             {!! Form::text('cli_cod', isset($participante->codigo) ? $participante->codigo:null, ['id'=>'cli_cod','autocomplete'=>'off','class'=>'form-control','placeholder'=>'código para pesquisa...']) !!}
                          </div>    
                          <div class="form-group col-md-8 ui-widget">
-                            {!! Form::text('cli_id',0, ['id'=>'cli_id','class'=>'form-control hidden']) !!}
+                            <!-- Id do participante, campo não disponível na view -->
+                            {!! Form::text('participante_id',0, ['id'=>'participante_id','class'=>'form-control hidden']) !!}
                             {!! Form::label('l.cli_nome', 'Destinatário') !!}
                             {!! Form::text('cli_nome', null, ['id'=>'cli_nome','class'=>'form-control','placeholder'=>'nome para pesquisa...']) !!}
                          </div>    
@@ -244,7 +253,7 @@
                           <div class="col-lg-12">
                               <div class="pull-right">
                                   <button class="btn btn-default previous-tab" type="button"><span class="glyphicon glyphicon-chevron-left"></span> Anterior</button>
-                                  <button class="btn btn-default next-tab" type="submit"><span class="glyphicon glyphicon-chevron-ok"></span> Gerar</button>
+                                  <button id = "gerar" class="btn btn-default next-tab" type="submit"><span class="glyphicon glyphicon-chevron-ok"></span> Gerar</button>
                               </div>
                           </div>
                       </div>
@@ -299,17 +308,54 @@
             }
             $previous_tab.parents('li').removeClass('disabled');
             $previous_tab.data('toggle','tab');
-            $previous_tab.tab('show');    });
+            $previous_tab.tab('show');    
+        });
         
+        // Exibir mascaras
+        $('#qtd').maskMoney('mask');
+        $('#vl_item').maskMoney('mask');
+        $('#aliq_icms').maskMoney('mask');
+        $('#vl_desc').maskMoney('mask');
+        // Desabilitar inputs da aba somatório
+        $('#qtd_item').attr("disabled", true);
+        $('#vl_merc').attr("disabled", true);
+        $('#vl_doc').attr("disabled", true);
+        $('#vl_bc_icms').attr("disabled", true);
+        $('#tot_icms').attr("disabled", true);
+        $('#vl_doc').attr("disabled", true);
+        // Habilitar inputs da aba somatório
+        $("#gerar").click(function() {
+          var idserie = $('#ser').val();
+          $.ajax({
+              type: "GET",
+              url: '../serie/nota/' + idserie, 
+              success: function (result) {
+                  if (Object.keys(result).length > 0){
+                     $("#num_doc").val(result.numnota);
+                  }
+               },
+          });
+        //  var url = "../serie/nota/" + idserie;
+        //  $.get(url , function (data) {
+        //      alerta(data.numnota);
+        //      $("#num_doc").val(data.numnota);
+        //  })           
+          // Habilitar inputs da aba somatório
+          $('#qtd_item').attr("disabled", false);
+          $('#vl_merc').attr("disabled", false);
+          $('#vl_doc').attr("disabled", false);
+          $('#vl_bc_icms').attr("disabled",false);
+          $('#tot_icms').attr("disabled", false);
+          $('#vl_doc').attr("disabled", false);
+          // Retirar mascaras
+          $("#qtd_item").val($("#qtd_item").maskMoney('unmasked')[0]);
+          $("#vl_merc").val($("#vl_merc").maskMoney('unmasked')[0]);
+          $("#vl_doc").val($("#vl_doc").maskMoney('unmasked')[0]);
+          $("#vl_bc_icms").val($("#vl_bc_icms").maskMoney('unmasked')[0]);
+          $("#tot_icms").val($("#tot_icms").maskMoney('unmasked')[0]);
+
+        });
     });    
-    // Exibir mascaras
-    $('#qtd').maskMoney('mask');
-    $('#vl_item').maskMoney('mask');
-    $('#aliq_icms').maskMoney('mask');
-    $('#vl_desc').maskMoney('mask');
-    function geraid(){
-      return Math.floor((Math.random() * 100) + 1);
-    }
   </script>
 @endpush
 

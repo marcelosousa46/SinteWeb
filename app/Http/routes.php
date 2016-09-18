@@ -110,5 +110,10 @@ Route::group(['middleware' => 'web'], function () {
         'postUpdate'  => 'nota.update',
         'anyGeranfe'  => 'nota.geranfe',
     ]);
+    /* Series */
+    Route::controller('serie','SerieController',[
+        'anyData'       => 'serie.data',
+        'anyNota' => 'serie.nota',
+    ]);
 
 });

@@ -11,7 +11,7 @@ class notas extends Model
             'id',
             'ind_oper',
             'ind_emit',
-            'cod_part',
+            'participante_id',
             'cod_mod',
             'cod_sitr',
             'ser',
@@ -40,11 +40,15 @@ class notas extends Model
             'serie_id'
     ];
 
-    public function Series() {
+    public function series() {
         return $this->belongsTo('App\Models\Series');
     }
-    public function Itens()
+    public function itens()
     {
         return $this->hasMany('App\Models\notaitens');
     }
+    public function participante() {
+        return $this->belongsTo('App\Models\participantes');
+    }
+
 }

@@ -12,6 +12,7 @@ Use App\Classes\Classes;
 use Yajra\Datatables\Datatables;
 use App\Classes\Nfe;
 use App\Http\Requests\NotaRequest;
+use DB;
 
 class NotaController extends Controller
 {
@@ -21,7 +22,7 @@ class NotaController extends Controller
   {
       $this->middleware('auth');
       $this->permissao = new Classes;
-      $this->nfe = new Nfe;
+//      $this->nfe = new Nfe;
   }
   public function getIndex(Request $request)
   {
@@ -36,7 +37,12 @@ class NotaController extends Controller
   public function anyData()
   {
       $user_id  = session('user_id');
-      $notas = Notas::all();
+      $retorno = DB::table('notas')
+                     ->join('participantes', 'participantes.id', '=', 'notas.participante_id')
+                     ->select('notas.id', 'participantes.codigo','participantes.nome','notas.dt_doc','notas.vl_doc')
+                     ->get();
+
+      $notas = collect($retorno);
 
       return Datatables::of($notas)
 
@@ -69,17 +75,18 @@ class NotaController extends Controller
   { 
       $rotina_id = session('rotina_id');
       $user_id   = session('user_id');
-      $input = $request->all();
+      $input     = $request->all();
       dd($input);
-      Notas::create($input);
-      $itens = notaitens::find($id);
-        foreach ($postValues['qty'] as $qty) {
 
-        $itens->create([ 
-            'id' => $order->id,
-            'total' => $qty,
-        ]);
-    }
+      Notas::create($input);
+//      $itens = notaitens::find($id);
+//        foreach ($postValues['qty'] as $qty) {
+//
+//        $itens->create([ 
+//            'id' => $Notas->id,
+//            'total' => $qty,
+//        ]);
+//    }
       return redirect()->route('nota',['id' => $rotina_id, 'user_id'=>$user_id]);
   }
   public function getDestroy(Request $request,$id)

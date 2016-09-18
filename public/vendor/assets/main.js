@@ -113,7 +113,7 @@ $(document).ready(function(){
       updater: function (item) {
          $('#clie_cod').val(item.name);
          $('#cli_nome').val(item.nome);
-         $('#cli_id').val(item.id);
+         $('#participante_id').val(item.id);
          $('#cli_cod').focus();
          return item;
       }
@@ -130,7 +130,7 @@ $(document).ready(function(){
       updater: function (item) {
          $('#cli_cod').val(item.codigo);
          $('#cli_nome').val(item.name);
-         $('#cli_id').val(item.id);
+         $('#participante_id').val(item.id);
          $('#cli_cod').focus();
          return item;
       }
@@ -156,6 +156,7 @@ function Adicionar(){
   var icms        = $("#icms").maskMoney('unmasked')[0];
   var vl_merc     = $("#qtd").maskMoney('unmasked')[0] *
                     $("#vl_item").maskMoney('unmasked')[0];
+  var vl_doc      = vl_merc;                  
   var id_variavel = Math.floor((Math.random() * 100) + 1) + cod_item;
   
   if ( cst == '00'){
@@ -210,7 +211,7 @@ function Adicionar(){
     // Preencher aba de totalizações
     //***
     // Soma o valor da mercadorias após inclusão do item
-    $("#tot_merc").maskMoney('mask',($("#tot_merc").maskMoney('unmasked')[0] + vl_merc));
+    $("#vl_doc").maskMoney('mask',($("#vl_doc").maskMoney('unmasked')[0] + vl_merc));
     //***
     // Soma o valor da quantidade após inclusão do item
     $("#qtd_item").maskMoney('mask',($("#qtd_item").maskMoney('unmasked')[0] + 1)); 
@@ -232,7 +233,7 @@ function Adicionar(){
     $('#qtd').maskMoney('mask');
     $('#vl_item').maskMoney('mask');
     $('#vl_merc').maskMoney('mask');
-    $('#tot_merc').maskMoney('mask');
+    $('#vl_doc').maskMoney('mask');
     $('#qtd_item').maskMoney('mask');
     $('#vl_bc_icms').maskMoney('mask');
     $('#tot_icms').maskMoney('mask');
@@ -260,25 +261,21 @@ function Excluir(){
     
     par.remove();
     // Diminue o valor da mercadorias após exclusão do item
-//    $("#tot_merc").val(parseFloat($("#tot_merc").val())*100 - parseFloat(vl_merc.html()));
-    $("#tot_merc").maskMoney('mask',($("#tot_merc").maskMoney('unmasked')[0] - parseFloat(vl_merc.html())));
+    $("#vl_doc").maskMoney('mask',($("#vl_doc").maskMoney('unmasked')[0] - parseFloat(vl_merc.html())));
     //***
     // Diminue a quantidade do item após exclusão do item
-//    $("#qtd_item").val((parseFloat($("#qtd_item").val())*100 - (parseFloat(100)))); // representa 1.00
     $("#qtd_item").maskMoney('mask',($("#qtd_item").maskMoney('unmasked')[0] - 1)); 
     //***
     // Diminue o valor da Base de calculo após exclusão do item
-//    $("#vl_bc_icms").val(parseFloat($("#vl_bc_icms").val())*100 - parseFloat(vl_bc_icms.html()));
     $("#vl_bc_icms").maskMoney('mask',($("#vl_bc_icms").maskMoney('unmasked')[0] - parseFloat(vl_bc_icms.html())));
     //***
     // Diminue o valor do icms após exclusão do item
-//    $("#tot_icms").val(parseFloat($("#tot_icms").val())*100 - parseFloat(vl_icms.html()));
     $("#tot_icms").maskMoney('mask',($("#tot_icms").maskMoney('unmasked')[0] - parseFloat(vl_icms.html())));
     //***
     $('#cod_item').focus();
     // Exibir mascaras
     $('#vl_merc').maskMoney('mask');
-    $('#tot_merc').maskMoney('mask');
+    $('#vl_doc').maskMoney('mask');
     $('#qtd_item').maskMoney('mask');
     $('#vl_bc_icms').maskMoney('mask');
     $('#tot_icms').maskMoney('mask');

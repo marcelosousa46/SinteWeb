@@ -66,7 +66,7 @@ class ProdutoController extends Controller
   { 
       $rotina_id = session('rotina_id');
       $user_id   = session('user_id');
-      $input = $request->all();
+      $input     = $request->all();
 
       Produtos::create($input);
       return redirect()->route('produtos',['id' => $rotina_id, 'user_id'=>$user_id]);

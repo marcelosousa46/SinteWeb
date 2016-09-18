@@ -78,7 +78,7 @@ class PermissaoController extends Controller
 
       $rotina_id = session('rotina_id');
       $user_id   = session('user_id');
-      $input = $request->all();
+      $input     = $request->all();
 
       Permissoes::create($input);
       return redirect()->route('permissoes',['id' => $rotina_id, 'user_id'=>$user_id]);
@@ -89,8 +89,8 @@ class PermissaoController extends Controller
 
   public function getDestroy(Request $request,$id)
   {
-      $rotina_id = session('rotina_id');
-      $user_id   = session('user_id');
+      $rotina_id  = session('rotina_id');
+      $user_id    = session('user_id');
       $autorizado = $this->permissao->getPermissao($request,'E');
 
       if ($autorizado)
