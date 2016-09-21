@@ -18,8 +18,10 @@ class CreateNotasTable extends Migration
             $table->string('ind_emit',1);
             $table->integer('participante_id')->unsigned();
             $table->foreign('participante_id')->references('id')->on('participantes');
+            $table->integer('natop_id')->unsigned();
+            $table->foreign('natop_id')->references('id')->on('natop');
             $table->string('cod_mod',2);
-            $table->string('cod_sitr',2);
+            $table->string('cod_sit',2);
             $table->string('ser',3);
             $table->integer('num_doc');
             $table->string('chv_nfe',44);

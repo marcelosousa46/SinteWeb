@@ -122,6 +122,10 @@ class Classes {
         }
         return $retorno_series;
      }
-
-
+     public function numeroNota($id)
+     {
+        $numeronota = Series::find($id)->ultimo + 1;
+        Series::find($id)->update(['ultimo' => $numeronota]);
+        return $numeronota;
+     }
 }

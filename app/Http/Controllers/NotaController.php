@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 
 use App\Models\notas;
-use App\Models\notasitens;
+use App\Models\notaitens;
 Use App\Classes\Classes;
 use Yajra\Datatables\Datatables;
 use App\Classes\Nfe;
@@ -75,18 +75,51 @@ class NotaController extends Controller
   { 
       $rotina_id = session('rotina_id');
       $user_id   = session('user_id');
+      $numdoc    = $this->permissao->numeroNota($request->ser);
+      $request->merge(array('num_doc' => $numdoc));
+      $request->merge(array('dt_e_s'  => $request->dt_doc));
       $input     = $request->all();
-      dd($input);
-
-      Notas::create($input);
-//      $itens = notaitens::find($id);
-//        foreach ($postValues['qty'] as $qty) {
-//
-//        $itens->create([ 
-//            'id' => $Notas->id,
-//            'total' => $qty,
-//        ]);
-//    }
+      //dd($input);
+      $notas = Notas::create($input);
+      $i = 0;
+      for ($i = 0; $i < $request->qtd_item; $i++){
+        $itens = new notaitens([
+          'num_item'      => $i + 1,
+          'produtos_id'   => $request->item_id_item[$i],
+          'qtd'           => $request->item_qtd[$i],
+          'unid'          => 'UND',
+          'vl_item'       => $request->item_vl_item[$i], 
+          'vl_desc'       => 0,
+          'ind_mov'       => '',
+          'cst_icms'      => $request->item_cst[$i], 
+          'natop_id'      => $request->item_id_natop[$i], 
+          'cod_nat'       => '',
+          'vl_bc_icms'    => $request->item_vl_merc[$i],
+          'aliq_icms'     => $request->item_icms[$i],
+          'vl_icms'       => $request->item_vl_icms[$i],
+          'vl_bc_icms_ST' => 0,
+          'aliq_ST'       => 0,
+          'vl_icms_st'    => 0,
+          'ind_apur'      => '0',
+          'cst_ipi'       => '02',
+          'cod_enq'       => '',
+          'vl_bc_ipi'     => 0,
+          'aliq_ipi'      => 0,
+          'vl_ipi'        => 0,
+          'cst_pis'       => '03',
+          'vl_bc_pis'     => $request->item_vl_merc[$i],
+          'aliq_pis'      => $request->item_pis[$i],
+          'quant_bc_pis'  => '',
+          'vl_pis'        => $request->item_vl_pis[$i],
+          'cst_cofins'    => '03',
+          'vl_bc_cofins'  => $request->item_vl_merc[$i],
+          'aliq_cofins'   => $request->item_cofins[$i],
+          'quant_bc_pis'  => '',
+          'vl_cofins'     => $request->item_vl_cofins[$i],
+          'cod_conta'     => ''
+        ]);
+        $notas->itens()->save($itens);
+      }
       return redirect()->route('nota',['id' => $rotina_id, 'user_id'=>$user_id]);
   }
   public function getDestroy(Request $request,$id)
@@ -110,11 +143,13 @@ class NotaController extends Controller
       $autorizado = $this->permissao->getPermissao($request,'A');
       $rotina_id  = session('rotina_id');
       $user_id    = session('user_id');
+      $series     = $this->permissao->getSeries();
+      $unidades   = $this->permissao->getUnidades();
 
       if ($autorizado)
       {
         $nota = Notas::find($id);
-        return view('notas.notas-new-edit',compact(['nota','rotina_id','user_id']));
+        return view('notas.notas-new-edit',compact(['nota','rotina_id','user_id','series','unidades']));
       } else {
         session()->put('status', 'error');
         session()->put('status-mensagem', 'Usuário não autorizado.');

@@ -33,6 +33,7 @@ $(document).ready(function(){
       },
       updater: function (item) {
          $('#natop').val(item.name);
+         $('#natop_id').val(item.id);
          $('#qtd').focus();
          return item;
       }
@@ -72,6 +73,8 @@ $(document).ready(function(){
          $('#vl_item').val(item.preco_venda);
          $('#cst').val(item.cst);
          $('#icms').val(item.icms);
+         $('#pis').val(item.pis);
+         $('#cofins').val(item.cofins);
          $('#vl_item').maskMoney('mask');
          $('#aliq_icms').maskMoney('mask');
          $('#cfop').focus();
@@ -95,6 +98,8 @@ $(document).ready(function(){
          $('#vl_item').val(item.preco_venda);
          $('#cst').val(item.cst);
          $('#icms').val(item.icms);
+         $('#pis').val(item.pis);
+         $('#cofins').val(item.cofins);
          $('#vl_item').maskMoney('mask');
          $('#aliq_icms').maskMoney('mask');
          $('#cfop').focus();
@@ -154,6 +159,8 @@ function Adicionar(){
   var id_natop    = $("#id_natop").val();
   var cst         = $("#cst").val();
   var icms        = $("#icms").maskMoney('unmasked')[0];
+  var pis         = $("#pis").maskMoney('unmasked')[0];
+  var cofins      = $("#cofins").maskMoney('unmasked')[0];
   var vl_merc     = $("#qtd").maskMoney('unmasked')[0] *
                     $("#vl_item").maskMoney('unmasked')[0];
   var vl_doc      = vl_merc;                  
@@ -161,10 +168,15 @@ function Adicionar(){
   
   if ( cst == '00'){
      var vl_bc_icms = vl_merc;
-     var vl_icms = (vl_bc_icms * icms / 100);
+     var vl_icms    = (vl_bc_icms * icms / 100);
+     var vl_pis     = (vl_bc_icms * pis / 100);
+     var vl_cofins  = (vl_bc_icms * cofins / 100);
+
   } else {
      var vl_bc_icms = 0;
-     var vl_icms = 0;
+     var vl_icms    = 0;
+     var vl_pis     = 0;
+     var vl_cofins  = 0;
 
   }               
 
@@ -205,12 +217,17 @@ function Adicionar(){
       "<td style='display:none'>"+vl_merc+"</td>" +
       "<td style='display:none'>"+vl_bc_icms+"</td>" +
       "<td style='display:none'>"+vl_icms+"</td>" +
+      "<td style='display:none'>"+vl_pis+"</td>" +
+      "<td style='display:none'>"+vl_cofins+"</td>" +
       "<td><button id='" + id_variavel +"' class='btnExcluir btn btn-default btn-xs' type='button'><span class='glyphicon glyphicon-remove'></span></button></td>"+
       "</tr>");
 
     // Preencher aba de totalizações
     //***
     // Soma o valor da mercadorias após inclusão do item
+    $("#vl_merc").maskMoney('mask',($("#vl_merc").maskMoney('unmasked')[0] + vl_merc));
+    //***
+    // Soma o valor do documento após inclusão do item
     $("#vl_doc").maskMoney('mask',($("#vl_doc").maskMoney('unmasked')[0] + vl_merc));
     //***
     // Soma o valor da quantidade após inclusão do item
@@ -220,7 +237,13 @@ function Adicionar(){
     $("#vl_bc_icms").maskMoney('mask',($("#vl_bc_icms").maskMoney('unmasked')[0] + vl_bc_icms));
     //***
     // Soma o icms após inclusão do item
-    $("#tot_icms").maskMoney('mask',($("#tot_icms").maskMoney('unmasked')[0] + vl_icms));
+    $("#vl_icms").maskMoney('mask',($("#vl_icms").maskMoney('unmasked')[0] + vl_icms));
+    //***
+    // Soma o pis após inclusão do item
+    $("#vl_pis").maskMoney('mask',($("#vl_pis").maskMoney('unmasked')[0] + vl_pis));
+    //***
+    // Soma o cofins após inclusão do item
+    $("#vl_cofins").maskMoney('mask',($("#vl_cofins").maskMoney('unmasked')[0] + vl_cofins));
     //***
     // Limpar campos após inclusão
     $("#cod_item").val("");
@@ -236,17 +259,24 @@ function Adicionar(){
     $('#vl_doc').maskMoney('mask');
     $('#qtd_item').maskMoney('mask');
     $('#vl_bc_icms').maskMoney('mask');
-    $('#tot_icms').maskMoney('mask');
+    $('#vl_icms').maskMoney('mask');
+    $('#vl_pis').maskMoney('mask');
+    $('#vl_cofins').maskMoney('mask');
     $('#td_qtd').maskMoney('mask');
     $('#td_vl_item').maskMoney('mask');
     $("#tab2primary").append(
       "<input type='text' name='item_id_item[]' id='id_item"+ id_variavel + "' value='" + id_item + "' class='hidden'/>" +
       "<input type='text' name='item_vl_item[]' id='vl_item"+ id_variavel + "' value='" + vl_item + "' class='hidden'/>" +
       "<input type='text' name='item_qtd[]' id='qtd"+ id_variavel + "' value='" + qtd + "' class='hidden'/>" +
-      "<input type='text' name='item_icms[]' id='icms"+ id_variavel + "' value='" + icms + "' class='hidden'/>" +
+      "<input type='text' name='item_vl_icms[]' id='vl_icms"+ id_variavel + "' value='" + vl_icms + "' class='hidden'/>" +
+      "<input type='text' name='item_vl_pis[]' id='vl_pis"+ id_variavel + "' value='" + vl_pis + "' class='hidden'/>" +
+      "<input type='text' name='item_vl_cofins[]' id='vl_cofins"+ id_variavel + "' value='" + vl_cofins + "' class='hidden'/>" +
       "<input type='text' name='item_vl_merc[]' id='vl_merc"+ id_variavel + "' value='" + vl_merc +"' class='hidden'/>" +
       "<input type='text' name='item_cst[]' id='cst"+ id_variavel + "' value='" + cst +"' class='hidden'/>" +
-      "<input type='text' name='item_id_natop[]' id='id_natop"+ id_variavel + "' value='" + id_natop +"' class='hidden'/>"
+      "<input type='text' name='item_id_natop[]' id='id_natop"+ id_variavel + "' value='" + id_natop +"' class='hidden'/>" +
+      "<input type='text' name='item_icms[]' id='icms"+ id_variavel + "' value='" + icms + "' class='hidden'/>" +
+      "<input type='text' name='item_pis[]' id='pis"+ id_variavel + "' value='" + pis + "' class='hidden'/>" +
+      "<input type='text' name='item_cofins[]' id='cofins"+ id_variavel + "' value='" + cofins + "' class='hidden'/>"
       );
 
     //***
@@ -258,9 +288,14 @@ function Excluir(){
     var vl_merc    = par.children("td:nth-child(5)");
     var vl_bc_icms = par.children("td:nth-child(6)");
     var vl_icms    = par.children("td:nth-child(7)");
+    var vl_pis     = par.children("td:nth-child(8)");
+    var vl_cofins  = par.children("td:nth-child(9)");
     
     par.remove();
     // Diminue o valor da mercadorias após exclusão do item
+    $("#vl_merc").maskMoney('mask',($("#vl_merc").maskMoney('unmasked')[0] - parseFloat(vl_merc.html())));
+    //***
+    // Diminue o valor do documento após exclusão do item
     $("#vl_doc").maskMoney('mask',($("#vl_doc").maskMoney('unmasked')[0] - parseFloat(vl_merc.html())));
     //***
     // Diminue a quantidade do item após exclusão do item
@@ -270,7 +305,13 @@ function Excluir(){
     $("#vl_bc_icms").maskMoney('mask',($("#vl_bc_icms").maskMoney('unmasked')[0] - parseFloat(vl_bc_icms.html())));
     //***
     // Diminue o valor do icms após exclusão do item
-    $("#tot_icms").maskMoney('mask',($("#tot_icms").maskMoney('unmasked')[0] - parseFloat(vl_icms.html())));
+    $("#vl_icms").maskMoney('mask',($("#vl_icms").maskMoney('unmasked')[0] - parseFloat(vl_icms.html())));
+    //***
+    // Diminue o valor do pis após exclusão do item
+    $("#vl_pis").maskMoney('mask',($("#vl_pis").maskMoney('unmasked')[0] - parseFloat(vl_pis.html())));
+    //***
+    // Diminue o valor do cofins após exclusão do item
+    $("#vl_cofins").maskMoney('mask',($("#vl_cofins").maskMoney('unmasked')[0] - parseFloat(vl_cofins.html())));
     //***
     $('#cod_item').focus();
     // Exibir mascaras
@@ -278,7 +319,9 @@ function Excluir(){
     $('#vl_doc').maskMoney('mask');
     $('#qtd_item').maskMoney('mask');
     $('#vl_bc_icms').maskMoney('mask');
-    $('#tot_icms').maskMoney('mask');
+    $('#vl_icms').maskMoney('mask');
+    $('#vl_pis').maskMoney('mask');
+    $('#vl_cofins').maskMoney('mask');
     //***
 };
 // Mascaras

@@ -11,9 +11,10 @@ class notas extends Model
             'id',
             'ind_oper',
             'ind_emit',
+            'natop_id',
             'participante_id',
             'cod_mod',
-            'cod_sitr',
+            'cod_sit',
             'ser',
             'num_doc',
             'chv_nfe',
@@ -49,6 +50,9 @@ class notas extends Model
     }
     public function participante() {
         return $this->belongsTo('App\Models\participantes');
+    }
+    public function natop() {
+        return $this->belongsTo('App\Models\natops');
     }
 
 }

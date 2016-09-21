@@ -6,11 +6,12 @@ use Illuminate\Database\Eloquent\Model;
 
 class notaitens extends Model
 {
-    protected $table    = 'notas';
+    protected $table    = 'notaitens';
     protected $fillable = [
             'id',
+            'notas_id',
             'num_item',
-            'cod_item',
+            'produtos_id',
             'desc_compl',
             'qtd',
             'unid',
@@ -18,7 +19,7 @@ class notaitens extends Model
             'vl_desc',
             'ind_mov',
             'cst_icms',
-            'cfop',
+            'natop_id',
             'cod_nat',
             'vl_bc_icms',
             'aliq_icms',

@@ -118,12 +118,12 @@ class ProdutoController extends Controller
   }
   public function anyAutocomplete(Request $request)
   {
-      $data = produtos::select("codigo","descricao as name","id","preco_venda","cst")->where("descricao","LIKE","%{$request->input('query')}%")->get();
+      $data = produtos::select("codigo","descricao as name","id","preco_venda","cst","icms","pis","cofins")->where("descricao","LIKE","%{$request->input('query')}%")->get();
       return response()->json($data);
   }
   public function anyCodigo(Request $request)
   {
-      $data = produtos::select("codigo as name","descricao","id","icms","preco_venda","cst")->where("codigo","LIKE","%{$request->input('query')}%")->get();
+      $data = produtos::select("codigo as name","descricao","id","icms","preco_venda","cst","pis","cofins")->where("codigo","LIKE","%{$request->input('query')}%")->get();
       return response()->json($data);
   }
   public function anyId(Request $request, $id)

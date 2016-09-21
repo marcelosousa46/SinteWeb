@@ -29,10 +29,10 @@
           </ul>
         </div>
       @endif          
-      @if(isset($participante->id) )
-          {!! Form::open(['route'=>['nota.update', $participante->id]]) !!}
+      @if(isset($nota->id) )
+          {!! Form::open(['id'=>'nota','route'=>['nota.update', $nota->id]]) !!}
       @else
-          {!! Form::open(['route'=>'nota.store']) !!}
+          {!! Form::open(['id'=>'nota','route'=>'nota.store']) !!}
       @endif
       {!! csrf_field() !!}
       <div class="panel with-nav-tabs panel-primary">
@@ -59,8 +59,10 @@
                             {!! Form::date('dt_doc', isset($nota->dt_doc) ? $nota->dt_doc:\Carbon\Carbon::now(),  ['class'=>'form-control']) !!}
                           </div>    
                           <div class="form-group col-md-8 ui-widget">
+                            <!-- Natureza da venda, campo não disponível na view -->
+                            {!! Form::text('natop_id',0, ['id'=>'natop_id','class'=>'form-control hidden']) !!}
                             {!! Form::label('l.natop', 'Natureza operação') !!}
-                            {!! Form::text('natop', isset($nota->cod_nat) ? $nota->natop:null, ['id'=>'natop','class'=>'form-control','placeholder'=>'descrição para pesquisa...']) !!}
+                            {!! Form::text('natop', isset($nota->natop_id) ? $nota->natop->descricao:null, ['id'=>'natop','class'=>'form-control','placeholder'=>'descrição para pesquisa...']) !!}
                          </div>    
                       </div>    
 
@@ -103,6 +105,8 @@
                       <div class="row">
                           <!-- Emissão prórpia, campo não disponível na view -->
                           {!! Form::text('ind_emit',0, ['id'=>'ind_emit','class'=>'form-control hidden']) !!}
+                          <!-- Documento regular, campo não disponível na view -->
+                          {!! Form::text('cod_sit','00', ['id'=>'cod_sit','class'=>'form-control hidden']) !!}
                           <!-- Emissão prórpia, campo não disponível na view -->
                           {!! Form::text('cod_mod','55', ['id'=>'cod_mod','class'=>'form-control hidden']) !!}
                           <div class="col-lg-12">
@@ -121,6 +125,10 @@
                             {!! Form::text('cst',null, ['id'=>'cst','class'=>'form-control hidden']) !!}
                             <!-- taxa do icms do produto para calculo de impostos, campo não disponível na view -->
                             {!! Form::text('icms',null, ['id'=>'icms','class'=>'form-control hidden']) !!}
+                            <!-- taxa do pis do produto para calculo de impostos, campo não disponível na view -->
+                            {!! Form::text('pis',null, ['id'=>'pis','class'=>'form-control hidden']) !!}
+                            <!-- taxa do cofins do produto para calculo de impostos, campo não disponível na view -->
+                            {!! Form::text('cofins',null, ['id'=>'cofins','class'=>'form-control hidden']) !!}
                             <!-- *** -->
                             {!! Form::label('l.cod_item', 'Código produto') !!}
                             {!! Form::text('cod_item', isset($notaitem->cod_item) ? $notaitem->coditem:null, ['id'=>'cod_item','autocomplete'=>'off','class'=>'form-control','placeholder'=>'código para pesquisa...']) !!}
@@ -208,8 +216,18 @@
                             {!! Form::text('vl_bc_icms', '0,00', ['id'=>'vl_bc_icms','class'=>'form-control text-right mascara-monetaria']) !!}
                          </div>    
                           <div class="form-group col-md-2 ui-widget">
-                            {!! Form::label('l.tot_icms', 'Vlr icms R$') !!}
-                            {!! Form::text('tot_icms', '0,00', ['id'=>'tot_icms','class'=>'form-control text-right mascara-monetaria']) !!}
+                            {!! Form::label('l.vl_icms', 'Vlr icms R$') !!}
+                            {!! Form::text('vl_icms', '0,00', ['id'=>'vl_icms','class'=>'form-control text-right mascara-monetaria']) !!}
+                         </div>    
+                      </div>    
+                      <div class="row">
+                          <div class="form-group col-md-2">
+                            {!! Form::label('l.vl_pis', 'Vlr pis R$') !!}
+                            {!! Form::text('vl_pis', '0,00', ['id'=>'vl_pis','class'=>'form-control text-right mascara-monetaria']) !!}
+                          </div>    
+                          <div class="form-group col-md-2 ui-widget">
+                            {!! Form::label('l.vl_cofins', 'Vlr cofins R$') !!}
+                            {!! Form::text('vl_cofins', '0,00', ['id'=>'vl_cofins','class'=>'form-control text-right mascara-monetaria']) !!}
                          </div>    
                       </div>    
                       <div class="row">
@@ -321,39 +339,28 @@
         $('#vl_merc').attr("disabled", true);
         $('#vl_doc').attr("disabled", true);
         $('#vl_bc_icms').attr("disabled", true);
-        $('#tot_icms').attr("disabled", true);
+        $('#vl_icms').attr("disabled", true);
         $('#vl_doc').attr("disabled", true);
-        // Habilitar inputs da aba somatório
-        $("#gerar").click(function() {
-          var idserie = $('#ser').val();
-          $.ajax({
-              type: "GET",
-              url: '../serie/nota/' + idserie, 
-              success: function (result) {
-                  if (Object.keys(result).length > 0){
-                     $("#num_doc").val(result.numnota);
-                  }
-               },
-          });
-        //  var url = "../serie/nota/" + idserie;
-        //  $.get(url , function (data) {
-        //      alerta(data.numnota);
-        //      $("#num_doc").val(data.numnota);
-        //  })           
+        $('#vl_pis').attr("disabled", true);
+        $('#vl_cofins').attr("disabled", true);
+        $("#gerar").click(function(e) {
           // Habilitar inputs da aba somatório
           $('#qtd_item').attr("disabled", false);
           $('#vl_merc').attr("disabled", false);
           $('#vl_doc').attr("disabled", false);
           $('#vl_bc_icms').attr("disabled",false);
-          $('#tot_icms').attr("disabled", false);
+          $('#vl_icms').attr("disabled", false);
           $('#vl_doc').attr("disabled", false);
+          $('#vl_pis').attr("disabled", false);
+          $('#vl_cofins').attr("disabled", false);
           // Retirar mascaras
           $("#qtd_item").val($("#qtd_item").maskMoney('unmasked')[0]);
           $("#vl_merc").val($("#vl_merc").maskMoney('unmasked')[0]);
           $("#vl_doc").val($("#vl_doc").maskMoney('unmasked')[0]);
           $("#vl_bc_icms").val($("#vl_bc_icms").maskMoney('unmasked')[0]);
-          $("#tot_icms").val($("#tot_icms").maskMoney('unmasked')[0]);
-
+          $("#vl_icms").val($("#vl_icms").maskMoney('unmasked')[0]);
+          $("#vl_pis").val($("#vl_pis").maskMoney('unmasked')[0]);
+          $("#vl_cofins").val($("#vl_cofins").maskMoney('unmasked')[0]);
         });
     });    
   </script>

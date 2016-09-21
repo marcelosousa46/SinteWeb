@@ -9,51 +9,54 @@
 
 @section('content')
 <div class="container-fluid">
-  <div class="row">
-    <div class="col-md-6">
-      @if (count($errors) > 0)
-      <div class="alert alert-danger fade in">
-        <ul>
-          @foreach ($errors->all() as $error)
-            <li>{{ $error }}</li>
-          @endforeach
-        </ul>
-      </div>
-      @endif          
+  <div class="col-md-12">
+    <div class="row">
+      <div class="col-md-6">
+        @if (count($errors) > 0)
+        <div class="alert alert-danger fade in">
+          <ul>
+            @foreach ($errors->all() as $error)
+              <li>{{ $error }}</li>
+            @endforeach
+          </ul>
+        </div>
+        @endif          
 
-      @if (session('status'))
-        @if (session('status') == 'error')
-          <div class="alert alert-danger fade in">
-            <h4>Atenção!</h4>
-            {{ session('status-mensagem') }}
-            {{ session()->forget('status') }}
-          </div>
-        @endif  
-        @if (session('status') == 'sucesso')
-          <div class="alert alert-success fade in">
-            <h4>Atenção!</h4>
-            {{ session('status-mensagem') }}
-            {{ session()->forget('status') }}
-          </div>
-        @endif  
-      @endif
-  </div>
-  <div class="row">
-    <div class="col-md-10">
-      <table class="table table-striped table-bordered table-hover" id="participante-table">
-          <thead>
-            <tr>
-              <th>Número</th>
-              <th>Destinatário</th>
-              <th>Data Emissão</th>
-              <th>Valor</th>
-              <th>Situação</th>
-              <th>Ação</th>
-            </tr>
-          </thead>
-      </table>
+        @if (session('status'))
+          @if (session('status') == 'error')
+            <div class="alert alert-danger fade in">
+              <h4>Atenção!</h4>
+              {{ session('status-mensagem') }}
+              {{ session()->forget('status') }}
+            </div>
+          @endif  
+          @if (session('status') == 'sucesso')
+            <div class="alert alert-success fade in">
+              <h4>Atenção!</h4>
+              {{ session('status-mensagem') }}
+              {{ session()->forget('status') }}
+            </div>
+          @endif  
+        @endif
     </div>
-  </div>
+  </div>  
+
+    <div class="row">
+      <div class="col-md-12">
+        <table class="table table-striped table-bordered table-hover" id="participante-table">
+            <thead>
+              <tr>
+                <th>Número</th>
+                <th>Destinatário</th>
+                <th>Data Emissão</th>
+                <th class="text-right">Valor</th>
+                <th>Ação</th>
+              </tr>
+            </thead>
+        </table>
+      </div>
+    </div>
+  </div>  
 </div>
 
 @stop
@@ -66,6 +69,10 @@
 
     $(function() {
         $('#participante-table').DataTable({
+            "columnDefs": [ 
+              { className: "vlr_out text-right", "targets": [3] },
+              { className: "text-center", "targets": [2] },
+              ],
             language : {
                 "sEmptyTable": "Nenhum registro encontrado",
                 "sInfo": "Mostrando de _START_ até _END_ de _TOTAL_ registros",
@@ -93,15 +100,17 @@
             processing: true,
             serverSide: false,
             ajax: '{!! URL::to('/nota/data') !!}',
+
             columns: [
                 { data: 'codigo', name: 'codigo' },
-                { data: 'nome', name: 'nome' },
-                { data: 'dt_doc'      , name: 'emissao' },
-                { data: 'vl_doc'      , name: 'valor' },
+                { data: 'nome'  , name: 'nome' },
+                { data: 'dt_doc', name: 'emissao' },
+                { data: 'vl_doc', name: 'valor' },
                 { data: 'action', name: 'action', orderable: false, searchable: false}
             ]
         });
 
     });
+
   </script>
 @endpush

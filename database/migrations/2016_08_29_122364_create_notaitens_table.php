@@ -14,10 +14,11 @@ class CreateNotaitensTable extends Migration
     {
         Schema::create('notaitens', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('nota_id')->unsigned();
-            $table->foreign('nota_id')->references('id')->on('notas');
+            $table->integer('notas_id')->unsigned();
+            $table->foreign('notas_id')->references('id')->on('notas');
             $table->integer('num_item');
-            $table->string('cod_item');
+            $table->integer('produtos_id')->unsigned();
+            $table->foreign('produtos_id')->references('id')->on('produtos');
             $table->string('desc_compl');
             $table->decimal('qtd',14,5);
             $table->string('unid',6);
@@ -25,7 +26,8 @@ class CreateNotaitensTable extends Migration
             $table->decimal('vl_desc',14,2);
             $table->string('ind_mov',1);
             $table->integer('cst_icms');
-            $table->string('cfop',4);
+            $table->integer('natop_id')->unsigned();
+            $table->foreign('natop_id')->references('id')->on('natop');
             $table->string('cod_nat',10);
             $table->decimal('vl_bc_icms',14,2);
             $table->decimal('aliq_icms',6,2);
