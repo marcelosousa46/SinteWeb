@@ -44,5 +44,9 @@ class notaitens extends Model
             'quant_bc_cofins',
             'vl_cofins',
             'cod_conta',
-    ];        
+    ];       
+    public function produtos() {
+        return $this->belongsTo('App\Models\produtos');
+    }
+
 }

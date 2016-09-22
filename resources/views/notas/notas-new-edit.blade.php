@@ -60,7 +60,7 @@
                           </div>    
                           <div class="form-group col-md-8 ui-widget">
                             <!-- Natureza da venda, campo não disponível na view -->
-                            {!! Form::text('natop_id',0, ['id'=>'natop_id','class'=>'form-control hidden']) !!}
+                            {!! Form::text('natop_id',isset($nota->natop_id) ? $nota->natop_id:0, ['id'=>'natop_id','class'=>'form-control hidden']) !!}
                             {!! Form::label('l.natop', 'Natureza operação') !!}
                             {!! Form::text('natop', isset($nota->natop_id) ? $nota->natop->descricao:null, ['id'=>'natop','class'=>'form-control','placeholder'=>'descrição para pesquisa...']) !!}
                          </div>    
@@ -174,6 +174,7 @@
                             {!! Form::label('l.nbsp', '&nbsp;') !!}
                             <button id="btnAdicionar" class="btn btn-default btn-block" type="button"><span class="glyphicon glyphicon-plus"></span> Incluir item </button>
                           </div>    
+
                       </div>    
                       <table id="tblCadastro" class="table table-striped table-bordered">         
                         <thead>
@@ -184,8 +185,35 @@
                             <th class="text-right">Vlr item R$</th>
                             <th>Opções</th>
                           </tr>
+
                         </thead>
                         <tbody>
+                        @if (isset($nota->id) )                          
+                          @if ($nota->itens->count() > 0)
+                              <tr>
+                              @for($i = 0; $i < $nota->itens->count(); $i++)
+                                  <td>{{ $nota->itens[$i]->produtos->codigo }}</td>
+                                  <td>{{ $nota->itens[$i]->produtos->descricao }}</td>
+                                  <td class='text-right'>{{ $nota->itens[$i]->qtd }}</td>
+                                  <td class='text-right'>{{ $nota->itens[$i]->vl_item }}</td>
+                                  <td><button id= {{ $i }} class='btnExcluir btn btn-default btn-xs' type='button'><span class='glyphicon glyphicon-remove'></span></button></td>
+                                  <input type='text' name='item_id_item[]' class='hidden' id='id_item'+ {{ $i }} value= {{ $nota->itens[$i]->produtos_id }} />
+                                  <input type='text' name='item_vl_item[]' class='hidden' id='vl_item'+ {{ $i }} value= {{ $nota->itens[$i]->vl_item }} />
+                                  <input type='text' name='item_qtd[]' class='hidden' id='qtd'+ {{ $i }} value= {{ $nota->itens[$i]->qtd }} />
+                                  <input type='text' name='item_vl_icms[]' class='hidden' id='vl_icms'+ {{ $i }} value= {{ $nota->itens[$i]->vl_icms }} />
+                                  <input type='text' name='item_vl_pis[]' class='hidden' id='vl_pis'+ {{ $i }} value= {{ $nota->itens[$i]->vl_pis }} />
+                                  <input type='text' name='item_vl_cofins[]' class='hidden' id='vl_cofins'+ {{ $i }} value= {{ $nota->itens[$i]->vl_cofins }} />
+                                  <input type='text' name='item_vl_merc[]' class='hidden' id='vl_merc'+ {{ $i }} value= {{ $nota->itens[$i]->vl_merc }} />
+                                  <input type='text' name='item_cst[]' class='hidden' id='cst'+ {{ $i }} value= {{ $nota->itens[$i]->cst }} />
+                                  <input type='text' name='item_icsm[]' class='hidden' id='icms'+ {{ $i }} value= {{ $nota->itens[$i]->icms }} />
+                                  <input type='text' name='item_pis[]' class='hidden' id='pis'+ {{ $i }} value= {{ $nota->itens[$i]->pis }} />
+                                  <input type='text' name='item_cofins[]' class='hidden' id='cofins'+ {{ $i }} value= {{ $nota->itens[$i]->cofins }} />
+                                  <input type='text' name='item_natop[]' class='hidden' id='natop'+ {{ $i }} value= {{ $nota->itens[$i]->natop }} />
+                              @endfor
+                            </tr>
+
+                          @endif
+                        @endif  
                         </tbody>
                       </table>
                       <div class="row">
@@ -201,33 +229,33 @@
                       <div class="row">
                           <div class="form-group col-md-2">
                             {!! Form::label('l.qtd_item', 'Qtde itens') !!}
-                            {!! Form::text('qtd_item', '0,00', ['id'=>'qtd_item','class'=>'form-control text-center mascara-monetaria']) !!}
+                            {!! Form::text('qtd_item', isset($nota->id) ? $nota->itens->count()*100:'0,00', ['id'=>'qtd_item','class'=>'form-control text-center mascara-monetaria']) !!}
                           </div>    
                           <div class="form-group col-md-2 ui-widget">
                             {!! Form::label('l.vl_merc', 'Vlr mercadoria R$') !!}
-                            {!! Form::text('vl_merc', '0,00', ['id'=>'vl_merc','class'=>'form-control text-right mascara-monetaria']) !!}
+                            {!! Form::text('vl_merc', isset($nota->vl_merc) ? $nota->vl_merc:'0,00', ['id'=>'vl_merc','class'=>'form-control text-right mascara-monetaria']) !!}
                          </div>    
                           <div class="form-group col-md-2 ui-widget">
                             {!! Form::label('l.vl_doc', 'Vlr documento R$') !!}
-                            {!! Form::text('vl_doc', '0,00', ['id'=>'vl_doc','class'=>'form-control text-right mascara-monetaria']) !!}
+                            {!! Form::text('vl_doc', isset($nota->vl_doc) ? $nota->vl_doc:'0,00', ['id'=>'vl_doc','class'=>'form-control text-right mascara-monetaria']) !!}
                          </div>    
                           <div class="form-group col-md-2 ui-widget">
                             {!! Form::label('l.vl_bc_icms', 'Base icms R$') !!}
-                            {!! Form::text('vl_bc_icms', '0,00', ['id'=>'vl_bc_icms','class'=>'form-control text-right mascara-monetaria']) !!}
+                            {!! Form::text('vl_bc_icms', isset($nota->vl_bc_icms) ? $nota->vl_bc_icms:'0,00', ['id'=>'vl_bc_icms','class'=>'form-control text-right mascara-monetaria']) !!}
                          </div>    
                           <div class="form-group col-md-2 ui-widget">
                             {!! Form::label('l.vl_icms', 'Vlr icms R$') !!}
-                            {!! Form::text('vl_icms', '0,00', ['id'=>'vl_icms','class'=>'form-control text-right mascara-monetaria']) !!}
+                            {!! Form::text('vl_icms', isset($nota->vl_icms) ? $nota->vl_icms:'0,00', ['id'=>'vl_icms','class'=>'form-control text-right mascara-monetaria']) !!}
                          </div>    
                       </div>    
                       <div class="row">
                           <div class="form-group col-md-2">
                             {!! Form::label('l.vl_pis', 'Vlr pis R$') !!}
-                            {!! Form::text('vl_pis', '0,00', ['id'=>'vl_pis','class'=>'form-control text-right mascara-monetaria']) !!}
+                            {!! Form::text('vl_pis', isset($nota->vl_pis) ? $nota->vl_pis:'0,00', ['id'=>'vl_pis','class'=>'form-control text-right mascara-monetaria']) !!}
                           </div>    
                           <div class="form-group col-md-2 ui-widget">
                             {!! Form::label('l.vl_cofins', 'Vlr cofins R$') !!}
-                            {!! Form::text('vl_cofins', '0,00', ['id'=>'vl_cofins','class'=>'form-control text-right mascara-monetaria']) !!}
+                            {!! Form::text('vl_cofins', isset($nota->vl_cofins) ? $nota->vl_cofins:'0,00', ['id'=>'vl_cofins','class'=>'form-control text-right mascara-monetaria']) !!}
                          </div>    
                       </div>    
                       <div class="row">
@@ -250,7 +278,6 @@
                               </div>
                           </div>
                       </div>
-                      
                   </div>
                   <div class="tab-pane fade" id="tab5primary">
                       <div class="row">
@@ -258,13 +285,13 @@
                             <!-- Numero da nota, campo não disponível na view -->
                             {!! Form::text('num_doc',0, ['id'=>'num_doc','class'=>'form-control hidden']) !!}
                             {!! Form::label('l.cod_cli', 'Código') !!}
-                            {!! Form::text('cli_cod', isset($participante->codigo) ? $participante->codigo:null, ['id'=>'cli_cod','autocomplete'=>'off','class'=>'form-control','placeholder'=>'código para pesquisa...']) !!}
+                            {!! Form::text('cli_cod', isset($nota->participante_id) ? $nota->participante->codigo:null, ['id'=>'cli_cod','autocomplete'=>'off','class'=>'form-control','placeholder'=>'código para pesquisa...']) !!}
                          </div>    
                          <div class="form-group col-md-8 ui-widget">
                             <!-- Id do participante, campo não disponível na view -->
-                            {!! Form::text('participante_id',0, ['id'=>'participante_id','class'=>'form-control hidden']) !!}
+                            {!! Form::text('participante_id',isset($nota->participante_id) ? $nota->participante_id:0, ['id'=>'participante_id','class'=>'form-control hidden']) !!}
                             {!! Form::label('l.cli_nome', 'Destinatário') !!}
-                            {!! Form::text('cli_nome', null, ['id'=>'cli_nome','class'=>'form-control','placeholder'=>'nome para pesquisa...']) !!}
+                            {!! Form::text('cli_nome', isset($nota->participante_id) ? $nota->participante->nome:null, ['id'=>'cli_nome','class'=>'form-control','placeholder'=>'nome para pesquisa...']) !!}
                          </div>    
                       </div>
                       <div class="row">
@@ -334,6 +361,13 @@
         $('#vl_item').maskMoney('mask');
         $('#aliq_icms').maskMoney('mask');
         $('#vl_desc').maskMoney('mask');
+        $('#qtd_item').maskMoney('mask');
+        $('#vl_merc').maskMoney('mask');
+        $('#vl_doc').maskMoney('mask');
+        $('#vl_bc_icms').maskMoney('mask');
+        $('#vl_icms').maskMoney('mask');
+        $('#vl_pis').maskMoney('mask');
+        $('#vl_cofins').maskMoney('mask');
         // Desabilitar inputs da aba somatório
         $('#qtd_item').attr("disabled", true);
         $('#vl_merc').attr("disabled", true);

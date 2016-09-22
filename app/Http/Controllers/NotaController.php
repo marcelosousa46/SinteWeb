@@ -13,15 +13,18 @@ use Yajra\Datatables\Datatables;
 use App\Classes\Nfe;
 use App\Http\Requests\NotaRequest;
 use DB;
+use App\Classes\InterItens;
 
 class NotaController extends Controller
 {
   private $permissao;
   private $nfe;
+  private $inter;
   public function __construct()
   {
       $this->middleware('auth');
       $this->permissao = new Classes;
+      $this->inter = new InterItens;
 //      $this->nfe = new Nfe;
   }
   public function getIndex(Request $request)
@@ -83,41 +86,7 @@ class NotaController extends Controller
       $notas = Notas::create($input);
       $i = 0;
       for ($i = 0; $i < $request->qtd_item; $i++){
-        $itens = new notaitens([
-          'num_item'      => $i + 1,
-          'produtos_id'   => $request->item_id_item[$i],
-          'qtd'           => $request->item_qtd[$i],
-          'unid'          => 'UND',
-          'vl_item'       => $request->item_vl_item[$i], 
-          'vl_desc'       => 0,
-          'ind_mov'       => '',
-          'cst_icms'      => $request->item_cst[$i], 
-          'natop_id'      => $request->item_id_natop[$i], 
-          'cod_nat'       => '',
-          'vl_bc_icms'    => $request->item_vl_merc[$i],
-          'aliq_icms'     => $request->item_icms[$i],
-          'vl_icms'       => $request->item_vl_icms[$i],
-          'vl_bc_icms_ST' => 0,
-          'aliq_ST'       => 0,
-          'vl_icms_st'    => 0,
-          'ind_apur'      => '0',
-          'cst_ipi'       => '02',
-          'cod_enq'       => '',
-          'vl_bc_ipi'     => 0,
-          'aliq_ipi'      => 0,
-          'vl_ipi'        => 0,
-          'cst_pis'       => '03',
-          'vl_bc_pis'     => $request->item_vl_merc[$i],
-          'aliq_pis'      => $request->item_pis[$i],
-          'quant_bc_pis'  => '',
-          'vl_pis'        => $request->item_vl_pis[$i],
-          'cst_cofins'    => '03',
-          'vl_bc_cofins'  => $request->item_vl_merc[$i],
-          'aliq_cofins'   => $request->item_cofins[$i],
-          'quant_bc_pis'  => '',
-          'vl_cofins'     => $request->item_vl_cofins[$i],
-          'cod_conta'     => ''
-        ]);
+        $itens = $this->inter->relacionar($request, $i);
         $notas->itens()->save($itens);
       }
       return redirect()->route('nota',['id' => $rotina_id, 'user_id'=>$user_id]);
@@ -130,6 +99,8 @@ class NotaController extends Controller
 
       if ($autorizado)
       {
+
+        Notas::find($id)->itens()->delete();
         Notas::find($id)->delete();
         return redirect()->route('nota', ['id' => $rotina_id, 'user_id'=>$user_id]);
       } else {
@@ -149,6 +120,7 @@ class NotaController extends Controller
       if ($autorizado)
       {
         $nota = Notas::find($id);
+//        dd($nota->itens->count());
         return view('notas.notas-new-edit',compact(['nota','rotina_id','user_id','series','unidades']));
       } else {
         session()->put('status', 'error');
@@ -158,9 +130,17 @@ class NotaController extends Controller
   }
   public function postUpdate(Request $request, $id)
   {
+    //dd($request->all());
       $rotina_id = session('rotina_id');
       $user_id   = session('user_id');
       $nota      = Notas::find($id)->update($request->all());
+      $i = 0;
+      for ($i = 0; $i < $request->qtd_item; $i++){
+        $itens = notaitens::find($request->item_id_item[$i]);
+//        dd($itens);
+        $itens = $this->inter->igualhar($request, $itens, $i);
+        $itens->save();
+      }
 
       return redirect()->route('nota', ['id' => $rotina_id, 'user_id'=>$user_id]);
   }
