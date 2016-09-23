@@ -48,5 +48,8 @@ class notaitens extends Model
     public function produtos() {
         return $this->belongsTo('App\Models\produtos');
     }
+    public function natop() {
+        return $this->belongsTo('App\Models\natops');
+    }
 
 }

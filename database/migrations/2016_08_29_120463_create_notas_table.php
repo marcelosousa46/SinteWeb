@@ -20,6 +20,7 @@ class CreateNotasTable extends Migration
             $table->foreign('participante_id')->references('id')->on('participantes');
             $table->integer('natop_id')->unsigned();
             $table->foreign('natop_id')->references('id')->on('natop');
+            $table->string('tpemis',1);
             $table->string('cod_mod',2);
             $table->string('cod_sit',2);
             $table->string('ser',3);

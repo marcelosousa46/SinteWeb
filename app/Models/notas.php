@@ -15,6 +15,7 @@ class notas extends Model
             'participante_id',
             'cod_mod',
             'cod_sit',
+            'tpemis',
             'ser',
             'num_doc',
             'chv_nfe',
@@ -40,6 +41,14 @@ class notas extends Model
             'vl_cofins_st',
             'serie_id'
     ];
+
+    protected static function boot() {
+        parent::boot();
+
+        static::deleting(function($nota) { 
+             $nota->itens()->delete();
+        });
+    }    
 
     public function series() {
         return $this->belongsTo('App\Models\Series');

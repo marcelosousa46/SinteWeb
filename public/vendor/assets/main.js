@@ -68,8 +68,8 @@ $(document).ready(function(){
       },
       updater: function (item) {
          $('#descricao').val(item.name);
-         $('#cod_item.tagCodProduto').val(item.codigo);
-         $('#id_item').val(item.id);
+         $('#cod_item').val(item.codigo);
+         $('#produto_id').val(item.id);
          $('#vl_item').val(item.preco_venda);
          $('#cst').val(item.cst);
          $('#icms').val(item.icms);
@@ -93,7 +93,7 @@ $(document).ready(function(){
       updater: function (item) {
          $('#cod_item').val(item.name);
          $('#descricao').val(item.descricao);
-         $('#id_item').val(item.id);
+         $('#produto_id').val(item.id);
          $('#aliq_icms').val(item.icms);
          $('#vl_item').val(item.preco_venda);
          $('#cst').val(item.cst);
@@ -155,7 +155,7 @@ function Adicionar(){
   var descricao   = $("#descricao").val();
   var qtd         = $("#qtd").maskMoney('unmasked')[0];
   var vl_item     = $("#vl_item").maskMoney('unmasked')[0];
-  var id_item     = $("#id_item").val();
+  var produto_id  = $("#produto_id").val();
   var id_natop    = $("#id_natop").val();
   var cst         = $("#cst").val();
   var icms        = $("#icms").maskMoney('unmasked')[0];
@@ -165,7 +165,7 @@ function Adicionar(){
                     $("#vl_item").maskMoney('unmasked')[0];
   var vl_doc      = vl_merc;                  
   var id_variavel = Math.floor((Math.random() * 100) + 1) + cod_item;
-  
+
   if ( cst == '00'){
      var vl_bc_icms = vl_merc;
      var vl_icms    = (vl_bc_icms * icms / 100);
@@ -182,10 +182,10 @@ function Adicionar(){
 
   $.ajax({
       type: "GET",
-      url: '../../../produtos/id/'+id_item, 
+      url: '../../../produtos/id/'+produto_id, 
       success: function (result) {
           if (Object.keys(result).length > 0){
-             $("#id_item").val(result.id);
+             $("#produto_id").val(result.id);
              $("#aliq_icms").val(result.icms);
           }
       },
@@ -200,7 +200,7 @@ function Adicionar(){
       },
       });
 
-  if ($("#id_item").val() == 0 || $("#id_natop").val() == 0 || cod_item == "" || descricao == "" || qtd == "" || vl_item == "" ) {
+  if ($("#produto_id").val() == 0 || $("#id_natop").val() == 0 || cod_item == "" || descricao == "" || qtd == "" || vl_item == "" ) {
     $('.mensagem').removeClass('hidden');
     $('.mensagem').addClass('visible');
     $("#mensagem").text('Campos com valores inválidos!');
@@ -265,7 +265,7 @@ function Adicionar(){
     $('#td_qtd').maskMoney('mask');
     $('#td_vl_item').maskMoney('mask');
     $("#tab2primary").append(
-      "<input type='text' name='item_id_item[]' id='id_item"+ id_variavel + "' value='" + id_item + "' class='hidden'/>" +
+      "<input type='text' name='item_produto_id[]' id='produto_id"+ id_variavel + "' value='" + produto_id + "' class='hidden'/>" +
       "<input type='text' name='item_vl_item[]' id='vl_item"+ id_variavel + "' value='" + vl_item + "' class='hidden'/>" +
       "<input type='text' name='item_qtd[]' id='qtd"+ id_variavel + "' value='" + qtd + "' class='hidden'/>" +
       "<input type='text' name='item_vl_icms[]' id='vl_icms"+ id_variavel + "' value='" + vl_icms + "' class='hidden'/>" +
@@ -273,10 +273,13 @@ function Adicionar(){
       "<input type='text' name='item_vl_cofins[]' id='vl_cofins"+ id_variavel + "' value='" + vl_cofins + "' class='hidden'/>" +
       "<input type='text' name='item_vl_merc[]' id='vl_merc"+ id_variavel + "' value='" + vl_merc +"' class='hidden'/>" +
       "<input type='text' name='item_cst[]' id='cst"+ id_variavel + "' value='" + cst +"' class='hidden'/>" +
-      "<input type='text' name='item_id_natop[]' id='id_natop"+ id_variavel + "' value='" + id_natop +"' class='hidden'/>" +
+      "<input type='text' name='item_natop_id[]' id='id_natop"+ id_variavel + "' value='" + id_natop +"' class='hidden'/>" +
       "<input type='text' name='item_icms[]' id='icms"+ id_variavel + "' value='" + icms + "' class='hidden'/>" +
       "<input type='text' name='item_pis[]' id='pis"+ id_variavel + "' value='" + pis + "' class='hidden'/>" +
-      "<input type='text' name='item_cofins[]' id='cofins"+ id_variavel + "' value='" + cofins + "' class='hidden'/>"
+      "<input type='text' name='item_cofins[]' id='cofins"+ id_variavel + "' value='" + cofins + "' class='hidden'/>" +
+      "<input type='text' name='item_vl_bc_icms[]' id='vl_bc_icms"+ id_variavel + "' value='" + vl_merc +"' class='hidden'/>" +
+      "<input type='text' name='item_vl_bc_pis[]'  id='vl_bc_pis"+ id_variavel + "' value='" + vl_merc +"' class='hidden'/>" +
+      "<input type='text' name='item_vl_bc_cofins[]'  id='vl_bc_cofins"+ id_variavel + "' value='" + vl_merc +"' class='hidden'/>"
       );
 
     //***
@@ -290,8 +293,26 @@ function Excluir(){
     var vl_icms    = par.children("td:nth-child(7)");
     var vl_pis     = par.children("td:nth-child(8)");
     var vl_cofins  = par.children("td:nth-child(9)");
+    var iclasse    = $("#nitem").val();
     
     par.remove();
+    if (iclasse >= 0 ){
+      $( "#id_item"+iclasse ).remove();
+      $( "#produto_id"+iclasse ).remove();
+      $( "#vl_item"+iclasse ).remove();
+      $( "#qtd"+iclasse ).remove();
+      $( "#vl_icms"+iclasse ).remove();
+      $( "#vl_pis"+iclasse ).remove();
+      $( "#vl_cofins"+iclasse ).remove();
+      $( "#cst"+iclasse ).remove();
+      $( "#icms"+iclasse ).remove();
+      $( "#pis"+iclasse ).remove();
+      $( "#cofins"+iclasse ).remove();
+      $( "#natop"+iclasse ).remove();
+      $( "#vl_bc_icms"+iclasse ).remove();
+      $( "#vl_bc_pis"+iclasse ).remove();
+      $( "#vl_bc_cofins"+iclasse ).remove();
+    }
     // Diminue o valor da mercadorias após exclusão do item
     $("#vl_merc").maskMoney('mask',($("#vl_merc").maskMoney('unmasked')[0] - parseFloat(vl_merc.html())));
     //***

@@ -24,9 +24,9 @@ class NotaRequest extends Request
     public function rules()
     {
         return [
-           'natop'        => 'required|max:60',
-           'cli_cod'      => 'required|max:60',
-           'item_id_item' => 'required',
+           'natop'           => 'required|max:60',
+           'cli_cod'         => 'required|max:60',
+           'item_produto_id' => 'required',
         ];
 
     }

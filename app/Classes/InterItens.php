@@ -12,16 +12,16 @@ class InterItens
 
         $itens = new notaitens([
           'num_item'      => $i + 1,
-          'produtos_id'   => $conteudo->item_id_item[$i],
+          'produtos_id'   => $conteudo->item_produto_id[$i],
           'qtd'           => $conteudo->item_qtd[$i],
           'unid'          => 'UND',
           'vl_item'       => $conteudo->item_vl_item[$i], 
           'vl_desc'       => 0,
           'ind_mov'       => '',
           'cst_icms'      => $conteudo->item_cst[$i], 
-          'natop_id'      => $conteudo->item_id_natop[$i], 
+          'natop_id'      => $conteudo->item_natop_id[$i], 
           'cod_nat'       => '',
-          'vl_bc_icms'    => $conteudo->item_vl_merc[$i],
+          'vl_bc_icms'    => $conteudo->item_vl_bc_icms[$i],
           'aliq_icms'     => $conteudo->item_icms[$i],
           'vl_icms'       => $conteudo->item_vl_icms[$i],
           'vl_bc_icms_ST' => 0,
@@ -34,12 +34,12 @@ class InterItens
           'aliq_ipi'      => 0,
           'vl_ipi'        => 0,
           'cst_pis'       => '03',
-          'vl_bc_pis'     => $conteudo->item_vl_merc[$i],
+          'vl_bc_pis'     => $conteudo->item_vl_bc_pis[$i],
           'aliq_pis'      => $conteudo->item_pis[$i],
           'quant_bc_pis'  => '',
           'vl_pis'        => $conteudo->item_vl_pis[$i],
           'cst_cofins'    => '03',
-          'vl_bc_cofins'  => $conteudo->item_vl_merc[$i],
+          'vl_bc_cofins'  => $conteudo->item_vl_bc_cofins[$i],
           'aliq_cofins'   => $conteudo->item_cofins[$i],
           'quant_bc_pis'  => '',
           'vl_cofins'     => $conteudo->item_vl_cofins[$i],
@@ -49,9 +49,7 @@ class InterItens
 	}
 	public function igualhar($conteudo, $item, $i){
 
-//        $itens->num_item      = $conteudo->num_item[$i];
-//		dd($item->produtos_id);
-        $item->produtos_id   = $conteudo->item_id_item[$i];
+        $item->produtos_id   = $conteudo->item_produto_id[$i];
         $item->qtd           = $conteudo->item_qtd[$i];
         $item->unid          = $conteudo->item_unid[$i];
         $item->vl_item       = $conteudo->item_vl_item[$i]; 

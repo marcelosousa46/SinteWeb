@@ -25,7 +25,7 @@ class NotaController extends Controller
       $this->middleware('auth');
       $this->permissao = new Classes;
       $this->inter = new InterItens;
-//      $this->nfe = new Nfe;
+      $this->nfe = new Nfe;
   }
   public function getIndex(Request $request)
   {
@@ -54,6 +54,8 @@ class NotaController extends Controller
               '<a href="nota/edit/'.$notas->id.'" class="glyphicon glyphicon-pencil" title="Editar"></a>',
               '<a href="nota/destroy/'.$notas->id.'" class="glyphicon glyphicon-trash" title="Deletar"
                                                                      onclick="return confirm(\'Excluir Nota?\')"></a>',
+              '<a href="nota/geranfe/'.$notas->id.'" class="glyphicon glyphicon-list-alt" title="Emitir nota"
+                                                                     onclick="return confirm(\'Confirma emissão da nota?\')"></a>',
              ];
       })
       ->make(true);
@@ -82,8 +84,8 @@ class NotaController extends Controller
       $request->merge(array('num_doc' => $numdoc));
       $request->merge(array('dt_e_s'  => $request->dt_doc));
       $input     = $request->all();
-      //dd($input);
-      $notas = Notas::create($input);
+//      dd($input);
+      $notas = notas::create($input);
       $i = 0;
       for ($i = 0; $i < $request->qtd_item; $i++){
         $itens = $this->inter->relacionar($request, $i);
@@ -99,9 +101,7 @@ class NotaController extends Controller
 
       if ($autorizado)
       {
-
-        Notas::find($id)->itens()->delete();
-        Notas::find($id)->delete();
+        notas::find($id)->delete();
         return redirect()->route('nota', ['id' => $rotina_id, 'user_id'=>$user_id]);
       } else {
         session()->put('status', 'error');
@@ -119,7 +119,7 @@ class NotaController extends Controller
 
       if ($autorizado)
       {
-        $nota = Notas::find($id);
+        $nota = notas::find($id);
 //        dd($nota->itens->count());
         return view('notas.notas-new-edit',compact(['nota','rotina_id','user_id','series','unidades']));
       } else {
@@ -130,24 +130,23 @@ class NotaController extends Controller
   }
   public function postUpdate(Request $request, $id)
   {
-    //dd($request->all());
+//      dd($request->all());
       $rotina_id = session('rotina_id');
       $user_id   = session('user_id');
-      $nota      = Notas::find($id)->update($request->all());
+      $nota      = notas::find($id)->update($request->all());
+      $rows      = notaitens::where('notas_id', $request->nota_id)->delete();
       $i = 0;
       for ($i = 0; $i < $request->qtd_item; $i++){
-        $itens = notaitens::find($request->item_id_item[$i]);
-//        dd($itens);
-        $itens = $this->inter->igualhar($request, $itens, $i);
-        $itens->save();
+        $itens = $this->inter->relacionar($request, $i);
+        $nota  = notas::find($id)->itens()->save($itens);
       }
-
       return redirect()->route('nota', ['id' => $rotina_id, 'user_id'=>$user_id]);
   }
 
-  public function anyGeranfe(Request $request)
+  public function anyGeranfe(Request $request, $id)
   {
-    return $this->nfe->getnfe($request);
+    $nota = notas::find($id);
+    return $this->nfe->getnfe($nota);
   }
 
 }

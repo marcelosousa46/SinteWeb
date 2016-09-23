@@ -6,7 +6,7 @@ namespace App\Classes;
 */
 class NfeCapa
 {
-    public  $cUF;
+    public $cUF;
     public $cNF;
     public $natOp;
     public $indPag;

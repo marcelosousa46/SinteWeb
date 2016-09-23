@@ -55,6 +55,8 @@
                   <div class="tab-pane fade in active" id="tab1primary">
                       <div class="row">
                           <div class="form-group col-md-4">
+                            <!-- ID da nota, campo não disponível na view -->
+                            {!! Form::text('nota_id',isset($nota->id) ? $nota->id:0, ['id'=>'nata_id','class'=>'form-control hidden']) !!}
                             {!! Form::label('l.dt_doc', 'Data emissão') !!}
                             {!! Form::date('dt_doc', isset($nota->dt_doc) ? $nota->dt_doc:\Carbon\Carbon::now(),  ['class'=>'form-control']) !!}
                           </div>    
@@ -88,9 +90,9 @@
                       <div class="row">
                           <div class="form-group col-md-4">
                             {!! Form::label('l.tpEmis', 'Tipo de Emissão') !!}
-                            {!! Form::select('tpEmis', array('1' => 'Normal', '2' => 'Contingência FS-IA', '3' => 'Contingência SCAN', 
+                            {!! Form::select('tpemis', array('1' => 'Normal', '2' => 'Contingência FS-IA', '3' => 'Contingência SCAN', 
                                                              '4' => 'Contingência DPEC', '5' => 'Contingência FS-DA',
-                                                             '6' => 'Contingência SVC-AN', '7' => 'Contingência SVC-RS'),isset($nota->tpEmis) ? $nota->tpEmis:'1', ['class'=>'form-control']) !!}
+                                                             '6' => 'Contingência SVC-AN', '7' => 'Contingência SVC-RS'),isset($nota->tpemis) ? $nota->tpemis:'1', ['class'=>'form-control']) !!}
                           </div>    
                           <div class="form-group col-md-4">
                             {!! Form::label('l.finNFe', 'Finalidade') !!}
@@ -120,7 +122,7 @@
                       <div class="row">
                           <div class="form-group col-md-4">
                             <!-- Id do produto para validação, campo não disponível na view -->
-                            {!! Form::text('id_item',0, ['id'=>'id_item','class'=>'form-control hidden']) !!}
+                            {!! Form::text('produto_id',0, ['id'=>'produto_id','class'=>'form-control hidden']) !!}
                             <!-- Cst do produto para calculo de impostos, campo não disponível na view -->
                             {!! Form::text('cst',null, ['id'=>'cst','class'=>'form-control hidden']) !!}
                             <!-- taxa do icms do produto para calculo de impostos, campo não disponível na view -->
@@ -190,27 +192,31 @@
                         <tbody>
                         @if (isset($nota->id) )                          
                           @if ($nota->itens->count() > 0)
-                              <tr>
                               @for($i = 0; $i < $nota->itens->count(); $i++)
+                                <tr>
                                   <td>{{ $nota->itens[$i]->produtos->codigo }}</td>
                                   <td>{{ $nota->itens[$i]->produtos->descricao }}</td>
                                   <td class='text-right'>{{ $nota->itens[$i]->qtd }}</td>
                                   <td class='text-right'>{{ $nota->itens[$i]->vl_item }}</td>
                                   <td><button id= {{ $i }} class='btnExcluir btn btn-default btn-xs' type='button'><span class='glyphicon glyphicon-remove'></span></button></td>
-                                  <input type='text' name='item_id_item[]' class='hidden' id='id_item'+ {{ $i }} value= {{ $nota->itens[$i]->produtos_id }} />
-                                  <input type='text' name='item_vl_item[]' class='hidden' id='vl_item'+ {{ $i }} value= {{ $nota->itens[$i]->vl_item }} />
-                                  <input type='text' name='item_qtd[]' class='hidden' id='qtd'+ {{ $i }} value= {{ $nota->itens[$i]->qtd }} />
-                                  <input type='text' name='item_vl_icms[]' class='hidden' id='vl_icms'+ {{ $i }} value= {{ $nota->itens[$i]->vl_icms }} />
-                                  <input type='text' name='item_vl_pis[]' class='hidden' id='vl_pis'+ {{ $i }} value= {{ $nota->itens[$i]->vl_pis }} />
-                                  <input type='text' name='item_vl_cofins[]' class='hidden' id='vl_cofins'+ {{ $i }} value= {{ $nota->itens[$i]->vl_cofins }} />
-                                  <input type='text' name='item_vl_merc[]' class='hidden' id='vl_merc'+ {{ $i }} value= {{ $nota->itens[$i]->vl_merc }} />
-                                  <input type='text' name='item_cst[]' class='hidden' id='cst'+ {{ $i }} value= {{ $nota->itens[$i]->cst }} />
-                                  <input type='text' name='item_icsm[]' class='hidden' id='icms'+ {{ $i }} value= {{ $nota->itens[$i]->icms }} />
-                                  <input type='text' name='item_pis[]' class='hidden' id='pis'+ {{ $i }} value= {{ $nota->itens[$i]->pis }} />
-                                  <input type='text' name='item_cofins[]' class='hidden' id='cofins'+ {{ $i }} value= {{ $nota->itens[$i]->cofins }} />
-                                  <input type='text' name='item_natop[]' class='hidden' id='natop'+ {{ $i }} value= {{ $nota->itens[$i]->natop }} />
+                                  <input type='text' name='nitem' class='hidden' id='nitem' value= {{ $i }} />
+                                </tr>
+                                <input type='text' name='item_id_item[]' class='hidden' id='id_item{{ $i }}' value= {{ $nota->itens[$i]->id }} />
+                                <input type='text' name='item_produto_id[]' class='hidden' id='produto_id{{ $i }}' value= {{ $nota->itens[$i]->produtos_id }} />
+                                <input type='text' name='item_vl_item[]' class='hidden' id='vl_item{{ $i }}' value= {{ $nota->itens[$i]->vl_item }} />
+                                <input type='text' name='item_qtd[]' class='hidden' id='qtd{{ $i }}' value= {{ $nota->itens[$i]->qtd }} />
+                                <input type='text' name='item_vl_icms[]' class='hidden' id='vl_icms{{ $i }}' value= {{ $nota->itens[$i]->vl_icms }} />
+                                <input type='text' name='item_vl_pis[]' class='hidden' id='vl_pis{{ $i }}' value= {{ $nota->itens[$i]->vl_pis }} />
+                                <input type='text' name='item_vl_cofins[]' class='hidden' id='vl_cofins{{ $i }}' value= {{ $nota->itens[$i]->vl_cofins }} />
+                                <input type='text' name='item_cst[]' class='hidden' id='cst{{ $i }}' value= {{ $nota->itens[$i]->cst_icms }} />
+                                <input type='text' name='item_icms[]' class='hidden' id='icms{{ $i }}' value= {{ $nota->itens[$i]->aliq_icms }} />
+                                <input type='text' name='item_pis[]' class='hidden' id='pis{{ $i }}' value= {{ $nota->itens[$i]->aliq_pis }} />
+                                <input type='text' name='item_cofins[]' class='hidden' id='cofins{{ $i }}' value= {{ $nota->itens[$i]->aliq_cofins }} />
+                                <input type='text' name='item_natop_id[]' class='hidden' id='natop{{ $i }}' value= {{ $nota->itens[$i]->natop_id }} />
+                                <input type='text' name='item_vl_bc_icms[]' class='hidden' id='vl_bc_icms{{ $i }}' value= {{ $nota->itens[$i]->vl_bc_icms }} />
+                                <input type='text' name='item_vl_bc_pis[]' class='hidden' id='vl_bc_pis{{ $i }}' value= {{ $nota->itens[$i]->vl_bc_pis }} />
+                                <input type='text' name='item_vl_bc_cofins[]' class='hidden' id='vl_bc_cofins{{ $i }}' value= {{ $nota->itens[$i]->vl_bc_cofins }} />
                               @endfor
-                            </tr>
 
                           @endif
                         @endif  
