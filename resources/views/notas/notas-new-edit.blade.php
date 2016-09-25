@@ -20,6 +20,7 @@
             <li id="mensagem">error</li>
         </ul>
       </div>
+      
       @if (count($errors) > 0)
         <div class="alert alert-danger">
           <ul>
@@ -28,7 +29,7 @@
             @endforeach
           </ul>
         </div>
-      @endif          
+      @endif
       @if(isset($nota->id) )
           {!! Form::open(['id'=>'nota','route'=>['nota.update', $nota->id]]) !!}
       @else
@@ -59,51 +60,51 @@
                             {!! Form::text('nota_id',isset($nota->id) ? $nota->id:0, ['id'=>'nata_id','class'=>'form-control hidden']) !!}
                             {!! Form::label('l.dt_doc', 'Data emissão') !!}
                             {!! Form::date('dt_doc', isset($nota->dt_doc) ? $nota->dt_doc:\Carbon\Carbon::now(),  ['class'=>'form-control']) !!}
-                          </div>    
+                          </div>
                           <div class="form-group col-md-8 ui-widget">
                             <!-- Natureza da venda, campo não disponível na view -->
                             {!! Form::text('natop_id',isset($nota->natop_id) ? $nota->natop_id:0, ['id'=>'natop_id','class'=>'form-control hidden']) !!}
                             {!! Form::label('l.natop', 'Natureza operação') !!}
                             {!! Form::text('natop', isset($nota->natop_id) ? $nota->natop->descricao:null, ['id'=>'natop','class'=>'form-control','placeholder'=>'descrição para pesquisa...']) !!}
-                         </div>    
-                      </div>    
+                         </div>
+                      </div>
 
                       <div class="row">
                           <div class="form-group col-md-2">
                             {!! Form::label('l.ind_pagto', 'Série') !!}
                             {!! Form::select('ser', $series,isset($nota->ser) ? $nota->ser:'1', ['id'=>'ser','class'=>'form-control']) !!}
-                          </div>    
+                          </div>
                           <div class="form-group col-md-2">
                             {!! Form::label('l.ind_pagto', 'Pagamento') !!}
                             {!! Form::select('ind_pagto', array('0' => 'à vista', '1' => 'à prazo', '2' => 'Outros'),isset($nota->ind_pagto) ? $nota->ind_pagto:'0', ['class'=>'form-control']) !!}
-                          </div>    
+                          </div>
                           <div class="form-group col-md-4">
                             {!! Form::label('l.tpNf', 'Tipo de operação') !!}
                             {!! Form::select('ind_oper', array('0' => 'Entrada', '1' => 'Saída'),isset($nota->ind_oper) ? $nota->ind_oper:'1', ['class'=>'form-control']) !!}
-                          </div>    
+                          </div>
                           <div class="form-group col-md-4">
                             {!! Form::label('l.idDest', 'Destino da operação') !!}
                             {!! Form::select('idDest', array('1' => 'Interna', '2' => 'Interestadual', '3' => 'Exterior'),isset($nota->idDest) ? $nota->idDest:'1', ['class'=>'form-control']) !!}
-                          </div>    
-                      </div>    
+                          </div>
+                      </div>
 
                       <div class="row">
                           <div class="form-group col-md-4">
                             {!! Form::label('l.tpEmis', 'Tipo de Emissão') !!}
-                            {!! Form::select('tpemis', array('1' => 'Normal', '2' => 'Contingência FS-IA', '3' => 'Contingência SCAN', 
+                            {!! Form::select('tpemis', array('1' => 'Normal', '2' => 'Contingência FS-IA', '3' => 'Contingência SCAN',
                                                              '4' => 'Contingência DPEC', '5' => 'Contingência FS-DA',
                                                              '6' => 'Contingência SVC-AN', '7' => 'Contingência SVC-RS'),isset($nota->tpemis) ? $nota->tpemis:'1', ['class'=>'form-control']) !!}
-                          </div>    
+                          </div>
                           <div class="form-group col-md-4">
                             {!! Form::label('l.finNFe', 'Finalidade') !!}
                             {!! Form::select('finNFe', array('1' => 'Normal', '2' => 'Complementar', '3' => 'Ajuste',
                                                              '4' => 'Devolução/Retorno'),isset($nota->finNFe) ? $nota->finNFe:'1', ['class'=>'form-control']) !!}
-                          </div>    
+                          </div>
                           <div class="form-group col-md-4">
                             {!! Form::label('l.indFinal', 'Consumidor final') !!}
                             {!! Form::select('indFinal', array('0' => 'Normal', '1' => 'Consumidor final'),isset($nota->indFinal) ? $nota->indFinal:'0', ['class'=>'form-control']) !!}
-                          </div>    
-                      </div>    
+                          </div>
+                      </div>
                       <div class="row">
                           <!-- Emissão prórpia, campo não disponível na view -->
                           {!! Form::text('ind_emit',0, ['id'=>'ind_emit','class'=>'form-control hidden']) !!}
@@ -117,7 +118,7 @@
                               </div>
                           </div>
                       </div>
-                  </div>    
+                  </div>
                   <div class="tab-pane fade" id="tab2primary">
                       <div class="row">
                           <div class="form-group col-md-4">
@@ -134,51 +135,51 @@
                             <!-- *** -->
                             {!! Form::label('l.cod_item', 'Código produto') !!}
                             {!! Form::text('cod_item', isset($notaitem->cod_item) ? $notaitem->coditem:null, ['id'=>'cod_item','autocomplete'=>'off','class'=>'form-control','placeholder'=>'código para pesquisa...']) !!}
-                          </div>    
+                          </div>
                           <div class="form-group col-md-8 ui-widget">
                             {!! Form::label('l.descricao', 'Descrição produto') !!}
                             {!! Form::text('descricao[]', isset($notaitem->descricao) ? $notaitem->descricao:null, ['id'=>'descricao','class'=>'form-control','placeholder'=>'descrição para pesquisa...']) !!}
-                         </div>    
-                      </div>    
+                         </div>
+                      </div>
                       <div class="row">
                           <div class="form-group col-md-4 ui-widget">
                             {!! Form::label('l.CFOP', 'Natop') !!}
                             {!! Form::text('cfop', isset($notaitem->cfop) ? $notaitem->cfop:null, ['id'=>'cfop','autocomplete'=>'off','class'=>'form-control','placeholder'=>'código para pesquisa...']) !!}
-                         </div>    
+                         </div>
                          <div class="form-group col-md-8 ui-widget">
                             {!! Form::text('id_natop',0, ['id'=>'id_natop','class'=>'form-control hidden']) !!}
                             {!! Form::label('l.natop_descricao', 'Descrição natureza') !!}
                             {!! Form::text('descricao', null, ['id'=>'natop_descricao','class'=>'form-control','placeholder'=>'descrição para pesquisa...']) !!}
-                         </div>    
+                         </div>
                       </div>
                       <div class="row">
                          <div class="form-group col-md-2">
                             {!! Form::label('l.unid', 'Unidade') !!}
                             {!! Form::select('unid', $unidades,isset($notaitem->unid) ? $notaitem->unid:'1', ['class'=>'form-control']) !!}
-                         </div>    
+                         </div>
                           <div class="form-group col-md-2">
                             {!! Form::label('l.qtd', 'Qtde produto') !!}
                             {!! Form::text('qtd', isset($notaitem->qtd) ? $notaitem->qtd:null, ['id'=>'qtd','class'=>'form-control text-right mascara-monetaria']) !!}
-                          </div>    
+                          </div>
                           <div class="form-group col-md-2">
                             {!! Form::label('l.vl_item', 'Vlr produto R$') !!}
                             {!! Form::text('vl_item', isset($notaitem->vl_item) ? $notaitem->vl_item:null, ['id'=>'vl_item','class'=>'form-control text-right mascara-monetaria']) !!}
-                          </div>    
+                          </div>
                           <div class="form-group col-md-2">
                             {!! Form::label('l.vl_desc', 'Vlr desconto R$') !!}
                             {!! Form::text('vl_desc', isset($notaitem->vl_desc) ? $notaitem->vl_desc:null, ['id'=>'vl_desc','class'=>'form-control text-right mascara-monetaria']) !!}
-                          </div>    
+                          </div>
                           <div class="form-group col-md-2">
                             {!! Form::label('l.aliq_icms', 'Aliq. icms (%)') !!}
                             {!! Form::text('aliq_icms', isset($notaitem->aliq_icms) ? $notaitem->aliq_icms:null, ['id'=>'aliq_icms','class'=>'form-control text-right mascara-monetaria']) !!}
-                          </div>    
+                          </div>
                           <div class="form-group col-md-2">
                             {!! Form::label('l.nbsp', '&nbsp;') !!}
                             <button id="btnAdicionar" class="btn btn-default btn-block" type="button"><span class="glyphicon glyphicon-plus"></span> Incluir item </button>
-                          </div>    
+                          </div>
 
-                      </div>    
-                      <table id="tblCadastro" class="table table-striped table-bordered">         
+                      </div>
+                      <table id="tblCadastro" class="table table-striped table-bordered">
                         <thead>
                           <tr>
                             <th>Código</th>
@@ -190,7 +191,7 @@
 
                         </thead>
                         <tbody>
-                        @if (isset($nota->id) )                          
+                        @if (isset($nota->id) )
                           @if ($nota->itens->count() > 0)
                               @for($i = 0; $i < $nota->itens->count(); $i++)
                                 <tr>
@@ -219,7 +220,7 @@
                               @endfor
 
                           @endif
-                        @endif  
+                        @endif
                         </tbody>
                       </table>
                       <div class="row">
@@ -236,34 +237,34 @@
                           <div class="form-group col-md-2">
                             {!! Form::label('l.qtd_item', 'Qtde itens') !!}
                             {!! Form::text('qtd_item', isset($nota->id) ? $nota->itens->count()*100:'0,00', ['id'=>'qtd_item','class'=>'form-control text-center mascara-monetaria']) !!}
-                          </div>    
+                          </div>
                           <div class="form-group col-md-2 ui-widget">
                             {!! Form::label('l.vl_merc', 'Vlr mercadoria R$') !!}
                             {!! Form::text('vl_merc', isset($nota->vl_merc) ? $nota->vl_merc:'0,00', ['id'=>'vl_merc','class'=>'form-control text-right mascara-monetaria']) !!}
-                         </div>    
+                         </div>
                           <div class="form-group col-md-2 ui-widget">
                             {!! Form::label('l.vl_doc', 'Vlr documento R$') !!}
                             {!! Form::text('vl_doc', isset($nota->vl_doc) ? $nota->vl_doc:'0,00', ['id'=>'vl_doc','class'=>'form-control text-right mascara-monetaria']) !!}
-                         </div>    
+                         </div>
                           <div class="form-group col-md-2 ui-widget">
                             {!! Form::label('l.vl_bc_icms', 'Base icms R$') !!}
                             {!! Form::text('vl_bc_icms', isset($nota->vl_bc_icms) ? $nota->vl_bc_icms:'0,00', ['id'=>'vl_bc_icms','class'=>'form-control text-right mascara-monetaria']) !!}
-                         </div>    
+                         </div>
                           <div class="form-group col-md-2 ui-widget">
                             {!! Form::label('l.vl_icms', 'Vlr icms R$') !!}
                             {!! Form::text('vl_icms', isset($nota->vl_icms) ? $nota->vl_icms:'0,00', ['id'=>'vl_icms','class'=>'form-control text-right mascara-monetaria']) !!}
-                         </div>    
-                      </div>    
+                         </div>
+                      </div>
                       <div class="row">
                           <div class="form-group col-md-2">
                             {!! Form::label('l.vl_pis', 'Vlr pis R$') !!}
                             {!! Form::text('vl_pis', isset($nota->vl_pis) ? $nota->vl_pis:'0,00', ['id'=>'vl_pis','class'=>'form-control text-right mascara-monetaria']) !!}
-                          </div>    
+                          </div>
                           <div class="form-group col-md-2 ui-widget">
                             {!! Form::label('l.vl_cofins', 'Vlr cofins R$') !!}
                             {!! Form::text('vl_cofins', isset($nota->vl_cofins) ? $nota->vl_cofins:'0,00', ['id'=>'vl_cofins','class'=>'form-control text-right mascara-monetaria']) !!}
-                         </div>    
-                      </div>    
+                         </div>
+                      </div>
                       <div class="row">
                           <div class="col-lg-12">
                               <div class="pull-right">
@@ -272,7 +273,7 @@
                               </div>
                           </div>
                       </div>
-                      
+
                   </div>
                   <div class="tab-pane fade" id="tab4primary">
                       <p>Primary 4</p>
@@ -292,13 +293,13 @@
                             {!! Form::text('num_doc',0, ['id'=>'num_doc','class'=>'form-control hidden']) !!}
                             {!! Form::label('l.cod_cli', 'Código') !!}
                             {!! Form::text('cli_cod', isset($nota->participante_id) ? $nota->participante->codigo:null, ['id'=>'cli_cod','autocomplete'=>'off','class'=>'form-control','placeholder'=>'código para pesquisa...']) !!}
-                         </div>    
+                         </div>
                          <div class="form-group col-md-8 ui-widget">
                             <!-- Id do participante, campo não disponível na view -->
                             {!! Form::text('participante_id',isset($nota->participante_id) ? $nota->participante_id:0, ['id'=>'participante_id','class'=>'form-control hidden']) !!}
                             {!! Form::label('l.cli_nome', 'Destinatário') !!}
                             {!! Form::text('cli_nome', isset($nota->participante_id) ? $nota->participante->nome:null, ['id'=>'cli_nome','class'=>'form-control','placeholder'=>'nome para pesquisa...']) !!}
-                         </div>    
+                         </div>
                       </div>
                       <div class="row">
                           <div class="col-lg-12">
@@ -308,7 +309,7 @@
                               </div>
                           </div>
                       </div>
-                      
+
                   </div>
               </div>
           </div>
@@ -326,7 +327,7 @@
             $(this).addClass('disabled');
             $('a',$(this)).attr('data-toggle','');
         });
-        
+
         $('.next-tab').on('click',function(){
             var $panel = $(this).closest('.panel');
             var $tabs = $('.nav-tabs li',$panel);
@@ -359,9 +360,9 @@
             }
             $previous_tab.parents('li').removeClass('disabled');
             $previous_tab.data('toggle','tab');
-            $previous_tab.tab('show');    
+            $previous_tab.tab('show');
         });
-        
+
         // Exibir mascaras
         $('#qtd').maskMoney('mask');
         $('#vl_item').maskMoney('mask');
@@ -402,7 +403,6 @@
           $("#vl_pis").val($("#vl_pis").maskMoney('unmasked')[0]);
           $("#vl_cofins").val($("#vl_cofins").maskMoney('unmasked')[0]);
         });
-    });    
+    });
   </script>
 @endpush
-

@@ -59,7 +59,7 @@ class NotaController extends Controller
              ];
       })
       ->make(true);
-  }  
+  }
   public function getCreate(Request $request)
   {
       $rotina_id  = session('rotina_id');
@@ -77,7 +77,7 @@ class NotaController extends Controller
       }
   }
   public function postStore(NotaRequest $request)
-  { 
+  {
       $rotina_id = session('rotina_id');
       $user_id   = session('user_id');
       $numdoc    = $this->permissao->numeroNota($request->ser);
@@ -145,8 +145,17 @@ class NotaController extends Controller
 
   public function anyGeranfe(Request $request, $id)
   {
-    $nota = notas::find($id);
-    return $this->nfe->getnfe($nota);
+    $rotina_id = session('rotina_id');
+    $user_id   = session('user_id');
+    $nota      = notas::find($id);
+    $error     = $this->nfe->getnfe($nota);
+
+    if (!is_array($error)) {
+      return view('notas.notas',compact(['rotina_id','user_id']));
+    } else {
+      return view('notas.notas',compact(['error','rotina_id','user_id']));
+    }
+
   }
 
 }

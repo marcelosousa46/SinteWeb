@@ -20,14 +20,14 @@
               {{ session('status-mensagem') }}
               {{ session()->forget('status') }}
             </div>
-          @endif  
+          @endif
           @if (session('status') == 'sucesso')
             <div class="alert alert-success fade in">
               <h4>Atenção!</h4>
               {{ session('status-mensagem') }}
               {{ session()->forget('status') }}
             </div>
-          @endif  
+          @endif
         @endif
     </div>
     <div class="row">

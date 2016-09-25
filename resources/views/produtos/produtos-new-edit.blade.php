@@ -26,7 +26,7 @@
               @endforeach
             </ul>
           </div>
-        @endif        
+        @endif
 
         @if(isset($produto->id) )
             {!! Form::open(['route'=>['produtos.update', $produto->id]]) !!}
@@ -39,17 +39,17 @@
             <div class="form-group col-md-4">
                 {!! Form::label('l.codigo', 'Código') !!}
                 {!! Form::text('codigo', isset($produto->codigo) ? $produto->codigo:null, ['id'=>'codigo', 'class'=>'form-control']) !!}
-            </div>    
+            </div>
             <div class="form-group col-md-8">
                 {!! Form::label('l.descricao', 'Descrição') !!}
                 {!! Form::text('descricao', isset($produto->descricao) ? $produto->descricao:null, ['class'=>'form-control']) !!}
-            </div>    
-          </div>  
+            </div>
+          </div>
           <div class="row">
             <div class="form-group col-md-4">
                 {!! Form::label('l.codigo_barra', 'Código de barras') !!}
                 {!! Form::text('codigo_barra', isset($produto->codigo_barra) ? $produto->codigo_barra:null, ['class'=>'form-control']) !!}
-            </div>    
+            </div>
             <div class="form-group col-md-2">
                 {!! Form::label('l.codigo_anterior', 'Código anterior') !!}
                 {!! Form::text('codigo_anterior', isset($produto->codigo_anterior) ? $produto->codigo_anterior:null, ['class'=>'form-control']) !!}
@@ -57,60 +57,60 @@
             <div class="form-group col-md-2">
                 {!! Form::label('l.id_unidade', 'unidade') !!}
                 {!! Form::select('unidade_id', $unidades,isset($produto->unidade_id) ? $produto->unidade_id:'1', ['class'=>'form-control']) !!}
-            </div>    
+            </div>
             <div class="form-group col-md-4">
                 {!! Form::label('l.id_tipoitem', 'Tipo do item:') !!}
                 {!! Form::select('tipoitem_id', $tipoitens,isset($produto->tipoitem_id) ? $produto->tipoitem_id:'1', ['class'=>'form-control']) !!}
-            </div>    
+            </div>
           </div>
           <div class="row">
             <div class="form-group col-md-6">
                 {!! Form::label('l.id_cst', 'CST') !!}
-                {!! Form::select('cst', array('00' => '00-Tributada integralmente', 
+                {!! Form::select('cst', array('00' => '00-Tributada integralmente',
                                               '10' => '10-Tributada e com cobrança do ICMS por substituição tributária',
-                                              '20' => '20-Com redução de base de cálculo', 
-                                              '30' => '30-Isenta ou não tributada e com cobrança do ICMS por substituição tributária', 
-                                              '40' => '40-Isenta', 
-                                              '41' => '41-Não tributada', 
-                                              '50' => '50-Suspensão', 
-                                              '51' => '51-Diferimento', 
+                                              '20' => '20-Com redução de base de cálculo',
+                                              '30' => '30-Isenta ou não tributada e com cobrança do ICMS por substituição tributária',
+                                              '40' => '40-Isenta',
+                                              '41' => '41-Não tributada',
+                                              '50' => '50-Suspensão',
+                                              '51' => '51-Diferimento',
                                               '60' => '60-ICMS cobrado anteriormente por substituição tributária',
                                               '70' => '70-Com redução de base de cálculo e cobrança do ICMS por substituição tributária',
                                               '90' => '90-outras'),
                           isset($produto->cst) ? $produto->cst:'1', ['class'=>'form-control']) !!}
-            </div>    
+            </div>
             <div class="form-group col-md-6">
                 {!! Form::label('l.id_ncm', 'N.C.M') !!}
                 {!! Form::select('ncm_id', $ncms,isset($produto->ncm_id) ? $produto->ncm_id:'1', ['class'=>'form-control']) !!}
-            </div>    
+            </div>
           </div>
           <div class="row">
             <div class="form-group col-md-2">
                 {!! Form::label('l.id_genero', 'Gênero') !!}
                 {!! Form::select('genero_id', $generos,isset($produto->genero_id) ? $produto->genero_id:'1', ['class'=>'form-control']) !!}
-            </div>    
+            </div>
             <div class="form-group col-md-2">
                 {!! Form::label('l.ipi', 'I.P.I') !!}
                 {!! Form::text('ipi', isset($produto->ipi) ? $produto->ipi:null, ['id'=>'ipi','class'=>'form-control text-right']) !!}
-            </div>    
+            </div>
             <div class="form-group col-md-2">
                 {!! Form::label('l.icms', 'I.C.M.S (%)') !!}
                 {!! Form::text('icms', isset($produto->icms) ? $produto->icms:null, ['id'=>'icms','class'=>'form-control mascara-monetaria text-right']) !!}
-            </div>    
+            </div>
             <div class="form-group col-md-2">
                 {!! Form::label('l.pis', 'Pis (%)') !!}
                 {!! Form::text('pis', isset($produto->pis) ? $produto->pis:null, ['id'=>'pis','class'=>'form-control mascara-percent4 text-right']) !!}
-            </div>    
+            </div>
             <div class="form-group col-md-2">
                 {!! Form::label('l.cofins', 'Cofins (%)') !!}
                 {!! Form::text('cofins', isset($produto->cofins) ? $produto->cofins:null, ['id'=>'cofins','class'=>'form-control mascara-percent4 text-right']) !!}
-            </div>    
+            </div>
           </div>
           <div class="row">
             <div class="form-group col-md-2">
                 {!! Form::label('l.lst', 'L.S.T') !!}
                 {!! Form::text('lst', isset($produto->lst) ? $produto->lst:null, ['id'=>'lst','class'=>'form-control']) !!}
-            </div>    
+            </div>
             <div class="form-group col-md-2">
                 {!! Form::label('l.preco', 'Preço R$') !!}
                 {!! Form::text('preco_venda', isset($produto->preco_venda) ? $produto->preco_venda:null, ['id'=>'preco_venda','class'=>'form-control mascara-monetaria text-right']) !!}
@@ -119,7 +119,7 @@
                 {!! Form::label('l.nbsp', '&nbsp;') !!}
                 {!! Form::submit('Confirmar', ['id'=>'confirma','class'=>'btn btn-primary btn-block']) !!}
             </div>
-          </div>  
+          </div>
         {!! Form::close() !!}
       </div>
   </div>
@@ -142,4 +142,3 @@
     });
   </script>
 @endpush
-

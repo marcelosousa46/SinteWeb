@@ -20,7 +20,7 @@
             @endforeach
           </ul>
         </div>
-        @endif          
+        @endif
 
         @if (session('status'))
           @if (session('status') == 'error')
@@ -29,17 +29,17 @@
               {{ session('status-mensagem') }}
               {{ session()->forget('status') }}
             </div>
-          @endif  
+          @endif
           @if (session('status') == 'sucesso')
             <div class="alert alert-success fade in">
               <h4>Atenção!</h4>
               {{ session('status-mensagem') }}
               {{ session()->forget('status') }}
             </div>
-          @endif  
+          @endif
         @endif
     </div>
-  </div>  
+  </div>
 
     <div class="row">
       <div class="col-md-12">
@@ -56,7 +56,7 @@
         </table>
       </div>
     </div>
-  </div>  
+  </div>
 </div>
 
 @stop
@@ -69,7 +69,7 @@
 
     $(function() {
         $('#participante-table').DataTable({
-            "columnDefs": [ 
+            "columnDefs": [
               { className: "vlr_out text-right", "targets": [3] },
               { className: "text-center", "targets": [2] },
               ],
