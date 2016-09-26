@@ -172,11 +172,21 @@ function Adicionar(){
      var vl_pis     = (vl_bc_icms * pis / 100);
      var vl_cofins  = (vl_bc_icms * cofins / 100);
 
+  } elseif ( cst == '10') {
+     var vl_bc_icms    = 0;
+     var vl_icms       = 0;
+     var vl_bc_icms_st = vl_merc;
+     var vl_icms_st    = (vl_bc_icms_st * icms / 100);
+     var vl_pis        = (vl_bc_icms * pis / 100);
+     var vl_cofins     = (vl_bc_icms * cofins / 100);
+
   } else {
-     var vl_bc_icms = 0;
-     var vl_icms    = 0;
-     var vl_pis     = 0;
-     var vl_cofins  = 0;
+     var vl_bc_icms    = 0;
+     var vl_icms       = 0;
+     var vl_bc_icms_st = 0;
+     var vl_icms_st    = 0;
+     var vl_pis        = 0;
+     var vl_cofins     = 0;
 
   }               
 

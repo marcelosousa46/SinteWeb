@@ -1,7 +1,7 @@
 @extends('layouts.lte')
 @section('title', 'Participantes')
 @section('ref')
-  <li><a href="{{url('natop?id='.$rotina_id.',&user_id='.$user_id)}}">Participantes</a></li>
+  <li><a href="{{url('participante?id='.$rotina_id.',&user_id='.$user_id)}}">Participantes</a></li>
 @endsection
 @if(isset($participante->id) )
   @section('ref1')
@@ -61,15 +61,37 @@
                 </div>    
                 <div class="form-group col-md-4">
                   {!! Form::label('l.bairro', 'Bairro') !!}
-                  {!! Form::text('numero', isset($participante->numero) ? $participante->numero:null, ['class'=>'form-control']) !!}
+                  {!! Form::text('bairro', isset($participante->bairro) ? $participante->bairro:null, ['class'=>'form-control']) !!}
+                </div>    
+                <div class="form-group col-md-4">
+                  {!! Form::label('l.cidade', 'Cidade') !!}
+                  {!! Form::text('municipio', isset($participante->municipio) ? $participante->municipio:null, ['class'=>'form-control']) !!}
+                </div>    
+              </div>    
+              <div class="row">
+                <div class="form-group col-md-2">
+                  {!! Form::label('l.uf', 'UF') !!}
+                  {!! Form::text('uf', isset($participante->uf) ? $participante->uf:null, ['class'=>'form-control']) !!}
                 </div>    
                 <div class="form-group col-md-2">
-                  {!! Form::label('l.municipio_id', 'Código IBGE') !!}
-                  {!! Form::text('municipio_id', isset($participante->municipio_id) ? $participante->municipio_id:null, ['class'=>'form-control']) !!}
+                  {!! Form::label('l.pais_id', 'Cep') !!}
+                  {!! Form::text('cep', isset($participante->cep) ? $participante->cep:null, ['class'=>'form-control']) !!}
                 </div>    
                 <div class="form-group col-md-2">
-                  {!! Form::label('l.pais_id', 'Código do País') !!}
-                  {!! Form::text('pais_id', isset($participante->pais_id) ? $participante->pais_id:null, ['class'=>'form-control']) !!}
+                  {!! Form::label('l.ibge', 'Código IBGE') !!}
+                  {!! Form::text('ibge', isset($participante->ibge) ? $participante->ibge:null, ['class'=>'form-control']) !!}
+                </div>    
+                <div class="form-group col-md-2">
+                  {!! Form::label('l.pais', 'País') !!}
+                  {!! Form::text('pais', isset($participante->pais) ? $participante->pais:null, ['class'=>'form-control']) !!}
+                </div>    
+                <div class="form-group col-md-2">
+                  {!! Form::label('l.cpais', 'Código do País') !!}
+                  {!! Form::text('cpais', isset($participante->cpais) ? $participante->cpais:null, ['class'=>'form-control']) !!}
+                </div>    
+                <div class="form-group col-md-2">
+                  {!! Form::label('l.pais_id', 'Telefone') !!}
+                  {!! Form::text('fone', isset($participante->fone) ? $participante->fone:null, ['class'=>'form-control']) !!}
                 </div>    
               </div>    
               <div class="row">
@@ -99,8 +121,13 @@
                 </div>    
               </div>    
               <div class="row">
+                <div class="form-group col-md-6">
+                  {!! Form::label('l.email', 'Email') !!}
+                  {!! Form::text('email', isset($participante->email) ? $participante->email:null, ['class'=>'form-control']) !!}
+                </div>    
                 <div class="form-group col-md-2">
-                    {!! Form::submit('Confirmar', ['class'=>'btn btn-primary form-control']) !!}
+                  {!! Form::label('l.nbsp', '&nbsp;') !!}
+                  {!! Form::submit('Gravar', ['class'=>'btn btn-default form-control']) !!}
                 </div>
               </div>
           </div>  

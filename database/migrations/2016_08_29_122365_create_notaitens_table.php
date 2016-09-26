@@ -20,7 +20,7 @@ class CreateNotaitensTable extends Migration
             $table->integer('produtos_id')->unsigned();
             $table->foreign('produtos_id')->references('id')->on('produtos');
             $table->string('desc_compl');
-            $table->decimal('qtd',14,5);
+            $table->decimal('qtd',14,4);
             $table->string('unid',6);
             $table->decimal('vl_item',14,2);
             $table->decimal('vl_desc',14,2);

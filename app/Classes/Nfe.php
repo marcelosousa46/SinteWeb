@@ -13,10 +13,10 @@ class Nfe
 	private $nfe;
 	private $nfeTools;
 
-    function __construct() {
-			$this->nfe      = new MakeNFe();
-			$this->nfeTools = new ToolsNFe('../vendor/nfephp-org/nfephp/config/config.json');
-    }
+        function __construct() {
+		$this->nfe      = new MakeNFe();
+		$this->nfeTools = new ToolsNFe('../vendor/nfephp-org/nfephp/config/config.json');
+        }
 
 	public function getnfe($nota)
 	{
@@ -45,16 +45,16 @@ class Nfe
 		$indPres  = '9';
 		$procEmi  = '0';
 		$verProc  = '1.0.0';
-    $dhCont   = '';
-    $xJust    = '';
+        $dhCont   = '';
+        $xJust    = '';
 		$cNF      = str_pad($nota->num_doc, 8, "0", STR_PAD_LEFT);
-    $chave    = $this->nfe->montaChave($cUF, $ano, $mes, $cnpj, $mod, $serie, $nNF, $tpEmis, $cNF);
+        $chave    = $this->nfe->montaChave($cUF, $ano, $mes, $cnpj, $mod, $serie, $nNF, $tpEmis, $cNF);
 		$versao   = '3.10';
 		$resp     = $this->nfe->taginfNFe($chave, $versao);
 		$cDV      = substr($chave, -1);
 		$resp     = $this->nfe->tagide($cUF, $cNF, $natOp, $indPag, $mod, $serie, $nNF, $dhEmi, $dhSaiEnt,
 		  	                           $tpNF, $idDest, $cMunFG, $tpImp, $tpEmis, $cDV, $tpAmb, $finNFe,
-			                             $indFinal, $indPres, $procEmi, $verProc, $dhCont, $xJust);
+		                               $indFinal, $indPres, $procEmi, $verProc, $dhCont, $xJust);
 
 		//Dados do emitente - (Importando dados do config.json)
 		$CNPJ  = $this->nfeTools->aConfig['cnpj'];
@@ -90,8 +90,8 @@ class Nfe
 		$indIEDest     = '1';
 		$IE            = $nota->participante->ie;
 		$ISUF          = '';
-		$IM            = '2300309';
-		$email         = 'marcelosousa46@gmail.com';
+		$IM            = $nota->participante->ibge;
+		$email         = $nota->participante->email;
 		$resp          = $this->nfe->tagdest($CNPJ, $CPF, $idEstrangeiro, $xNome, $indIEDest, $IE, $ISUF, $IM, $email);
 
 		//Endereço do destinatário
@@ -99,13 +99,13 @@ class Nfe
 		$nro     = $nota->participante->numero;
 		$xCpl    = $nota->participante->complemento;
 		$xBairro = $nota->participante->bairro;
-		$cMun    = '2300309';
-		$xMun    = 'Acopiara';
-		$UF      = 'CE';
-		$CEP     = '63560000';
-		$cPais   = '1058';
-		$xPais   = 'Brasil';
-		$fone    = '8835650540';
+		$cMun    = $nota->participante->ibge;
+		$xMun    = $nota->participante->municipio;
+		$UF      = $nota->participante->uf;
+		$CEP     = $nota->participante->cep;
+		$cPais   = $nota->participante->cpais;
+		$xPais   = $nota->participante->pais;;
+		$fone    = $nota->participante->fone;
 		$resp    = $this->nfe->tagenderDest($xLgr, $nro, $xCpl, $xBairro, $cMun, $xMun, $UF, $CEP, $cPais, $xPais, $fone);
 
 		//produtos
@@ -137,96 +137,93 @@ class Nfe
 		    $nFCI     = '';
 		    $resp     = $this->nfe->tagprod($nItem, $cProd, $cEAN, $xProd, $NCM, $NVE, $CEST, $EXTIPI, $CFOP, $uCom,$qCom, $vUnCom, $vProd, $cEANTrib, $uTrib, $qTrib, $vUnTrib, $vFrete, $vSeg, $vDesc, $vOutro, $indTot, $xPed, $nItemPed, $nFCI);
 
-//				$resp = $this->nfe->montaNFe();
-//				$xml = $this->nfe->getXML();
-//				dd($xml);
-				//Impostos
-				$nItem    = $prod->num_item;
-				$vTotTrib = $prod->vl_icms + $prod->vl_icms_st + $prod->vl_pis + $prod->vl_cofins + $prod->vl_ipi; //'449.90'; // 226.80 ICMS + 51.50 ICMSST + 50.40 IPI + 39.36 PIS + 81.84 CONFIS
-				$resp = $this->nfe->tagimposto($nItem, $vTotTrib);
+			//Impostos
+			$nItem    = $prod->num_item;
+			$vTotTrib = $prod->vl_icms + $prod->vl_icms_st + $prod->vl_pis + $prod->vl_cofins + $prod->vl_ipi; //'449.90'; // 226.80 ICMS + 51.50 ICMSST + 50.40 IPI + 39.36 PIS + 81.84 CONFIS
+			$resp = $this->nfe->tagimposto($nItem, $vTotTrib);
 
-				//ICMS - Imposto sobre Circulação de Mercadorias e Serviços
-				$nItem = $prod->num_item;
-				$orig  = '0';
-				$cst   = '00'; //  $prod->produtos->cst_icms
-				if ($cst == '00')
-				{
-					 $modBC      = '3';
-					 $pRedBC     = '';
-					 $vBC        = $prod->vl_bc_icms;
-					 $pICMS      = $prod->aliq_icms;
-					 $vICMS      = $prod->vl_icms;
-					 $vICMSDeson = '';
-					 $motDesICMS = '';
-					 $modBCST    = '';
-					 $pMVAST     = '';
-					 $pRedBCST   = '';
-					 $vBCST      = '';
-					 $pICMSST    = '';
-					 $vICMSST    = '';
-					 $pDif       = '';
-					 $vICMSDif   = '';
-					 $vICMSOp    = '';
-					 $vBCSTRet   = '';
-					 $vICMSSTRet = '';
-					 $resp       = $this->nfe->tagICMS($nItem, $orig, $cst, $modBC, $pRedBC, $vBC, $pICMS, $vICMS, $vICMSDeson, $motDesICMS, $modBCST, $pMVAST, $pRedBCST, $vBCST, $pICMSST, $vICMSST, $pDif, $vICMSDif, $vICMSOp, $vBCSTRet, $vICMSSTRet);
- 			  }
-				if ($cst == '10')
-				{
-					$modBC      = '3';
-					$pRedBC     = '';
-					$vBC        = $prod->vl_bc_icms;
-					$pICMS      = $prod->aliq_icms;
-					$vICMS      = $prod->vl_icms;
-					$vICMSDeson = '';
-					$motDesICMS = '';
-					$modBCST    = '5'; // Calculo Por Pauta (valor)
-					$pMVAST     = '';
-					$pRedBCST   = '';
-					$vBCST      = $prod->vl_bc_icms_ST;
-					$pICMSST    = $prod->alis_st;
-					$vICMSST    = $prod->vl_icms_ST;
-					$pDif       = '';
-					$vICMSDif   = '';
-					$vICMSOp    = '';
-					$vBCSTRet   = '';
-					$vICMSSTRet = '';
-					$resp       = $this->nfe->tagICMS($nItem, $orig, $cst, $modBC, $pRedBC, $vBC, $pICMS, $vICMS, $vICMSDeson, $motDesICMS, $modBCST, $pMVAST, $pRedBCST, $vBCST, $pICMSST, $vICMSST, $pDif, $vICMSDif, $vICMSOp, $vBCSTRet, $vICMSSTRet);
+			//ICMS - Imposto sobre Circulação de Mercadorias e Serviços
+			$nItem = $prod->num_item;
+			$orig  = '0';
+			$cst   = $prod->produtos->cst;
+			if ($cst == '00')
+			{
+			   $modBC      = '3';
+			   $pRedBC     = '';
+			   $vBC        = $prod->vl_bc_icms;
+			   $pICMS      = $prod->aliq_icms;
+			   $vICMS      = $prod->vl_icms;
+			   $vICMSDeson = '';
+		       $motDesICMS = '';
+			   $modBCST    = '';
+			   $pMVAST     = '';
+			   $pRedBCST   = '';
+			   $vBCST      = '';
+			   $pICMSST    = '';
+			   $vICMSST    = '';
+			   $pDif       = '';
+			   $vICMSDif   = '';
+			   $vICMSOp    = '';
+			   $vBCSTRet   = '';
+			   $vICMSSTRet = '';
+			   $resp       = $this->nfe->tagICMS($nItem, $orig, $cst, $modBC, $pRedBC, $vBC, $pICMS, $vICMS, $vICMSDeson, $motDesICMS, $modBCST, $pMVAST, $pRedBCST, $vBCST, $pICMSST, $vICMSST, $pDif, $vICMSDif, $vICMSOp, $vBCSTRet, $vICMSSTRet);
+ 			}
+			if ($cst == '10')
+			{
+			   $modBC      = '3';
+			   $pRedBC     = '';
+			   $vBC        = $prod->vl_bc_icms;
+			   $pICMS      = $prod->aliq_icms;
+			   $vICMS      = $prod->vl_icms;
+			   $vICMSDeson = '';
+			   $motDesICMS = '';
+			   $modBCST    = '5'; // Calculo Por Pauta (valor)
+			   $pMVAST     = '';
+			   $pRedBCST   = '';
+			   $vBCST      = $prod->vl_bc_icms_ST;
+			   $pICMSST    = $prod->alis_st;
+			   $vICMSST    = $prod->vl_icms_ST;
+			   $pDif       = '';
+			   $vICMSDif   = '';
+			   $vICMSOp    = '';
+			   $vBCSTRet   = '';
+			   $vICMSSTRet = '';
+			   $resp       = $this->nfe->tagICMS($nItem, $orig, $cst, $modBC, $pRedBC, $vBC, $pICMS, $vICMS, $vICMSDeson, $motDesICMS, $modBCST, $pMVAST, $pRedBCST, $vBCST, $pICMSST, $vICMSST, $pDif, $vICMSDif, $vICMSOp, $vBCSTRet, $vICMSSTRet);
 
-					$vST = $vICMSST; // Total de ICMS ST
+			   $vST = $vICMSST; // Total de ICMS ST
 
-					//IPI - Imposto sobre Produto Industrializado
-					$cst      = '52'; // 50 - Saída Isenta (Código da Situação Tributária)
-					$clEnq    = '';
-					$cnpjProd = '';
-					$cSelo    = '';
-					$qSelo    = '';
-					$cEnq     = '999';
-					$vBC      = '0.00';
-					$pIPI     = '0.00';
-					$qUnid    = '';
-					$vUnid    = '';
-					$vIPI     = '0.00';
-					$resp = $this->nfe->tagIPI($nItem, $cst, $clEnq, $cnpjProd, $cSelo, $qSelo, $cEnq, $vBC, $pIPI, $qUnid, $vUnid, $vIPI);
+			   //IPI - Imposto sobre Produto Industrializado
+			   $cst      = '52'; // 50 - Saída Isenta (Código da Situação Tributária)
+			   $clEnq    = '';
+			   $cnpjProd = '';
+			   $cSelo    = '';
+			   $qSelo    = '';
+			   $cEnq     = '999';
+			   $vBC      = '0.00';
+			   $pIPI     = '0.00';
+			   $qUnid    = '';
+			   $vUnid    = '';
+			   $vIPI     = '0.00';
+			   $resp = $this->nfe->tagIPI($nItem, $cst, $clEnq, $cnpjProd, $cSelo, $qSelo, $cEnq, $vBC, $pIPI, $qUnid, $vUnid, $vIPI);
 
-					//PIS - Programa de Integração Social
-					$cst       = $prod->cst_pis;
-					$vBC       = '';
-					$pPIS      = '';
-					$vPIS      = $prod->vl_pis;
-					$qBCProd   = $prod->vl_bc_pis;
-					$vAliqProd = $prod->aliq_pis;
-					$resp      = $this->nfe->tagPIS($nItem, $cst, $vBC, $pPIS, $vPIS, $qBCProd, $vAliqProd);
+				//PIS - Programa de Integração Social
+				$cst       = $prod->cst_pis;
+				$vBC       = '';
+				$pPIS      = '';
+				$vPIS      = $prod->vl_pis;
+				$qBCProd   = $prod->vl_bc_pis;
+				$vAliqProd = $prod->aliq_pis;
+				$resp      = $this->nfe->tagPIS($nItem, $cst, $vBC, $pPIS, $vPIS, $qBCProd, $vAliqProd);
 
-					//COFINS - Contribuição para o Financiamento da Seguridade Social
-					$cst       = $prod->cst_cofins;
-					$vBC       = '';
-					$pCOFINS   = '';
-					$vCOFINS   = $prod->vl_confins;
-					$qBCProd   = $prod->vl_bc_cofins;
-					$vAliqProd = $prod->aliq_cofins;
-					$resp = $this->nfe->tagCOFINS($nItem, $cst, $vBC, $pCOFINS, $vCOFINS, $qBCProd, $vAliqProd);
-				}
+				//COFINS - Contribuição para o Financiamento da Seguridade Social
+				$cst       = $prod->cst_cofins;
+				$vBC       = '';
+				$pCOFINS   = '';
+				$vCOFINS   = $prod->vl_confins;
+				$qBCProd   = $prod->vl_bc_cofins;
+				$vAliqProd = $prod->aliq_cofins;
+				$resp = $this->nfe->tagCOFINS($nItem, $cst, $vBC, $pCOFINS, $vCOFINS, $qBCProd, $vAliqProd);
+			}
 		}
 		//Inicialização de váriaveis não declaradas...
 		$vII     = isset($vII) ? $vII : 0;
@@ -275,28 +272,30 @@ class Nfe
 		$infCpl     = "Pedido Nº16 - {$textoIBPT} ";
 		$resp       = $this->nfe->taginfAdic($infAdFisco, $infCpl);
 
-//        dd($resp);
-
 		//monta a NFe e retorna na tela
 		$resp = $this->nfe->montaNFe();
-		if ($resp) {
-		    $xml = $this->nfe->getXML();
-				// Assinar XML
-				$assinar = new nfeAssinar;
-				$xml = $assinar->getAssinar($chave, $xml);
-				// Validar XML
-				$validar = new nfeValidar;
-				$resp = $validar->getValidar($chave,$tpAmb,$xml);
-				if (!is_array($resp)) {
-					// $filename = "/var/www/nfe/homologacao/entradas/{$chave}-nfe.xml"; // Ambiente Linux
-			    $filename = "C:/xampp/htdocs/laravel/sinteweb/vendor/nfephp-org/nfephp/xmls/NF-e/homologacao/entradas/{$chave}-nfe.xml"; // Ambiente Windows
-			    file_put_contents($filename, $xml);
-			    // chmod($filename, 0777);
-				} else {
-					return $resp;
-				};
-		} else {
+		if (!$resp) {
 		    return $resp;
 		}
+	    $xml = $this->nfe->getXML();
+ 		// Assinar XML
+		$assinar = new nfeAssinar;
+		$xml = $assinar->getAssinar($chave, $xml);
+		// Validar XML
+		$validar = new nfeValidar;
+		$resp = $validar->getValidar($chave,$tpAmb,$xml);
+		if (is_array($resp)) {
+		    return $resp;
+		}
+		$envia = new nfeEnvia;
+		$resp = $envia->getEnviar($this->nfeTools,$chave,$tpAmb,$xml);
+//        dd($retorno);
+		if (is_array($resp)) {
+		    return $resp;
+		}
+		// $filename = "/var/www/nfe/homologacao/entradas/{$chave}-nfe.xml"; // Ambiente Linux
+	    $filename = "C:/xmls/NF-e/homologacao/entradas/{$chave}-nfe.xml"; // Ambiente Windows
+	    file_put_contents($filename, $xml);
+	    // chmod($filename, 0777);
 	}
 }

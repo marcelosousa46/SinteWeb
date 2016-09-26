@@ -7,8 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 class participantes extends Model
 {
     protected $table    = 'participantes';
-    protected $fillable = ['id','codigo','nome','pais_id',
-                           'cnpj','cpf','ie', 'municipio_id', 
-                           'suframa','enereco','numero',
-                           'complemento', 'bairro'];
+    protected $fillable = ['id','codigo','nome','pais','bairro',
+                           'cnpj','cpf','ie', 'municipio','ibge',
+                           'suframa','endereco','numero','uf',
+                           'complemento', 'bairro','email',
+                           'cep','cpais','fone'];
 }

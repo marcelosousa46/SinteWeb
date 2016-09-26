@@ -84,8 +84,7 @@ class NotaController extends Controller
       $request->merge(array('num_doc' => $numdoc));
       $request->merge(array('dt_e_s'  => $request->dt_doc));
       $input     = $request->all();
-//      dd($input);
-      $notas = notas::create($input);
+      $notas     = notas::create($input);
       $i = 0;
       for ($i = 0; $i < $request->qtd_item; $i++){
         $itens = $this->inter->relacionar($request, $i);
@@ -149,11 +148,14 @@ class NotaController extends Controller
     $user_id   = session('user_id');
     $nota      = notas::find($id);
     $error     = $this->nfe->getnfe($nota);
-
+    $rejeicao  = false;
     if (!is_array($error)) {
-      return view('notas.notas',compact(['rotina_id','user_id']));
+      session()->put('status', 'sucesso');
+      session()->put('status-mensagem', 'NF-e gerada com sucesso.');
+      return redirect()->route('nota', ['id' => $rotina_id, 'user_id'=>$user_id]);
     } else {
-      return view('notas.notas',compact(['error','rotina_id','user_id']));
+      $rejeicao = true;
+      return view('notas.notas-errors',compact(['rejeicao','error','rotina_id','user_id']));
     }
 
   }
