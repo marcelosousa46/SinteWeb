@@ -11,6 +11,7 @@ use App\Models\Tipoitens;
 use App\Models\Ncms;
 use App\Models\Generos;
 use App\Models\Series;
+use App\Models\fpagamentos;
 use DB;
 
 class Classes {
@@ -127,5 +128,15 @@ class Classes {
         $numeronota = Series::find($id)->ultimo + 1;
         Series::find($id)->update(['ultimo' => $numeronota]);
         return $numeronota;
+     }
+     public function getFpagamentos()
+     {
+        $i = 0;
+        $formas = Fpagamentos::all();
+        foreach ($formas as $a) {
+          $retorno_formas[$a->id] = $a->descricao;
+          $i++;
+        }
+        return $retorno_formas;
      }
 }

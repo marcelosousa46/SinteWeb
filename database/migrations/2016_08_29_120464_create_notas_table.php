@@ -20,6 +20,8 @@ class CreateNotasTable extends Migration
             $table->foreign('participante_id')->references('id')->on('participantes');
             $table->integer('natop_id')->unsigned();
             $table->foreign('natop_id')->references('id')->on('natop');
+            $table->integer('fpagamento_id')->unsigned();
+            $table->foreign('fpagamento_id')->references('id')->on('fpagamentos');
             $table->string('tpemis',1);
             $table->string('cod_mod',2);
             $table->string('cod_sit',2);
@@ -46,6 +48,8 @@ class CreateNotasTable extends Migration
             $table->decimal('vl_cofins',14,2);
             $table->decimal('vl_pis_st',14,2);
             $table->decimal('vl_cofins_st',14,2);
+            $table->string('cStat',3);
+            $table->string('xMotivo',60);
             $table->timestamps();
         });
     }

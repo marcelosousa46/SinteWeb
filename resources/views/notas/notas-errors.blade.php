@@ -10,15 +10,11 @@
     <div class="row">
       <p>verifique os problema(s) abaixo relacionado(s):</p>	
       <ul>
-      	@if ($rejeicao == true)
-      	  <li>{{ $error['xMotivo'] }}</li>
-      	@else  
         @foreach ($error as $erro)
           @foreach ($erro as $err)
 	          <li>{{ $err }}</li>
-	      @endforeach
+  	      @endforeach
         @endforeach
-        @endif
       </ul>
     </div>
   </div>

@@ -43,13 +43,15 @@
 
     <div class="row">
       <div class="col-md-12">
-        <table class="table table-striped table-bordered table-hover" id="participante-table">
+        <table class="table table-condensed table-striped table-bordered table-hover" id="participante-table">
             <thead>
               <tr>
                 <th>Número</th>
                 <th>Destinatário</th>
                 <th>Data Emissão</th>
                 <th class="text-right">Valor</th>
+                <th>Status</th>
+                <th>Situação</th>
                 <th>Ação</th>
               </tr>
             </thead>
@@ -70,8 +72,10 @@
     $(function() {
         $('#participante-table').DataTable({
             "columnDefs": [
-              { className: "vlr_out text-right", "targets": [3] },
+              { className: "text-center", "targets": [0] },
               { className: "text-center", "targets": [2] },
+              { className: "vlr_out text-right", "targets": [3] },
+              { className: "text-center", "targets": [4] },
               ],
             language : {
                 "sEmptyTable": "Nenhum registro encontrado",
@@ -102,11 +106,13 @@
             ajax: '{!! URL::to('/nota/data') !!}',
 
             columns: [
-                { data: 'codigo', name: 'codigo' },
-                { data: 'nome'  , name: 'nome' },
-                { data: 'dt_doc', name: 'emissao' },
-                { data: 'vl_doc', name: 'valor' },
-                { data: 'action', name: 'action', orderable: false, searchable: false}
+                { data: 'num_doc', name: 'num_doc' },
+                { data: 'nome'   , name: 'nome' },
+                { data: 'dt_doc' , name: 'emissao' },
+                { data: 'vl_doc' , name: 'valor' },
+                { data: 'cStat'  , name: 'cStat' },
+                { data: 'xMotivo', name: 'xMotivo' },
+                { data: 'action' , name: 'action', orderable: false, searchable: false}
             ]
         });
 

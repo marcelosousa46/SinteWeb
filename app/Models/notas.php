@@ -39,7 +39,10 @@ class notas extends Model
             'vl_cofins',
             'vl_pis_st',
             'vl_cofins_st',
-            'serie_id'
+            'serie_id',
+            'cStat',
+            'xMotivo',
+            'fpagamento_id'
     ];
 
     protected static function boot() {
@@ -47,6 +50,7 @@ class notas extends Model
 
         static::deleting(function($nota) { 
              $nota->itens()->delete();
+             $nota->titulos()->delete();
         });
     }    
 
@@ -57,11 +61,14 @@ class notas extends Model
     {
         return $this->hasMany('App\Models\notaitens');
     }
+    public function titulos()
+    {
+        return $this->hasMany('App\Models\titulos');
+    }
     public function participante() {
         return $this->belongsTo('App\Models\participantes');
     }
     public function natop() {
         return $this->belongsTo('App\Models\natops');
     }
-
 }

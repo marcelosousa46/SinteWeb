@@ -260,7 +260,7 @@ class Nfe
 		$resp     = $this->nfe->tagtransp($modFrete);
 
 		// Calculo de carga tributária similar ao IBPT - Lei 12.741/12
-		$federal  = number_format($vII+$vIPI+$vIOF+$vPIS+$vCOFINS, 2, ',', '.');
+		$federal   = number_format($vII+$vIPI+$vIOF+$vPIS+$vCOFINS, 2, ',', '.');
 		$estadual  = number_format($vICMS+$vST, 2, ',', '.');
 		$municipal = number_format($vISS, 2, ',', '.');
 		$totalT    = number_format($federal+$estadual+$municipal, 2, ',', '.');
@@ -271,6 +271,21 @@ class Nfe
 		$infAdFisco = "";
 		$infCpl     = "Pedido Nº16 - {$textoIBPT} ";
 		$resp       = $this->nfe->taginfAdic($infAdFisco, $infCpl);
+
+		//dados da fatura
+		$nFat  = $cNF;
+		$vOrig = $nota->vl_doc;
+		$vDesc = '';
+		$vLiq  = $nota->vl_doc;
+		$resp  = $this->nfe->tagfat($nFat, $vOrig, $vDesc, $vLiq);
+
+		//dados das duplicatas (Pagamentos)
+		foreach ($nota->titulos as $dup) {
+		    $nDup  = $dup->codigo;
+		    $dVenc = $dup->dt_venc;
+		    $vDup  = $dup->vl_doc;
+		    $resp  = $this->nfe->tagdup($nDup, $dVenc, $vDup);
+		}
 
 		//monta a NFe e retorna na tela
 		$resp = $this->nfe->montaNFe();

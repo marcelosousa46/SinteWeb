@@ -46,8 +46,7 @@
                       <li class="active"><a href="#tab1primary" data-toggle="tab">Cabeçalho</a></li>
                       <li><a href="#tab2primary" data-toggle="tab">Itens da nota</a></li>
                       <li><a href="#tab3primary" data-toggle="tab">Totalização</a></li>
-                      <li><a href="#tab4primary" data-toggle="tab">Desdobramento</a></li>
-                      <li><a href="#tab5primary" data-toggle="tab">Emissão</a></li>
+                      <li><a href="#tab4primary" data-toggle="tab">Emissão</a></li>
                   </ul>
               </div>
           </div>
@@ -71,12 +70,12 @@
 
                       <div class="row">
                           <div class="form-group col-md-2">
-                            {!! Form::label('l.ind_pagto', 'Série') !!}
+                            {!! Form::label('l.ser', 'Série') !!}
                             {!! Form::select('ser', $series,isset($nota->ser) ? $nota->ser:'1', ['id'=>'ser','class'=>'form-control']) !!}
                           </div>
                           <div class="form-group col-md-2">
                             {!! Form::label('l.ind_pagto', 'Pagamento') !!}
-                            {!! Form::select('ind_pagto', array('0' => 'à vista', '1' => 'à prazo', '2' => 'Outros'),isset($nota->ind_pagto) ? $nota->ind_pagto:'0', ['class'=>'form-control']) !!}
+                            {!! Form::select('ind_pagto', array('0' => 'à vista', '1' => 'à prazo', '2' => 'Outros'),isset($nota->ind_pagto) ? $nota->ind_pagto:'0', ['id'=>'ind_pagto','class'=>'form-control']) !!}
                           </div>
                           <div class="form-group col-md-4">
                             {!! Form::label('l.tpNf', 'Tipo de operação') !!}
@@ -276,21 +275,10 @@
 
                   </div>
                   <div class="tab-pane fade" id="tab4primary">
-                      <p>Primary 4</p>
-                      <div class="row">
-                          <div class="col-lg-12">
-                              <div class="pull-right">
-                                  <button class="btn btn-default previous-tab" type="button"><span class="glyphicon glyphicon-chevron-left"></span> Próximo</button>
-                                  <button class="btn btn-default next-tab" type="button"><span class="glyphicon glyphicon-chevron-right"></span> Próximo</button>
-                              </div>
-                          </div>
-                      </div>
-                  </div>
-                  <div class="tab-pane fade" id="tab5primary">
                       <div class="row">
                           <div class="form-group col-md-4 ui-widget">
                             <!-- Numero da nota, campo não disponível na view -->
-                            {!! Form::text('num_doc',0, ['id'=>'num_doc','class'=>'form-control hidden']) !!}
+                            {!! Form::text('num_doc',isset($nota->num_doc) ? $nota->num_doc:0, ['id'=>'num_doc','class'=>'form-control hidden']) !!}
                             {!! Form::label('l.cod_cli', 'Código') !!}
                             {!! Form::text('cli_cod', isset($nota->participante_id) ? $nota->participante->codigo:null, ['id'=>'cli_cod','autocomplete'=>'off','class'=>'form-control','placeholder'=>'código para pesquisa...']) !!}
                          </div>
@@ -302,6 +290,12 @@
                          </div>
                       </div>
                       <div class="row">
+                          <div class="form-group col-md-4 ui-widget">
+                            {!! Form::label('l.cod_titulo', 'Forma de pagamento') !!}
+                            {!! Form::select('fpagamento_id', $formas,isset($nota->fpagamento_id) ? $nota->fpagamento_id:'1', ['id' => 'fpagto', 'class'=>'form-control']) !!}
+                         </div>
+                      </div>
+                     <div class="row">
                           <div class="col-lg-12">
                               <div class="pull-right">
                                   <button class="btn btn-default previous-tab" type="button"><span class="glyphicon glyphicon-chevron-left"></span> Anterior</button>
@@ -362,7 +356,16 @@
             $previous_tab.data('toggle','tab');
             $previous_tab.tab('show');
         });
-
+        if ($('#ind_pagto').val() == '0'){
+           $('#fpagto').attr("disabled", true);
+        } 
+        $('#ind_pagto').on('change',function(){
+          if ($('#ind_pagto').val() == '0'){
+             $('#fpagto').attr("disabled", true);
+          } else {
+             $('#fpagto').attr("disabled", false);
+          }
+        });  
         // Exibir mascaras
         $('#qtd').maskMoney('mask');
         $('#vl_item').maskMoney('mask');

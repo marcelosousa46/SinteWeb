@@ -115,5 +115,10 @@ Route::group(['middleware' => 'web'], function () {
         'anyData'       => 'serie.data',
         'anyNota' => 'serie.nota',
     ]);
+    /* FPagamentos */
+    Route::controller('fpagamentos','FpagamentoController',[
+        'anyData'   => 'fpagamento.data',
+        'anyFormas' => 'fpagmento.formas',
+    ]);
 
 });
