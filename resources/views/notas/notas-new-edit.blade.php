@@ -397,6 +397,7 @@
           $('#vl_doc').attr("disabled", false);
           $('#vl_pis').attr("disabled", false);
           $('#vl_cofins').attr("disabled", false);
+          $('#fpagto').attr("disabled", false);
           // Retirar mascaras
           $("#qtd_item").val($("#qtd_item").maskMoney('unmasked')[0]);
           $("#vl_merc").val($("#vl_merc").maskMoney('unmasked')[0]);

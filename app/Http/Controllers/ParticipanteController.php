@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 
-use App\Models\Participantes;
+use App\Models\participantes;
 Use App\Classes\Classes;
 use Yajra\Datatables\Datatables;
 use App\Http\Requests\ParticipanteRequest;
@@ -32,7 +32,7 @@ class ParticipanteController extends Controller
   public function anyData()
   {
       $user_id  = session('user_id');
-      $participantes = Participantes::all();
+      $participantes = participantes::all();
 
       return Datatables::of($participantes)
 
@@ -65,7 +65,7 @@ class ParticipanteController extends Controller
       $user_id   = session('user_id');
       $input = $request->all();
 
-      Participantes::create($input);
+      participantes::create($input);
       return redirect()->route('participante',['id' => $rotina_id, 'user_id'=>$user_id]);
   }
   public function getDestroy(Request $request,$id)
@@ -76,7 +76,7 @@ class ParticipanteController extends Controller
 
       if ($autorizado)
       {
-        Participantes::find($id)->delete();
+        participantes::find($id)->delete();
         return redirect()->route('participante', ['id' => $rotina_id, 'user_id'=>$user_id]);
       } else {
         session()->put('status', 'error');
@@ -92,7 +92,7 @@ class ParticipanteController extends Controller
 
       if ($autorizado)
       {
-        $participante = Participantes::find($id);
+        $participante = participantes::find($id);
         return view('participantes.participantes-new-edit',compact(['participante','rotina_id','user_id']));
       } else {
         session()->put('status', 'error');
@@ -104,18 +104,18 @@ class ParticipanteController extends Controller
   {
       $rotina_id = session('rotina_id');
       $user_id   = session('user_id');
-      $participante    = Participantes::find($id)->update($request->all());
+      $participante    = participantes::find($id)->update($request->all());
 
       return redirect()->route('participante', ['id' => $rotina_id, 'user_id'=>$user_id]);
   }
   public function anyNome(Request $request)
   {
-      $data = Participantes::select("codigo","nome as name","id")->where("nome","LIKE","%{$request->input('query')}%")->get();
+      $data = participantes::select("codigo","nome as name","id")->where("nome","LIKE","%{$request->input('query')}%")->get();
       return response()->json($data);
   }
   public function anyCodigo(Request $request)
   {
-      $data = Participantes::select("codigo as name","nome","id")->where("codigo","LIKE","%{$request->input('query')}%")->get();
+      $data = participantes::select("codigo as name","nome","id")->where("codigo","LIKE","%{$request->input('query')}%")->get();
       return response()->json($data);
   }  
 }

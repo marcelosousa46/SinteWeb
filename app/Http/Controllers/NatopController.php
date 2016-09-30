@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 
-use App\Models\Natops;
+use App\Models\natops;
 Use App\Classes\Classes;
 use Yajra\Datatables\Datatables;
 
@@ -32,7 +32,7 @@ class NatopController extends Controller
   public function anyData()
   {
       $user_id  = session('user_id');
-      $natops = Natops::all();
+      $natops = natops::all();
 
       return Datatables::of($natops)
 
@@ -65,7 +65,7 @@ class NatopController extends Controller
       $user_id   = session('user_id');
       $input = $request->all();
 
-      Natops::create($input);
+      natops::create($input);
       return redirect()->route('natop',['id' => $rotina_id, 'user_id'=>$user_id]);
   }
   public function getDestroy(Request $request,$id)
@@ -76,7 +76,7 @@ class NatopController extends Controller
 
       if ($autorizado)
       {
-        Natops::find($id)->delete();
+        natops::find($id)->delete();
         return redirect()->route('natop', ['id' => $rotina_id, 'user_id'=>$user_id]);
       } else {
         session()->put('status', 'error');
@@ -92,7 +92,7 @@ class NatopController extends Controller
 
       if ($autorizado)
       {
-        $natop = Natops::find($id);
+        $natop = natops::find($id);
         return view('natops.natops-new-edit',compact(['natop','rotina_id','user_id']));
       } else {
         session()->put('status', 'error');
@@ -104,23 +104,23 @@ class NatopController extends Controller
   {
       $rotina_id = session('rotina_id');
       $user_id   = session('user_id');
-      $natops    = Natops::find($id)->update($request->all());
+      $natops    = natops::find($id)->update($request->all());
 
       return redirect()->route('natop', ['id' => $rotina_id, 'user_id'=>$user_id]);
   }
   public function anyAutocomplete(Request $request)
   {
-      $data = Natops::select("codigo","descricao as name","id")->where("descricao","LIKE","%{$request->input('query')}%")->get();
+      $data = natops::select("codigo","descricao as name","id")->where("descricao","LIKE","%{$request->input('query')}%")->get();
       return response()->json($data);
   }
   public function anyCodigo(Request $request)
   {
-      $data = Natops::select("codigo as name","descricao","id")->where("codigo","LIKE","%{$request->input('query')}%")->get();
+      $data = natops::select("codigo as name","descricao","id")->where("codigo","LIKE","%{$request->input('query')}%")->get();
       return response()->json($data);
   }
   public function anyId(Request $request, $id)
   {
-      $data = Natops::find($id);
+      $data = natops::find($id);
       return response()->json($data);
   }
 

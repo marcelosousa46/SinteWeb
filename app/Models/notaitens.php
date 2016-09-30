@@ -46,7 +46,7 @@ class notaitens extends Model
             'cod_conta',
     ];       
     public function produtos() {
-        return $this->belongsTo('App\Models\produtos');
+        return $this->belongsTo('App\Models\Produtos');
     }
     public function natop() {
         return $this->belongsTo('App\Models\natops');
