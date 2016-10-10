@@ -17,6 +17,9 @@ use App\Http\Requests\NotaRequest;
 use DB;
 use App\Classes\InterItens;
 use App\Classes\interTitulos;
+use App\Classes\nfeConsultar;
+use App\Classes\nfeDanfe;
+use NFePHP\Common\Files\FilesFolders;
 
 class NotaController extends Controller
 {
@@ -60,6 +63,10 @@ class NotaController extends Controller
                                                                      onclick="return confirm(\'Excluir Nota?\')"></a>',
               '<a href="nota/geranfe/'.$notas->id.'" class="glyphicon glyphicon-list-alt" title="Emitir nota"
                                                                      onclick="return confirm(\'Confirma emissão da nota?\')"></a>',
+              '<a href="nota/consultar/'.$notas->id.'" class="glyphicon glyphicon-tasks" title="Consultar"
+                                                                     onclick="return confirm(\'Consultar recibo?\')"></a>',
+              '<a href="nota/danfe/'.$notas->id.'" class="glyphicon glyphicon-print" title="Danfe"
+                                                                     onclick="return confirm(\'Gerar danfe?\')"></a>',
              ];
       })
       ->editColumn('dt_doc', function ($notas) {
@@ -186,6 +193,7 @@ class NotaController extends Controller
     if (!is_array($error)) {
       $nota->cStat   = $error['cStat'];
       $nota->xMotivo = $error['xMotivo'];
+      $nota->nRec    = $error['nRec'];
       $nota->save();
       session()->put('status', 'sucesso');
       session()->put('status-mensagem', 'NF-e gerada com sucesso.');
@@ -194,6 +202,7 @@ class NotaController extends Controller
       if (isset($error['cStat'])){
         $nota->cStat   = $error['cStat'];
         $nota->xMotivo = $error['xMotivo'];
+        $nota->nRec    = $error['nRec'];
         $nota->save();
         session()->put('status', 'error');
         session()->put('status-mensagem', $nota->cStat . ' - '.$nota->xMotivo);
@@ -204,5 +213,35 @@ class NotaController extends Controller
     }
 
   }
+
+  public function anyConsultar(Request $request, $id){
+    $rotina_id = session('rotina_id');
+    $user_id   = session('user_id');
+    $nota      = notas::find($id);
+    $consulta  = new nfeConsultar;
+    $resposta  = $consulta->getConsulta($nota->nRec,'2');
+    if (isset($resposta['cStat'])){
+      $nota->cStat   = $resposta['aProt'][0]['cStat'];
+      $nota->xMotivo = $resposta['aProt'][0]['xMotivo'];
+      $nota->chv_nfe = $resposta['aProt'][0]['chNFe'];
+      $nota->save();
+      return redirect()->route('nota', ['id' => $rotina_id, 'user_id'=>$user_id]);
+    }
+  }
+
+  public function anyDanfe(Request $request, $id){
+    $rotina_id = session('rotina_id');
+    $user_id   = session('user_id');
+    $nota      = notas::find($id);
+//    $path      = $this->nfe->aConfig["pathNFeFiles"];
+    $mesano    = date('Ym');
+    $xmlProt   = "C:/xmls/NF-e/homologacao/enviadas/aprovadas/{$mesano}/{$nota->chv_nfe}-protNFe.xml";
+    $docxml    = FilesFolders::readFile($xmlProt);
+
+    $consulta  = new nfeDanfe;
+    $resposta  = $consulta->getDanfe($nota,$docxml);
+
+  }
+
 
 }

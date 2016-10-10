@@ -48,6 +48,7 @@ class CreateNotasTable extends Migration
             $table->decimal('vl_cofins',14,2);
             $table->decimal('vl_pis_st',14,2);
             $table->decimal('vl_cofins_st',14,2);
+            $table->string('nRec',15);
             $table->string('cStat',3);
             $table->string('xMotivo',60);
             $table->timestamps();

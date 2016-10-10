@@ -16,10 +16,10 @@ class nfeEnvia
 
   public function getEnviar($nfe,$chave,$tpAmb,$aXml){
   	$aResposta = array();
-	$idLote    = '';
-	$indSinc   = '0';
-	$flagZip   = false;
-	$retorno   = $nfe->sefazEnviaLote($aXml, $tpAmb, $idLote, $aResposta, $indSinc, $flagZip);
-	return $aResposta;
+  	$idLote    = '';
+  	$indSinc   = '0';
+  	$flagZip   = false;
+  	$retorno   = $nfe->sefazEnviaLote($aXml, $tpAmb, $idLote, $aResposta, $indSinc, $flagZip);
+  	return $aResposta;
   }
 }

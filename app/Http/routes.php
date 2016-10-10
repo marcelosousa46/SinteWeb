@@ -109,6 +109,8 @@ Route::group(['middleware' => 'web'], function () {
         'postStore'   => 'nota.store',
         'postUpdate'  => 'nota.update',
         'anyGeranfe'  => 'nota.geranfe',
+        'anyConsultar'=> 'nota.consultar',
+        'anyDanfe'    => 'nota.danfe',
     ]);
     /* Series */
     Route::controller('serie','SerieController',[

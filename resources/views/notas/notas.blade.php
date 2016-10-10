@@ -43,7 +43,7 @@
 
     <div class="row">
       <div class="col-md-12">
-        <table class="table table-condensed table-striped table-bordered table-hover" id="participante-table">
+        <table class="table table-striped table-bordered table-hover" id="participante-table">
             <thead>
               <tr>
                 <th>Número</th>
