@@ -71,6 +71,7 @@
 
     $(function() {
         $('#participante-table').DataTable({
+            "order": [[ 0, "desc" ]],
             "columnDefs": [
               { className: "text-center", "targets": [0] },
               { className: "text-center", "targets": [2] },

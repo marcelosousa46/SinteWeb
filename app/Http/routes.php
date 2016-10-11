@@ -111,6 +111,7 @@ Route::group(['middleware' => 'web'], function () {
         'anyGeranfe'  => 'nota.geranfe',
         'anyConsultar'=> 'nota.consultar',
         'anyDanfe'    => 'nota.danfe',
+        'anyEmail'    => 'nota.email',
     ]);
     /* Series */
     Route::controller('serie','SerieController',[

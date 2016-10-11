@@ -19,7 +19,7 @@ use App\Classes\InterItens;
 use App\Classes\interTitulos;
 use App\Classes\nfeConsultar;
 use App\Classes\nfeDanfe;
-use NFePHP\Common\Files\FilesFolders;
+use App\Classes\nfeEmail;
 
 class NotaController extends Controller
 {
@@ -67,6 +67,8 @@ class NotaController extends Controller
                                                                      onclick="return confirm(\'Consultar recibo?\')"></a>',
               '<a href="nota/danfe/'.$notas->id.'" class="glyphicon glyphicon-print" title="Danfe"
                                                                      onclick="return confirm(\'Gerar danfe?\')"></a>',
+              '<a href="nota/email/'.$notas->id.'" class="glyphicon glyphicon-paste" title="Email"
+                                                                     onclick="return confirm(\'Enviar email?\')"></a>',
              ];
       })
       ->editColumn('dt_doc', function ($notas) {
@@ -190,6 +192,7 @@ class NotaController extends Controller
     $user_id       = session('user_id');
     $nota          = notas::find($id);
     $error         = $this->nfe->getnfe($nota);
+    dd($error);
     if (!is_array($error)) {
       $nota->cStat   = $error['cStat'];
       $nota->xMotivo = $error['xMotivo'];
@@ -203,9 +206,19 @@ class NotaController extends Controller
         $nota->cStat   = $error['cStat'];
         $nota->xMotivo = $error['xMotivo'];
         $nota->nRec    = $error['nRec'];
+        if (isset($error['aProt'][0]['cStat'])){
+          $nota->cStat   = $error['aProt'][0]['cStat'];
+          $nota->xMotivo = $error['aProt'][0]['xMotivo'];
+          $nota->chv_nfe = $error['aProt'][0]['chNFe'];
+          if($error['aProt'][0]['cStat'] === '100'){
+            session()->put('status', 'sucesso');
+            session()->put('status-mensagem', 'NF-e gerada com sucesso.');
+          } else {
+            session()->put('status', 'error');
+            session()->put('status-mensagem', $nota->cStat . ' - '.$nota->xMotivo);
+          }
+        }  
         $nota->save();
-        session()->put('status', 'error');
-        session()->put('status-mensagem', $nota->cStat . ' - '.$nota->xMotivo);
         return redirect()->route('nota', ['id' => $rotina_id, 'user_id'=>$user_id]);
       } else {
         return view('notas.notas-errors',compact(['nota','error','rotina_id','user_id']));
@@ -233,13 +246,28 @@ class NotaController extends Controller
     $rotina_id = session('rotina_id');
     $user_id   = session('user_id');
     $nota      = notas::find($id);
-//    $path      = $this->nfe->aConfig["pathNFeFiles"];
-    $mesano    = date('Ym');
-    $xmlProt   = "C:/xmls/NF-e/homologacao/enviadas/aprovadas/{$mesano}/{$nota->chv_nfe}-protNFe.xml";
-    $docxml    = FilesFolders::readFile($xmlProt);
 
     $consulta  = new nfeDanfe;
-    $resposta  = $consulta->getDanfe($nota,$docxml);
+    $resposta  = $consulta->getDanfe($nota,$nota->chv_nfe,true);
+
+  }
+
+  public function anyEmail(Request $request, $id){
+    $rotina_id = session('rotina_id');
+    $user_id   = session('user_id');
+    $nota      = notas::find($id);
+
+    $email     = new nfeEmail;
+    $resposta  = $email->getEmail($nota,$nota->chv_nfe);
+    if ($resposta){
+      session()->put('status', 'sucesso');
+      session()->put('status-mensagem', 'E-mail enviado com sucesso.');
+      return redirect()->route('nota', ['id' => $rotina_id, 'user_id'=>$user_id]);
+    } else {
+      session()->put('status', 'error');
+      session()->put('status-mensagem', 'Problema no envio do e-mail.');
+      return redirect()->route('nota', ['id' => $rotina_id, 'user_id'=>$user_id]);
+    }
 
   }
 

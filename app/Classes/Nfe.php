@@ -125,7 +125,7 @@ class Nfe
 		    $vProd    =  number_format($prod->vl_item * $prod->qtd, 2, '.', ''); // todo trocar criar vl_merc
 		    $cEANTrib = '';
 		    $uTrib    = $prod->produtos->unidade->codigo;
-		    $qTrib    = '1';
+		    $qTrib    = $prod->qtd;
 		    $vUnTrib  = $prod->vl_item;
 		    $vFrete   = '';
 		    $vSeg     = '';
@@ -168,37 +168,6 @@ class Nfe
 			   $vICMSSTRet = '';
 			   $resp       = $this->nfe->tagICMS($nItem, $orig, $cst, $modBC, $pRedBC, $vBC, $pICMS, $vICMS, $vICMSDeson, $motDesICMS, $modBCST, $pMVAST, $pRedBCST, $vBCST, $pICMSST, $vICMSST, $pDif, $vICMSDif, $vICMSOp, $vBCSTRet, $vICMSSTRet);
 
-			   //IPI - Imposto sobre Produto Industrializado
-			   $cst      = '50'; // 50 - Saída Isenta (Código da Situação Tributária)
-			   $clEnq    = '';
-			   $cnpjProd = '';
-			   $cSelo    = '';
-			   $qSelo    = '';
-			   $cEnq     = '999';
-			   $vBC      = '0.00';
-			   $pIPI     = '0.00';
-			   $qUnid    = '';
-			   $vUnid    = '';
-			   $vIPI     = '0.00';
-			   $resp = $this->nfe->tagIPI($nItem, $cst, $clEnq, $cnpjProd, $cSelo, $qSelo, $cEnq, $vBC, $pIPI, $qUnid, $vUnid, $vIPI);
-
-                //PIS - Programa de Integração Social
-				$cst       = $prod->cst_pis;
-				$vBC       = '';
-				$pPIS      = '';
-				$vPIS      = $prod->vl_pis;
-				$qBCProd   = $prod->vl_bc_pis;
-				$vAliqProd = $prod->aliq_pis;
-				$resp      = $this->nfe->tagPIS($nItem, $cst, $vBC, $pPIS, $vPIS, $qBCProd, $vAliqProd);
-
-				//COFINS - Contribuição para o Financiamento da Seguridade Social
-				$cst       = $prod->cst_cofins;
-				$vBC       = '';
-				$pCOFINS   = '';
-				$vCOFINS   = $prod->vl_cofins;
-				$qBCProd   = $prod->vl_bc_cofins;
-				$vAliqProd = $prod->aliq_cofins;
-				$resp = $this->nfe->tagCOFINS($nItem, $cst, $vBC, $pCOFINS, $vCOFINS, $qBCProd, $vAliqProd);
  			}
 			if ($cst == '10')
 			{
@@ -223,39 +192,38 @@ class Nfe
 			   $resp       = $this->nfe->tagICMS($nItem, $orig, $cst, $modBC, $pRedBC, $vBC, $pICMS, $vICMS, $vICMSDeson, $motDesICMS, $modBCST, $pMVAST, $pRedBCST, $vBCST, $pICMSST, $vICMSST, $pDif, $vICMSDif, $vICMSOp, $vBCSTRet, $vICMSSTRet);
 
 			   $vST = $vICMSST; // Total de ICMS ST
+            }
+		    //IPI - Imposto sobre Produto Industrializado
+		    $cst      = '50'; // 50 - Saída Isenta (Código da Situação Tributária)
+		    $clEnq    = '';
+		    $cnpjProd = '';
+		    $cSelo    = '';
+		    $qSelo    = '';
+		    $cEnq     = '999';
+		    $vBC      = '0.00';
+		    $pIPI     = '0.00';
+		    $qUnid    = '';
+		    $vUnid    = '';
+		    $vIPI     = '0.00';
+		    $resp = $this->nfe->tagIPI($nItem, $cst, $clEnq, $cnpjProd, $cSelo, $qSelo, $cEnq, $vBC, $pIPI, $qUnid, $vUnid, $vIPI);
 
-			   //IPI - Imposto sobre Produto Industrializado
-			   $cst      = '52'; // 50 - Saída Isenta (Código da Situação Tributária)
-			   $clEnq    = '';
-			   $cnpjProd = '';
-			   $cSelo    = '';
-			   $qSelo    = '';
-			   $cEnq     = '999';
-			   $vBC      = '0.00';
-			   $pIPI     = '0.00';
-			   $qUnid    = '';
-			   $vUnid    = '';
-			   $vIPI     = '0.00';
-			   $resp = $this->nfe->tagIPI($nItem, $cst, $clEnq, $cnpjProd, $cSelo, $qSelo, $cEnq, $vBC, $pIPI, $qUnid, $vUnid, $vIPI);
+			//PIS - Programa de Integração Social
+			$cst       = $prod->cst_pis;
+			$vBC       = '';
+			$pPIS      = '';
+			$vPIS      = $prod->vl_pis;
+			$qBCProd   = $prod->vl_bc_pis;
+			$vAliqProd = $prod->aliq_pis;
+			$resp      = $this->nfe->tagPIS($nItem, $cst, $vBC, $pPIS, $vPIS, $qBCProd, $vAliqProd);
 
-				//PIS - Programa de Integração Social
-				$cst       = $prod->cst_pis;
-				$vBC       = '';
-				$pPIS      = '';
-				$vPIS      = $prod->vl_pis;
-				$qBCProd   = $prod->vl_bc_pis;
-				$vAliqProd = $prod->aliq_pis;
-				$resp      = $this->nfe->tagPIS($nItem, $cst, $vBC, $pPIS, $vPIS, $qBCProd, $vAliqProd);
-
-				//COFINS - Contribuição para o Financiamento da Seguridade Social
-				$cst       = $prod->cst_cofins;
-				$vBC       = '';
-				$pCOFINS   = '';
-				$vCOFINS   = $prod->vl_confins;
-				$qBCProd   = $prod->vl_bc_cofins;
-				$vAliqProd = $prod->aliq_cofins;
-				$resp = $this->nfe->tagCOFINS($nItem, $cst, $vBC, $pCOFINS, $vCOFINS, $qBCProd, $vAliqProd);
-			}
+			//COFINS - Contribuição para o Financiamento da Seguridade Social
+			$cst       = $prod->cst_cofins;
+			$vBC       = '';
+			$pCOFINS   = '';
+			$vCOFINS   = $prod->vl_cofins;
+			$qBCProd   = $prod->vl_bc_cofins;
+			$vAliqProd = $prod->aliq_cofins;
+			$resp = $this->nfe->tagCOFINS($nItem, $cst, $vBC, $pCOFINS, $vCOFINS, $qBCProd, $vAliqProd);
 		}
 		//Inicialização de váriaveis não declaradas...
 		$vII     = isset($vII) ? $vII : 0;
@@ -334,20 +302,28 @@ class Nfe
 		if (is_array($resp)) {
 		    return $resp;
 		}
-		$envia = new nfeEnvia;
-		$resp = $envia->getEnviar($this->nfeTools,$chave,$tpAmb,$xml);
+        $path   = $this->nfeTools->aConfig["pathNFeFiles"];
+        $mesano = date('Ym');
+		// Enviar XML
+		$envia  = new nfeEnvia;
+		$resp   = $envia->getEnviar($this->nfeTools,$chave,$tpAmb,$xml);
 		if ($resp['cStat'] === "103"){
+     		// Consultar lote enviado
 			$consulta = new nfeConsultar;
 		    $resp = $consulta->getConsulta($resp['nRec'],$tpAmb);
 	        if ($resp['aProt'][0]['cStat'] = "100"){
-			    $filename = "C:/xmls/NF-e/homologacao/enviadas/aprovadas/201610/{$chave}-protNFe.xml"; // Ambiente Windows
+			    $filename = "{$path}/homologacao/enviadas/aprovadas/{$mesano}/{$chave}-protNFe.xml"; // Ambiente Windows
 			    file_put_contents($filename, $xml);
+				// Gerar Danfe
+    	        $consulta  = new nfeDanfe;
+                $resposta  = $consulta->getDanfe($nota,$chave,false);
 	        }
+   		    return $resp;
 		}    
 		if (is_array($resp)) {
 		    return $resp;
 		}
-	    $filename = "C:/xmls/NF-e/homologacao/entradas/{$chave}-nfe.xml"; // Ambiente Windows
+	    $filename = "{$path}/homologacao/entradas/{$chave}-nfe.xml"; // Ambiente Windows
 	    file_put_contents($filename, $xml);
 	}
 }
