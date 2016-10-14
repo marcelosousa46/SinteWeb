@@ -20,6 +20,7 @@ use App\Classes\interTitulos;
 use App\Classes\nfeConsultar;
 use App\Classes\nfeDanfe;
 use App\Classes\nfeEmail;
+use App\Classes\nfeCancela;
 
 class NotaController extends Controller
 {
@@ -46,7 +47,7 @@ class NotaController extends Controller
   }
   public function anyData()
   {
-      $user_id  = session('user_id');
+      $user_id = session('user_id');
       $retorno = DB::table('notas')
                      ->join('participantes', 'participantes.id', '=', 'notas.participante_id')
                      ->select('notas.id', 'participantes.codigo','participantes.nome','notas.dt_doc',
@@ -58,17 +59,18 @@ class NotaController extends Controller
       return Datatables::of($notas)
       ->addColumn('action', function ($notas) {
       return [
-              '<a href="nota/edit/'.$notas->id.'" class="glyphicon glyphicon-pencil" title="Editar"></a>',
-              '<a href="nota/destroy/'.$notas->id.'" class="glyphicon glyphicon-trash" title="Deletar"
-                                                                     onclick="return confirm(\'Excluir Nota?\')"></a>',
-              '<a href="nota/geranfe/'.$notas->id.'" class="glyphicon glyphicon-list-alt" title="Emitir nota"
-                                                                     onclick="return confirm(\'Confirma emissão da nota?\')"></a>',
+              '<a href="nota/edit/'     .$notas->id.'" class="glyphicon glyphicon-pencil" title="Editar"></a>',
+              '<a href="nota/destroy/'  .$notas->id.'" class="glyphicon glyphicon-trash" title="Deletar"
+                                                       onclick="return gerar(\'Excluir Nota?\')"></a>',
+              '<a href="nota/geranfe/'  .$notas->id.'" id="gerar" class="glyphicon glyphicon-list-alt" title="Emitir nota"
+                                                       onclick="return gerar(\'Emitir nota?\')"></a>',
               '<a href="nota/consultar/'.$notas->id.'" class="glyphicon glyphicon-tasks" title="Consultar"
-                                                                     onclick="return confirm(\'Consultar recibo?\')"></a>',
-              '<a href="nota/danfe/'.$notas->id.'" class="glyphicon glyphicon-print" title="Danfe"
-                                                                     onclick="return confirm(\'Gerar danfe?\')"></a>',
-              '<a href="nota/email/'.$notas->id.'" class="glyphicon glyphicon-paste" title="Email"
-                                                                     onclick="return confirm(\'Enviar email?\')"></a>',
+                                                       onclick="return gerar(\'Consultar recibo?\')"></a>',
+              '<a href="nota/danfe/'    .$notas->id.'" class="glyphicon glyphicon-print" title="Danfe"
+                                                       onclick="return gerar(\'Gerar danfe?\')"></a>',
+              '<a href="nota/email/'    .$notas->id.'" class="glyphicon glyphicon-paste" title="Email"
+                                                       onclick="return gerar(\'Enviar email?\')"></a>',
+              '<a href="nota/motivo/'   .$notas->id.'" class="glyphicon glyphicon-ban-circle" title="Cancelamento"></a>',
              ];
       })
       ->editColumn('dt_doc', function ($notas) {
@@ -178,7 +180,7 @@ class NotaController extends Controller
         for ($i = 1; $i <= $forma->parcelas; $i++){
           $titulos = $this->iTitulos->relacionar($request,$request->num_doc,$i);
           $titulos->vl_doc = $vl_tit;
-          $dias = $i * $forma->intervalo;
+          $dias  = $i * $forma->intervalo;
           $titulos->dt_venc = date('Y-m-d', strtotime($request->dt_doc. ' + '.$dias.' days'));
           $nota  = notas::find($id)->titulos()->save($titulos);
         }  
@@ -188,11 +190,16 @@ class NotaController extends Controller
 
   public function anyGeranfe(Request $request, $id)
   {
-    $rotina_id     = session('rotina_id');
-    $user_id       = session('user_id');
-    $nota          = notas::find($id);
-    $error         = $this->nfe->getnfe($nota);
-    dd($error);
+    $rotina_id = session('rotina_id');
+    $user_id   = session('user_id');
+    $nota      = notas::find($id);
+    if(trim($nota->cStat) != ""){
+      session()->put('status', 'error');
+      session()->put('status-mensagem', 'Emissão apenas para notas geradas!');
+      return redirect()->route('nota', ['id' => $rotina_id, 'user_id'=>$user_id]);
+    }
+
+    $error = $this->nfe->getnfe($nota);
     if (!is_array($error)) {
       $nota->cStat   = $error['cStat'];
       $nota->xMotivo = $error['xMotivo'];
@@ -210,6 +217,7 @@ class NotaController extends Controller
           $nota->cStat   = $error['aProt'][0]['cStat'];
           $nota->xMotivo = $error['aProt'][0]['xMotivo'];
           $nota->chv_nfe = $error['aProt'][0]['chNFe'];
+          $nota->nProt   = $error['aProt'][0]['nProt'];
           if($error['aProt'][0]['cStat'] === '100'){
             session()->put('status', 'sucesso');
             session()->put('status-mensagem', 'NF-e gerada com sucesso.');
@@ -231,8 +239,20 @@ class NotaController extends Controller
     $rotina_id = session('rotina_id');
     $user_id   = session('user_id');
     $nota      = notas::find($id);
+
+    if(trim($nota->nRec) === ""){
+      session()->put('status', 'error');
+      session()->put('status-mensagem', 'Consultar nota apenas para notas enviadas para sefaz!');
+      return redirect()->route('nota', ['id' => $rotina_id, 'user_id'=>$user_id]);
+    } elseif(trim($nota->cStat) === "100"){
+      session()->put('status', 'error');
+      session()->put('status-mensagem', 'Nota já autorizada o uso!');
+      return redirect()->route('nota', ['id' => $rotina_id, 'user_id'=>$user_id]);
+    }
+
     $consulta  = new nfeConsultar;
     $resposta  = $consulta->getConsulta($nota->nRec,'2');
+
     if (isset($resposta['cStat'])){
       $nota->cStat   = $resposta['aProt'][0]['cStat'];
       $nota->xMotivo = $resposta['aProt'][0]['xMotivo'];
@@ -247,6 +267,12 @@ class NotaController extends Controller
     $user_id   = session('user_id');
     $nota      = notas::find($id);
 
+    if(trim($nota->cStat) != "100"){
+      session()->put('status', 'error');
+      session()->put('status-mensagem', 'Gerar danfe apenas para notas autorizadas!');
+      return redirect()->route('nota', ['id' => $rotina_id, 'user_id'=>$user_id]);
+    }
+
     $consulta  = new nfeDanfe;
     $resposta  = $consulta->getDanfe($nota,$nota->chv_nfe,true);
 
@@ -256,6 +282,12 @@ class NotaController extends Controller
     $rotina_id = session('rotina_id');
     $user_id   = session('user_id');
     $nota      = notas::find($id);
+
+    if(trim($nota->cStat) != "100"){
+      session()->put('status', 'error');
+      session()->put('status-mensagem', 'Enviar e-mail apenas para notas autorizadas!');
+      return redirect()->route('nota', ['id' => $rotina_id, 'user_id'=>$user_id]);
+    }
 
     $email     = new nfeEmail;
     $resposta  = $email->getEmail($nota,$nota->chv_nfe);
@@ -270,6 +302,49 @@ class NotaController extends Controller
     }
 
   }
+  public function anyCancela(Request $request, $id){
+    $rotina_id = session('rotina_id');
+    $user_id   = session('user_id');
+    $xJust     = $request->motivo;
+    $nota      = notas::find($id);
 
+    if(trim($nota->cStat) != "100"){
+      session()->put('status', 'error');
+      session()->put('status-mensagem', 'Cancelamento apenas para notas autorizadas!');
+      return redirect()->route('nota', ['id' => $rotina_id, 'user_id'=>$user_id]);
+    }
 
+    $cancelamento = new nfeCancela;
+    $resposta     = $cancelamento->getCancela($nota,$xJust);
+    if ($resposta['evento'][0]['cStat']==='135'){
+      $nota->cStat   = $resposta['evento'][0]['cStat'];
+      $nota->xMotivo = $resposta['evento'][0]['xMotivo'];
+      $nota->save();
+      session()->put('status', 'sucesso');
+      session()->put('status-mensagem', 'Nota cancelada com sucesso.');
+      return redirect()->route('nota', ['id' => $rotina_id, 'user_id'=>$user_id]);
+    } else {
+      session()->put('status', 'error');
+      session()->put('status-mensagem', $resposta['evento'][0]['xMotivo']);
+      return redirect()->route('nota', ['id' => $rotina_id, 'user_id'=>$user_id]);
+    }
+
+  }
+
+  public function anyMotivo(Request $request, $id){
+      $autorizado = $this->permissao->getPermissao($request,'A');
+      $rotina_id  = session('rotina_id');
+      $user_id    = session('user_id');
+
+      if ($autorizado)
+      {
+        $nota = notas::find($id);
+        return view('notas.notas-cancelamento',compact(['nota','rotina_id','user_id']));
+      } else {
+        session()->put('status', 'error');
+        session()->put('status-mensagem', 'Usuário não autorizado.');
+        return view('notas.notas',compact(['nota','rotina_id','user_id']));
+      }
+
+  }
 }

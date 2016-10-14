@@ -35,7 +35,7 @@ class Nfe
 		$dhEmi    = date("Y-m-d\TH:i:sP",strtotime($nota->dt_doc));
 		$dhSaiEnt = date("Y-m-d\TH:i:sP",strtotime($nota->dt_doc));
 		$tpEmis   = $nota->tpemis;
-		$tpAmb    = '2';
+		$tpAmb    = $this->nfeTools->aConfig['tpAmb'];
 		$tpNF     = '1';
 		$tpImp    = '1';
 		$idDest   = '1';
@@ -311,7 +311,7 @@ class Nfe
      		// Consultar lote enviado
 			$consulta = new nfeConsultar;
 		    $resp = $consulta->getConsulta($resp['nRec'],$tpAmb);
-	        if ($resp['aProt'][0]['cStat'] = "100"){
+	        if ($resp['aProt'][0]['cStat'] === "100"){
 			    $filename = "{$path}/homologacao/enviadas/aprovadas/{$mesano}/{$chave}-protNFe.xml"; // Ambiente Windows
 			    file_put_contents($filename, $xml);
 				// Gerar Danfe

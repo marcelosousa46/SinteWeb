@@ -43,6 +43,7 @@ class notas extends Model
             'cStat',
             'xMotivo',
             'nRec',
+            'nProt',
             'fpagamento_id'
     ];
 

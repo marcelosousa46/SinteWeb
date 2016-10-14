@@ -9,7 +9,9 @@
 
 @section('content')
 <div class="container-fluid">
-  <div class="col-md-12">
+    <div class="aguarde col-md-12 text-center">
+       <img class = "aguarde hidden text-center" src="/bower_components/AdminLTE/dist/img/aguarde.gif">
+    </div>   
     <div class="row">
       <div class="col-md-6">
         @if (count($errors) > 0)
@@ -41,22 +43,21 @@
     </div>
   </div>
 
-    <div class="row">
-      <div class="col-md-12">
-        <table class="table table-striped table-bordered table-hover" id="participante-table">
-            <thead>
-              <tr>
-                <th>Número</th>
-                <th>Destinatário</th>
-                <th>Data Emissão</th>
-                <th class="text-right">Valor</th>
-                <th>Status</th>
-                <th>Situação</th>
-                <th>Ação</th>
-              </tr>
-            </thead>
-        </table>
-      </div>
+  <div class="row">
+    <div class="col-md-12">
+      <table class="table table-striped table-bordered table-hover" id="participante-table">
+          <thead>
+            <tr>
+              <th>Número</th>
+              <th>Destinatário</th>
+              <th>Data Emissão</th>
+              <th class="text-right">Valor</th>
+              <th>Status</th>
+              <th>Situação</th>
+              <th>Ação</th>
+            </tr>
+          </thead>
+      </table>
     </div>
   </div>
 </div>
@@ -68,6 +69,14 @@
     $(".alert").fadeTo(5000, 0.4).slideUp(700, function(){
       $(".alert").alert('close');
     });
+    function gerar(mensagem){
+      if (confirm(mensagem)){
+         $('.aguarde').removeClass('hidden');
+         $('.aguarde').addClass('visible');
+      } else {
+        return false;
+      }   
+    };
 
     $(function() {
         $('#participante-table').DataTable({
@@ -77,6 +86,7 @@
               { className: "text-center", "targets": [2] },
               { className: "vlr_out text-right", "targets": [3] },
               { className: "text-center", "targets": [4] },
+              { className: "text-center", "targets": [6] },
               ],
             language : {
                 "sEmptyTable": "Nenhum registro encontrado",
@@ -116,7 +126,7 @@
                 { data: 'action' , name: 'action', orderable: false, searchable: false}
             ]
         });
-
     });
+
   </script>
 @endpush
