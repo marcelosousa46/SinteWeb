@@ -63,7 +63,7 @@
   <!-- jquery-ui.min.js -->
   <script src="{{ asset('/vendor/assets/jquery-ui.min.js') }}"></script>
   <!-- Bootstrap-3-Typeahead -->
-  <script src="{{ asset('/bower_components/Bootstrap-3-Typeahead/bootstrap3-typeahead.min.js') }}"></script>
+  <script src="{{ asset('\bower_components\Bootstrap-3-Typeahead\bootstrap3-typeahead.min.js') }}"></script>
   <!-- main.js -->
   <script src="{{ asset('/vendor/assets/main.js') }}"></script>
   @stack('scripts')
