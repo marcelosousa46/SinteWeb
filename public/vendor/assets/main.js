@@ -9,7 +9,7 @@ $(document).ready(function(){
   // Pesquisa pelo descrição da natureza da operação
   $('#natop_descricao').typeahead({
       source:  function (query, process) {
-      var path = "../../../natop/autocomplete";    
+      var path = "..\..\..\natop\autocomplete";    
       return $.get(path, { query: query }, function (data) {
               return process(data);
           });
@@ -26,7 +26,7 @@ $(document).ready(function(){
   // Pesquisa pelo descrição da natureza da operação - natop
   $('#natop').typeahead({
       source:  function (query, process) {
-      var path = "../../../natop/autocomplete";    
+      var path = "..\..\..\natop\autocomplete";    
       return $.get(path, { query: query }, function (data) {
               return process(data);
           });
@@ -42,7 +42,7 @@ $(document).ready(function(){
   // Pesquisa pelo codigo da natureza
   $('#cfop').typeahead({
       source:  function (query, process) {
-      var path = "../../../natop/codigo";    
+      var path = "..\..\..\natop\codigo";    
       return $.get(path, { query: query }, function (data) {
               return process(data);
           });
@@ -61,7 +61,7 @@ $(document).ready(function(){
   // Pesquisa pelo descricao do produto
   $('#descricao').typeahead({
       source:  function (query, process) {
-      var path = "../../../produtos/autocomplete";    
+      var path = "..\..\..\produtos\autocomplete";    
       return $.get(path, { query: query }, function (data) {
               return process(data);
           });
@@ -85,7 +85,7 @@ $(document).ready(function(){
   // Pesquisa pelo codigo do produto
   $('#cod_item').typeahead({
       source:  function (query, process) {
-      var path = "../../../produtos/codigo";    
+      var path = "..\..\..\produtos\codigo";    
       return $.get(path, { query: query }, function (data) {
               return process(data);
           });
@@ -110,7 +110,7 @@ $(document).ready(function(){
   // Pesquisa pelo codigo do participante
   $('#cli_cod').typeahead({
       source:  function (query, process) {
-      var path = "../../../participante/codigo";    
+      var path = "..\..\..\participante\codigo";    
       return $.get(path, { query: query }, function (data) {
               return process(data);
           });
@@ -127,7 +127,7 @@ $(document).ready(function(){
   // Pesquisa pelo nome do participante
   $('#cli_nome').typeahead({
       source:  function (query, process) {
-      var path = "../../../participante/nome";    
+      var path = "..\..\..\participante\nome";    
       return $.get(path, { query: query }, function (data) {
               return process(data);
           });
@@ -184,7 +184,7 @@ function Adicionar(){
 
   $.ajax({
       type: "GET",
-      url: '../../../produtos/id/'+produto_id, 
+      url: '..\..\..\produtos\id\'+produto_id, 
       success: function (result) {
           if (Object.keys(result).length > 0){
              $("#produto_id").val(result.id);
@@ -194,7 +194,7 @@ function Adicionar(){
       });
   $.ajax({
       type: "GET",
-      url: '../../../natop/id/'+id_natop, 
+      url: "..\..\..\natop\id\"+id_natop, 
       success: function (result) {
           if (Object.keys(result).length > 0){
              $("#id_natop").val(result.id);
